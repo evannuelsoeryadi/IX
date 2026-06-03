@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>IX</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,7 +12,7 @@
         <a href="#">Comic</a>
         <a href="#">Character</a>
         <a href="#">About Us</a>
-        <a href="#">Profile</a>
+        <a href="#" onclick="goProfile()">Profile</a>
     </nav>
 
     <div class="hero">
@@ -22,11 +21,37 @@
 
         <p>A New World Awaits</p>
 
-        <a href="#" class="btn">
+        <a href="#" class="btn" id="startBtn">
             Start Reading
         </a>
 
     </div>
+
+    <script>
+        function isLoggedIn() {
+            return localStorage.getItem("user") !== null;
+        }
+
+        // START READING BUTTON
+        document.getElementById("startBtn").addEventListener("click", function(e) {
+            e.preventDefault();
+
+            if (!isLoggedIn()) {
+                window.location.href = "login.html";
+            } else {
+                window.location.href = "comic.html";
+            }
+        });
+
+        // PROFILE BUTTON
+        function goProfile() {
+            if (!isLoggedIn()) {
+                window.location.href = "login.html";
+            } else {
+                window.location.href = "profile.html";
+            }
+        }
+    </script>
 
 </body>
 </html>
