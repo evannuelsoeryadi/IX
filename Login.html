@@ -8,18 +8,22 @@
             margin:0;
             font-family:Arial;
             height:100vh;
+
             display:flex;
             justify-content:center;
             align-items:center;
+
             background:linear-gradient(180deg,#3B82F6,#A855F7,#EC4899);
         }
 
         .box{
-            background:#0f172a;
+            width:320px;
             padding:40px;
+
+            background:#0f172a;
             border-radius:15px;
+
             box-shadow:0 0 20px rgba(0,0,0,0.5);
-            width:300px;
             text-align:center;
         }
 
@@ -30,23 +34,30 @@
 
         input{
             width:100%;
-            padding:10px;
+            padding:12px;
             margin:10px 0;
+
             border:none;
             border-radius:8px;
+
             outline:none;
         }
 
         button{
             width:100%;
-            padding:10px;
+            padding:12px;
+
             margin-top:10px;
+
             border:none;
             border-radius:8px;
+
             background:#3B82F6;
             color:white;
+
             font-weight:bold;
             cursor:pointer;
+
             transition:0.3s;
         }
 
@@ -56,8 +67,8 @@
 
         p{
             color:white;
-            margin-top:15px;
             font-size:12px;
+            margin-top:15px;
         }
 
         a{
@@ -89,7 +100,7 @@
                 return;
             }
 
-            // SIMPAN USER (dummy login)
+            // simpan user (dummy login)
             localStorage.setItem("user", user);
 
             // balik ke homepage
