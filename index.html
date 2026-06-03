@@ -12,7 +12,7 @@
         <a href="#">Comic</a>
         <a href="#">Character</a>
         <a href="#">About Us</a>
-        <a href="#" onclick="goProfile()">Profile</a>
+        <a href="#" onclick="goprofile()">Profile</a>
     </nav>
 
     <div class="hero">
@@ -37,16 +37,16 @@
             e.preventDefault();
 
             if (!isLoggedIn()) {
-                window.location.href = "login.html";
+                window.location.href = "Login.html";
             } else {
-                window.location.href = "comic.html";
+                window.location.href = "Comic.html";
             }
         });
 
         // PROFILE BUTTON
         function goProfile() {
             if (!isLoggedIn()) {
-                window.location.href = "login.html";
+                window.location.href = "Login.html";
             } else {
                 window.location.href = "profile.html";
             }
