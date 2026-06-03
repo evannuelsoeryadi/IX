@@ -12,15 +12,17 @@
         <a href="#">Comic</a>
         <a href="#">Character</a>
         <a href="#">About Us</a>
-        <a href="#" onclick="goprofile()">Profile</a>
+
+        <!-- PROFILE (CEK LOGIN) -->
+        <a href="#" onclick="goProfile()">Profile</a>
     </nav>
 
     <div class="hero">
 
         <h1>Infinite X</h1>
-
         <p>A New World Awaits</p>
 
+        <!-- START READING (CEK LOGIN) -->
         <a href="#" class="btn" id="startBtn">
             Start Reading
         </a>
@@ -32,21 +34,21 @@
             return localStorage.getItem("user") !== null;
         }
 
-        // START READING BUTTON
-        document.getElementById("startBtn").addEventListener("click", function(e) {
+        // START READING
+        document.getElementById("startBtn").addEventListener("click", function(e){
             e.preventDefault();
 
-            if (!isLoggedIn()) {
-                window.location.href = "Login.html";
+            if(!isLoggedIn()){
+                window.location.href = "login.html";
             } else {
-                window.location.href = "Comic.html";
+                window.location.href = "comic.html";
             }
         });
 
-        // PROFILE BUTTON
-        function goProfile() {
-            if (!isLoggedIn()) {
-                window.location.href = "Login.html";
+        // PROFILE
+        function goProfile(){
+            if(!isLoggedIn()){
+                window.location.href = "login.html";
             } else {
                 window.location.href = "profile.html";
             }
