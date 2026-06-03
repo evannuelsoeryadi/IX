@@ -1,1 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comic - Infinite X</title>
 
+    <style>
+        body{
+            margin:0;
+            font-family:Arial;
+            min-height:100vh;
+            background:linear-gradient(180deg,#0f172a,#1e293b);
+            color:white;
+        }
+
+        nav{
+            background:#020617;
+            padding:15px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        nav a{
+            color:white;
+            text-decoration:none;
+            margin:0 10px;
+        }
+
+        .container{
+            padding:30px;
+            text-align:center;
+        }
+
+        h1{
+            color:#22D3EE;
+            margin-bottom:10px;
+        }
+
+        .chapter{
+            background:#111827;
+            margin:20px auto;
+            padding:20px;
+            border-radius:10px;
+            width:80%;
+            max-width:600px;
+            box-shadow:0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .btn{
+            display:inline-block;
+            margin-top:10px;
+            padding:10px 20px;
+            background:#3B82F6;
+            color:white;
+            border-radius:8px;
+            text-decoration:none;
+        }
+
+        .btn:hover{
+            background:#2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div>📖 Infinite X</div>
+        <div>
+            <a href="index.html">Home</a>
+            <a href="profile.html">Profile</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <h1>Comic Page</h1>
+        <p>Welcome to Infinite X World</p>
+
+        <div class="chapter">
+            <h3>Chapter 1</h3>
+            <p>The beginning of Infinite X universe...</p>
+            <a class="btn" href="#">Read</a>
+        </div>
+
+        <div class="chapter">
+            <h3>Chapter 2</h3>
+            <p>A new threat appears...</p>
+            <a class="btn" href="#">Read</a>
+        </div>
+
+    </div>
+
+    <script>
+        // optional: proteksi biar gak bisa buka tanpa login
+        let user = localStorage.getItem("user");
+
+        if(!user){
+            window.location.href = "login.html";
+        }
+    </script>
+
+</body>
+</html>
