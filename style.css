@@ -276,3 +276,88 @@ nav a:hover{
 
     text-decoration:none;
 }
+
+/* LOGIN & SIGNUP */
+
+.login-box{
+
+    width:400px;
+
+    background:#071029;
+
+    padding:40px;
+
+    border-radius:20px;
+
+    margin:120px auto;
+
+    text-align:center;
+
+    box-shadow:0 0 25px rgba(0,0,0,0.4);
+}
+
+.login-box h1{
+
+    color:white;
+
+    margin-bottom:25px;
+}
+
+.login-box input{
+
+    width:100%;
+
+    padding:15px;
+
+    margin:10px 0;
+
+    border:none;
+
+    border-radius:10px;
+
+    font-size:16px;
+}
+
+.login-box button{
+
+    width:100%;
+
+    padding:15px;
+
+    margin-top:15px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#3B82F6;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.login-box button:hover{
+
+    transform:scale(1.03);
+}
+
+.login-box p{
+
+    color:white;
+
+    margin-top:20px;
+}
+
+.login-box a{
+
+    color:#22D3EE;
+
+    text-decoration:none;
+}
