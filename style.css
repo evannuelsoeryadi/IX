@@ -6,24 +6,25 @@
 
 body{
     min-height:100vh;
+    font-family:Arial, sans-serif;
 
-    background: linear-gradient(
+    background:linear-gradient(
         180deg,
         #3B82F6,
         #A855F7,
         #EC4899,
         #3B82F6
     );
-
-    font-family:Arial, sans-serif;
 }
 
+/* NAVBAR */
+
 nav{
-    background: linear-gradient(
+    background:linear-gradient(
         180deg,
         #020617 0%,
         #020617 42%,
-        #3B82F6 50%,
+        #2563EB 50%,
         #020617 58%,
         #020617 100%
     );
@@ -42,17 +43,26 @@ nav{
 nav a{
     color:white;
     text-decoration:none;
-    font-size:24px;
+    font-size:20px;
     font-weight:bold;
+    transition:0.3s;
 }
 
 nav a:hover{
     color:#22D3EE;
 }
 
+/* HOMEPAGE */
+
 .hero{
+    height:calc(100vh - 80px);
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
     text-align:center;
-    margin-top:180px;
 }
 
 .hero h1{
@@ -61,7 +71,8 @@ nav a:hover{
 
     text-shadow:
         0 0 10px white,
-        0 0 20px white;
+        0 0 20px white,
+        0 0 40px white;
 }
 
 .hero p{
@@ -91,8 +102,10 @@ nav a:hover{
 }
 
 .btn:hover{
-    transform:scale(1.05);
+    transform:scale(1.08);
 }
+
+/* COMIC PAGE */
 
 .comic-page{
     padding:50px;
@@ -103,29 +116,31 @@ nav a:hover{
     color:white;
     font-size:50px;
     margin-bottom:50px;
+
+    text-shadow:
+        0 0 10px white,
+        0 0 20px white;
 }
 
 .comic-container{
     display:flex;
     justify-content:center;
-    flex-wrap:wrap;
     gap:60px;
+    flex-wrap:wrap;
 }
 
 .comic-card{
     width:250px;
-    text-align:center;
 }
 
 .card-inner{
+    position:relative;
+
     width:250px;
     height:350px;
 
-    position:relative;
-
-    transition:0.8s;
-
     transform-style:preserve-3d;
+    transition:0.8s;
 }
 
 .comic-card:hover .card-inner{
@@ -147,14 +162,14 @@ nav a:hover{
 .card-front{
     background:white;
 
+    border:2px solid black;
+
     display:flex;
     justify-content:center;
     align-items:center;
 
     font-size:24px;
     font-weight:bold;
-
-    border:2px solid black;
 }
 
 .card-back{
@@ -178,15 +193,14 @@ nav a:hover{
 
     margin-top:15px;
 
-    padding:10px 25px;
+    padding:10px 30px;
 
     background:white;
-
     color:black;
 
     text-decoration:none;
 
-    border-radius:25px;
+    border-radius:30px;
 
     font-weight:bold;
 
@@ -196,7 +210,4 @@ nav a:hover{
 .chapter-btn:hover{
     background:#3B82F6;
     color:white;
-}
-body{
-    border:10px solid red !important;
 }
