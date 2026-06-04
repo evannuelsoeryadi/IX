@@ -197,3 +197,6 @@ nav a:hover{
     background:#3B82F6;
     color:white;
 }
+body{
+    border:10px solid red !important;
+}
