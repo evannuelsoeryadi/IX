@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up - Infinite X</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>Sign Up</h1>
+
+        <input type="text" id="username" placeholder="Username">
+
+        <input type="password" id="password" placeholder="Password">
+
+        <input type="password" id="confirm" placeholder="Confirm Password">
+
+        <button onclick="signup()">
+            Create Account
+        </button>
+
+        <p>
+            Sudah punya akun?
+            <a href="login.html">Login</a>
+        </p>
+
+    </div>
+
+    <script>
+
+        function signup(){
+
+            let username =
+                document.getElementById("username").value;
+
+            let password =
+                document.getElementById("password").value;
+
+            let confirm =
+                document.getElementById("confirm").value;
+
+            if(username === "" || password === ""){
+
+                alert("Lengkapi data dulu!");
+                return;
+
+            }
+
+            if(password !== confirm){
+
+                alert("Password tidak sama!");
+                return;
+
+            }
+
+            localStorage.setItem(
+                "accountUser",
+                username
+            );
+
+            localStorage.setItem(
+                "accountPass",
+                password
+            );
+
+            alert("Account Created!");
+
+            window.location.href = "login.html";
+
+        }
+
+    </script>
+
+</body>
+</html>
