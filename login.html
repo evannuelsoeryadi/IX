@@ -92,21 +92,43 @@
     </div>
 
     <script>
-        function login(){
-            let user = document.getElementById("user").value;
 
-            if(user === ""){
-                alert("Isi username dulu!");
-                return;
-            }
+    function login(){
 
-            // simpan user (dummy login)
-            localStorage.setItem("user", user);
+        let user =
+            document.getElementById("user").value;
 
-            // balik ke homepage
-            window.location.href = "index.html";
+        let pass =
+            document.getElementById("pass").value;
+
+        let savedUser =
+            localStorage.getItem("accountUser");
+
+        let savedPass =
+            localStorage.getItem("accountPass");
+
+        if(user === savedUser &&
+           pass === savedPass){
+
+            localStorage.setItem(
+                "user",
+                user
+            );
+
+            window.location.href =
+                "index.html";
+
+        }else{
+
+            alert(
+                "Username atau Password salah!"
+            );
+
         }
-    </script>
+
+    }
+
+</script>
 
 </body>
 </html>
