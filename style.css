@@ -140,7 +140,7 @@ nav a:hover{
     height:350px;
 
     transform-style:preserve-3d;
-    transition:0.8s;
+    transition:1.5s;
 }
 
 .comic-card:hover .card-inner{
