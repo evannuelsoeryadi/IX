@@ -1,127 +1,98 @@
-    background:linear-gradient(180deg,#0f172a,#1e293b);
-            color:white;
-        }
-
-        /* NAV */
-        nav{
-            background:#020617;
-            padding:15px 20px;
-
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-        }
-
-        nav a{
-            color:white;
-            text-decoration:none;
-            margin:0 10px;
-
-            font-weight:bold;
-        }
-
-        nav a:hover{
-            color:#22D3EE;
-        }
-
-        /* CONTENT */
-        .container{
-            padding:30px;
-            text-align:center;
-        }
-
-        h1{
-            color:#22D3EE;
-            margin-bottom:10px;
-        }
-
-        .sub{
-            color:#cbd5e1;
-            margin-bottom:30px;
-        }
-
-        /* CHAPTER CARD */
-        .chapter{
-            background:#111827;
-
-            margin:20px auto;
-            padding:20px;
-
-            border-radius:12px;
-
-            width:80%;
-            max-width:600px;
-
-            box-shadow:0 0 10px rgba(0,0,0,0.5);
-            text-align:left;
-        }
-
-        .chapter h3{
-            margin-bottom:5px;
-        }
-
-        .chapter p{
-            color:#cbd5e1;
-        }
-
-        .btn{
-            display:inline-block;
-
-            margin-top:10px;
-            padding:10px 20px;
-
-            background:#3B82F6;
-            color:white;
-
-            border-radius:8px;
-            text-decoration:none;
-
-            transition:0.3s;
-        }
-
-        .btn:hover{
-            background:#2563eb;
-        }
-    </style>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Our Comics - Infinite X</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <nav>
-        <div>📖 Infinite X</div>
-
-        <div>
-            <a href="index.html">Home</a>
-            <a href="profile.html">Profile</a>
-        </div>
+        <a href="index.html">🏠</a>
+        <a href="comic.html">Comic</a>
+        <a href="#">Character</a>
+        <a href="#">About Us</a>
+        <a href="profile.html">Profile</a>
     </nav>
 
-    <div class="container">
+    <div class="comic-page">
 
-        <h1>Comic Page</h1>
-        <div class="sub">Welcome to Infinite X World</div>
+        <h1 class="comic-title">Our Comics</h1>
 
-        <div class="chapter">
-            <h3>Chapter 1</h3>
-            <p>The beginning of Infinite X universe...</p>
-            <a class="btn" href="#">Read</a>
-        </div>
+        <div class="comic-container">
 
-        <div class="chapter">
-            <h3>Chapter 2</h3>
-            <p>A new threat appears...</p>
-            <a class="btn" href="#">Read</a>
+            <div class="comic-card">
+
+                <div class="card-inner">
+
+                    <div class="card-front">
+                        Cover Chapter 1
+                    </div>
+
+                    <div class="card-back">
+                        Seorang anak menemukan dunia misterius yang mengubah hidupnya selamanya.
+                    </div>
+
+                </div>
+
+                <a href="chapter1.html" class="chapter-btn">
+                    Chapter 1
+                </a>
+
+            </div>
+
+            <div class="comic-card">
+
+                <div class="card-inner">
+
+                    <div class="card-front">
+                        Cover Chapter 2
+                    </div>
+
+                    <div class="card-back">
+                        Ancaman baru muncul dan mulai mengincar para penjaga dunia.
+                    </div>
+
+                </div>
+
+                <a href="chapter2.html" class="chapter-btn">
+                    Chapter 2
+                </a>
+
+            </div>
+
+            <div class="comic-card">
+
+                <div class="card-inner">
+
+                    <div class="card-front">
+                        Cover Chapter 3
+                    </div>
+
+                    <div class="card-back">
+                        Rahasia besar mulai terungkap dan masa depan dunia dipertaruhkan.
+                    </div>
+
+                </div>
+
+                <a href="chapter3.html" class="chapter-btn">
+                    Chapter 3
+                </a>
+
+            </div>
+
         </div>
 
     </div>
 
     <script>
-        // 🔐 proteksi login
+
         let user = localStorage.getItem("user");
 
         if(!user){
             window.location.href = "login.html";
         }
+
     </script>
 
 </body>
