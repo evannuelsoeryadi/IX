@@ -112,28 +112,32 @@
                 "developerID"
             );
 
-        function logoutDeveloper(){
+function logoutDeveloper(){
 
-            localStorage.removeItem(
-                "developerLogged"
-            );
+    localStorage.removeItem(
+        "developerLogged"
+    );
 
-            localStorage.removeItem(
-                "developerName"
-            );
+    localStorage.removeItem(
+        "developerName"
+    );
 
-            localStorage.removeItem(
-                "developerRole"
-            );
+    localStorage.removeItem(
+        "developerRole"
+    );
 
-            localStorage.removeItem(
-                "developerID"
-            );
+    localStorage.removeItem(
+        "developerID"
+    );
 
-            window.location.href =
-                "index.html";
+    localStorage.removeItem(
+        "user"
+    );
 
-        }
+    window.location.href =
+        "index.html";
+
+}
 
     </script>
 
