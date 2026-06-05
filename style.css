@@ -123,10 +123,16 @@ nav a:hover{
 }
 
 .comic-container{
-    display:flex;
-    justify-content:center;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
     gap:60px;
-    flex-wrap:wrap;
+
+    justify-items:center;
+
 }
 
 .comic-card{
