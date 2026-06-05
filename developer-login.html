@@ -22,6 +22,14 @@
             id="developerPass"
             placeholder="Password"
         >
+        
+        <label style="color:white;">
+            <input
+                type="checkbox"
+                onclick="toggleDevPassword()"
+                >
+            Show Password
+        </label>
 
         <button onclick="developerLogin()">
             Login
@@ -32,6 +40,24 @@
         </a>
 
     </div>
+    function toggleDevPassword(){
+
+    let pass =
+        document.getElementById(
+            "developerPass"
+        );
+
+    if(pass.type === "password"){
+
+        pass.type = "text";
+
+    }else{
+
+        pass.type = "password";
+
+    }
+
+}
 
     <script>
 
