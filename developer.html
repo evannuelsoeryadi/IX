@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 <head>
     <title>Developer Dashboard - Infinite X</title>
@@ -8,108 +7,135 @@
 
 <body>
 
-```
-<div class="dashboard">
+    <nav>
 
-    <h1>Developer Dashboard</h1>
+        <a href="index.html">🏠</a>
 
-    <div class="dev-card">
+        <a href="comic.html">
+            Comic
+        </a>
 
-        <h2 id="devName"></h2>
+        <a href="#">
+            Character
+        </a>
 
-        <p>
-            Role:
-            <span id="devRole"></span>
-        </p>
+        <a href="#">
+            About Us
+        </a>
 
-        <p>
-            ID:
-            <span id="devID"></span>
-        </p>
+        <a href="profile.html">
+            Profile
+        </a>
+
+        <a href="developer.html">
+            ⚙️ Dev Panel
+        </a>
+
+    </nav>
+
+    <div class="dashboard">
+
+        <h1>Developer Dashboard</h1>
+
+        <div class="dev-card">
+
+            <h2 id="devName"></h2>
+
+            <p>
+                Role:
+                <span id="devRole"></span>
+            </p>
+
+            <p>
+                ID:
+                <span id="devID"></span>
+            </p>
+
+        </div>
+
+        <div class="dashboard-buttons">
+
+            <button>
+                Manage Comics
+            </button>
+
+            <button>
+                Manage Characters
+            </button>
+
+            <button>
+                Manage Members
+            </button>
+
+            <button
+                class="logout-btn"
+                onclick="logoutDeveloper()"
+            >
+                Logout
+            </button>
+
+        </div>
 
     </div>
 
-    <div class="dashboard-buttons">
+    <script>
 
-        <button>
-            Manage Comics
-        </button>
+        if(
+            localStorage.getItem(
+                "developerLogged"
+            ) !== "true"
+        ){
 
-        <button>
-            Manage Characters
-        </button>
+            window.location.href =
+                "developer-login.html";
 
-        <button>
-            Manage Members
-        </button>
+        }
 
-        <button onclick="logoutDeveloper()">
-            Logout
-        </button>
+        document.getElementById(
+            "devName"
+        ).innerText =
+            localStorage.getItem(
+                "developerName"
+            );
 
-    </div>
+        document.getElementById(
+            "devRole"
+        ).innerText =
+            localStorage.getItem(
+                "developerRole"
+            );
 
-</div>
+        document.getElementById(
+            "devID"
+        ).innerText =
+            localStorage.getItem(
+                "developerID"
+            );
 
-<script>
+        function logoutDeveloper(){
 
-    if(
-        localStorage.getItem(
-            "developerLogged"
-        ) !== "true"
-    ){
+            localStorage.removeItem(
+                "developerLogged"
+            );
 
-        window.location.href =
-            "developer-login.html";
+            localStorage.removeItem(
+                "developerName"
+            );
 
-    }
+            localStorage.removeItem(
+                "developerRole"
+            );
 
-    document.getElementById(
-        "devName"
-    ).innerText =
-        localStorage.getItem(
-            "developerName"
-        );
+            localStorage.removeItem(
+                "developerID"
+            );
 
-    document.getElementById(
-        "devRole"
-    ).innerText =
-        localStorage.getItem(
-            "developerRole"
-        );
+            window.location.href =
+                "index.html";
 
-    document.getElementById(
-        "devID"
-    ).innerText =
-        localStorage.getItem(
-            "developerID"
-        );
+        }
 
-    function logoutDeveloper(){
-
-        localStorage.removeItem(
-            "developerLogged"
-        );
-
-        localStorage.removeItem(
-            "developerName"
-        );
-
-        localStorage.removeItem(
-            "developerRole"
-        );
-
-        localStorage.removeItem(
-            "developerID"
-        );
-
-        window.location.href =
-            "developer-login.html";
-
-    }
-
-</script>
-```
+    </script>
 
 </body>
 </html>
