@@ -85,12 +85,26 @@
 
         <input type="text" id="user" placeholder="Username">
         <input type="password" id="pass" placeholder="Password">
-
+        <label>
+            <input type="checkbox" onclick="togglePassword()">
+            Show Password
+        </label>
         <button onclick="login()">Login</button>
 
         <p>Belum punya akun? <a href="#">Sign Up</a></p>
     </div>
+    function togglePassword(){
 
+    let pass =
+        document.getElementById("pass");
+
+    if(pass.type === "password"){
+        pass.type = "text";
+    }else{
+        pass.type = "password";
+    }
+
+}
     <script>
 
     function login(){
