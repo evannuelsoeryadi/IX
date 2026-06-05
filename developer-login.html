@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Developer Login - Infinite X</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>Developer Login</h1>
+
+        <input
+            type="text"
+            id="developerID"
+            placeholder="Developer ID"
+        >
+
+        <input
+            type="password"
+            id="developerPass"
+            placeholder="Password"
+        >
+
+        <button onclick="developerLogin()">
+            Login
+        </button>
+
+        <a href="whoareyou.html" class="back-btn">
+            ← Back
+        </a>
+
+    </div>
+
+    <script>
+
+        function developerLogin(){
+
+            let id =
+                document.getElementById(
+                    "developerID"
+                ).value;
+
+            let pass =
+                document.getElementById(
+                    "developerPass"
+                ).value;
+
+            /* OWNER */
+
+            if(
+                id === "OWN001" &&
+                pass === "owner123"
+            ){
+
+                localStorage.setItem(
+                    "developerLogged",
+                    "true"
+                );
+
+                localStorage.setItem(
+                    "developerID",
+                    "OWN001"
+                );
+
+                localStorage.setItem(
+                    "developerName",
+                    "Evan"
+                );
+
+                localStorage.setItem(
+                    "developerRole",
+                    "Owner"
+                );
+
+                window.location.href =
+                    "developer.html";
+
+                return;
+            }
+
+            /* OWNER 2 */
+
+            if(
+                id === "OWN002" &&
+                pass === "owner123"
+            ){
+
+                localStorage.setItem(
+                    "developerLogged",
+                    "true"
+                );
+
+                localStorage.setItem(
+                    "developerID",
+                    "OWN002"
+                );
+
+                localStorage.setItem(
+                    "developerName",
+                    "Owner 2"
+                );
+
+                localStorage.setItem(
+                    "developerRole",
+                    "Owner"
+                );
+
+                window.location.href =
+                    "developer.html";
+
+                return;
+            }
+
+            /* OWNER 3 */
+
+            if(
+                id === "OWN003" &&
+                pass === "owner123"
+            ){
+
+                localStorage.setItem(
+                    "developerLogged",
+                    "true"
+                );
+
+                localStorage.setItem(
+                    "developerID",
+                    "OWN003"
+                );
+
+                localStorage.setItem(
+                    "developerName",
+                    "Owner 3"
+                );
+
+                localStorage.setItem(
+                    "developerRole",
+                    "Owner"
+                );
+
+                window.location.href =
+                    "developer.html";
+
+                return;
+            }
+
+            alert(
+                "Developer ID atau Password salah!"
+            );
+
+        }
+
+    </script>
+
+</body>
+</html>
