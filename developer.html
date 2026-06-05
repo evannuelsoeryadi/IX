@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Developer Dashboard - Infinite X</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+```
+<div class="dashboard">
+
+    <h1>Developer Dashboard</h1>
+
+    <div class="dev-card">
+
+        <h2 id="devName"></h2>
+
+        <p>
+            Role:
+            <span id="devRole"></span>
+        </p>
+
+        <p>
+            ID:
+            <span id="devID"></span>
+        </p>
+
+    </div>
+
+    <div class="dashboard-buttons">
+
+        <button>
+            Manage Comics
+        </button>
+
+        <button>
+            Manage Characters
+        </button>
+
+        <button>
+            Manage Members
+        </button>
+
+        <button onclick="logoutDeveloper()">
+            Logout
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+    if(
+        localStorage.getItem(
+            "developerLogged"
+        ) !== "true"
+    ){
+
+        window.location.href =
+            "developer-login.html";
+
+    }
+
+    document.getElementById(
+        "devName"
+    ).innerText =
+        localStorage.getItem(
+            "developerName"
+        );
+
+    document.getElementById(
+        "devRole"
+    ).innerText =
+        localStorage.getItem(
+            "developerRole"
+        );
+
+    document.getElementById(
+        "devID"
+    ).innerText =
+        localStorage.getItem(
+            "developerID"
+        );
+
+    function logoutDeveloper(){
+
+        localStorage.removeItem(
+            "developerLogged"
+        );
+
+        localStorage.removeItem(
+            "developerName"
+        );
+
+        localStorage.removeItem(
+            "developerRole"
+        );
+
+        localStorage.removeItem(
+            "developerID"
+        );
+
+        window.location.href =
+            "developer-login.html";
+
+    }
+
+</script>
+```
+
+</body>
+</html>
