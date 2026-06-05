@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 <head>
     <title>Sign Up - Infinite X</title>
@@ -7,75 +8,144 @@
 
 <body>
 
-    <div class="login-box">
+```
+<div class="login-box">
 
-        <h1>Sign Up</h1>
+    <h1>Sign Up</h1>
 
-        <input type="text" id="username" placeholder="Username">
+    <input
+        type="text"
+        id="username"
+        placeholder="Username"
+    >
 
-        <input type="password" id="password" placeholder="Password">
+    <input
+        type="password"
+        id="password"
+        placeholder="Password"
+    >
 
-        <input type="password" id="confirm" placeholder="Confirm Password">
+    <input
+        type="password"
+        id="confirm"
+        placeholder="Confirm Password"
+    >
 
-        <button onclick="signup()">
-            Create Account
-        </button>
+    <button onclick="signup()">
+        Create Account
+    </button>
 
-        <a href="member.html" class="back-btn">
-            ← Back
+    <a href="member.html" class="back-btn">
+        ← Back
+    </a>
+
+    <p>
+        Sudah punya akun?
+        <a href="login.html">
+            Login
         </a>
+    </p>
 
-        <p>
-            Sudah punya akun?
-            <a href="login.html">Login</a>
-        </p>
+</div>
 
-    </div>
+<script>
 
-    <script>
+    function signup(){
 
-        function signup(){
+        let username =
+            document.getElementById(
+                "username"
+            ).value;
 
-            let username =
-                document.getElementById("username").value;
+        let password =
+            document.getElementById(
+                "password"
+            ).value;
 
-            let password =
-                document.getElementById("password").value;
+        let confirm =
+            document.getElementById(
+                "confirm"
+            ).value;
 
-            let confirm =
-                document.getElementById("confirm").value;
+        if(
+            username === "" ||
+            password === ""
+        ){
 
-            if(username === "" || password === ""){
-
-                alert("Lengkapi data dulu!");
-                return;
-
-            }
-
-            if(password !== confirm){
-
-                alert("Password tidak sama!");
-                return;
-
-            }
-
-            localStorage.setItem(
-                "accountUser",
-                username
+            alert(
+                "Lengkapi data dulu!"
             );
 
-            localStorage.setItem(
-                "accountPass",
-                password
-            );
-
-            alert("Account Created!");
-
-            window.location.href = "login.html";
-
+            return;
         }
 
-    </script>
+        if(
+            password !== confirm
+        ){
+
+            alert(
+                "Password tidak sama!"
+            );
+
+            return;
+        }
+
+        let accounts =
+            JSON.parse(
+                localStorage.getItem(
+                    "accounts"
+                )
+            ) || [];
+
+        let userExists =
+            accounts.some(
+                function(account){
+
+                    return (
+                        account.username ===
+                        username
+                    );
+
+                }
+            );
+
+        if(userExists){
+
+            alert(
+                "Username sudah digunakan!"
+            );
+
+            return;
+        }
+
+        accounts.push({
+
+            username: username,
+            password: password
+
+        });
+
+        localStorage.setItem(
+
+            "accounts",
+
+            JSON.stringify(
+                accounts
+            )
+
+        );
+
+        alert(
+            "Account Created!"
+        );
+
+        window.location.href =
+            "login.html";
+
+    }
+
+</script>
+```
 
 </body>
 </html>
