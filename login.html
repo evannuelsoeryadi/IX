@@ -4,6 +4,7 @@
     <title>Login - Infinite X</title>
 
     <style>
+
         body{
             margin:0;
             font-family:Arial;
@@ -13,7 +14,12 @@
             justify-content:center;
             align-items:center;
 
-            background:linear-gradient(180deg,#3B82F6,#A855F7,#EC4899);
+            background:linear-gradient(
+                180deg,
+                #3B82F6,
+                #A855F7,
+                #EC4899
+            );
         }
 
         .box{
@@ -24,6 +30,7 @@
             border-radius:15px;
 
             box-shadow:0 0 20px rgba(0,0,0,0.5);
+
             text-align:center;
         }
 
@@ -41,6 +48,7 @@
             border-radius:8px;
 
             outline:none;
+            box-sizing:border-box;
         }
 
         button{
@@ -75,84 +83,126 @@
             color:#22D3EE;
             text-decoration:none;
         }
+
+        .show-pass{
+            color:white;
+            font-size:14px;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            gap:8px;
+            margin-top:10px;
+        }
+
+        .show-pass input{
+            width:auto;
+            margin:0;
+        }
+
     </style>
 </head>
 
 <body>
 
     <div class="box">
+
         <h2>Login</h2>
 
-        <input type="text" id="user" placeholder="Username">
-        <input type="password" id="pass" placeholder="Password">
-        <label>
-            <input type="checkbox" onclick="togglePassword()">
+        <input
+            type="text"
+            id="user"
+            placeholder="Username"
+        >
+
+        <input
+            type="password"
+            id="pass"
+            placeholder="Password"
+        >
+
+        <label class="show-pass">
+
+            <input
+                type="checkbox"
+                onclick="togglePassword()"
+            >
+
             Show Password
+
         </label>
-        <button onclick="login()">Login</button>
 
-        <p>Belum punya akun? <a href="#">Sign Up</a></p>
+        <button onclick="login()">
+            Login
+        </button>
+
+        <p>
+            Belum punya akun?
+            <a href="signup.html">
+                Sign Up
+            </a>
+        </p>
+
     </div>
-    function togglePassword(){
 
-    let pass =
-        document.getElementById("pass");
-
-    if(pass.type === "password"){
-        pass.type = "text";
-    }else{
-        pass.type = "password";
-    }
-
-}
     <script>
 
-    function login(){
+        function login(){
 
-        let user =
-            document.getElementById("user").value;
+            let user =
+                document.getElementById("user").value;
 
-        let pass =
-            document.getElementById("pass").value;
+            let pass =
+                document.getElementById("pass").value;
 
-        let savedUser =
-            localStorage.getItem("accountUser");
+            let savedUser =
+                localStorage.getItem("accountUser");
 
-        let savedPass =
-            localStorage.getItem("accountPass");
+            let savedPass =
+                localStorage.getItem("accountPass");
 
-        if(user === savedUser &&
-           pass === savedPass){
+            if(
+                user === savedUser &&
+                pass === savedPass
+            ){
 
-            localStorage.setItem(
-                "user",
-                user
-            );
+                localStorage.setItem(
+                    "user",
+                    user
+                );
 
-            window.location.href =
-                "index.html";
+                window.location.href =
+                    "index.html";
 
-        }else{
+            }else{
 
-            alert(
-                "Username atau Password salah!"
-            );
-            function togglePassword(){
-                let pass =
-                    document.getElementById("pass");
-                if(pass.type === "password"){
-                    pass.type = "text";
-                }else{
-                    pass.type = "password";
-                }
+                alert(
+                    "Username atau Password salah!"
+                );
+
             }
 
         }
 
-    }
+        function togglePassword(){
 
-</script>
+            let pass =
+                document.getElementById("pass");
+
+            if(pass.type === "password"){
+
+                pass.type = "text";
+
+            }else{
+
+                pass.type = "password";
+
+            }
+
+        }
+
+    </script>
 
 </body>
 </html>
-
