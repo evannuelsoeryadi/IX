@@ -455,3 +455,17 @@ font-size:18px;
     transform:scale(1.05);
 
 }
+
+.logout-btn{
+
+    background:#EF4444 !important;
+
+    color:white;
+
+}
+
+.logout-btn:hover{
+
+    transform:scale(1.05);
+
+}
