@@ -420,48 +420,38 @@ font-size:18px;
 
 }
 
-.dashboard-buttons{
-
-```
-margin-top:40px;
-
-display:flex;
-
-flex-direction:column;
-
-gap:15px;
-
-align-items:center;
-```
-
-}
-
 .dashboard-buttons button{
 
-```
-width:250px;
+    width:220px;
 
-padding:15px;
+    height:60px;
 
-border:none;
+    border:none;
 
-border-radius:10px;
+    border-radius:12px;
 
-background:white;
+    background:#3B82F6;
 
-font-weight:bold;
+    color:white;
 
-cursor:pointer;
+    font-size:18px;
 
-transition:0.3s;
-```
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    box-shadow:
+        0 0 10px #3B82F6,
+        0 0 20px #3B82F6;
 
 }
 
 .dashboard-buttons button:hover{
 
-```
-transform:scale(1.05);
-```
+    background:#2563EB;
+
+    transform:scale(1.05);
 
 }
