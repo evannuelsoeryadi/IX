@@ -22,13 +22,17 @@
             id="developerPass"
             placeholder="Password"
         >
-        
+
         <label style="color:white;">
+
             <input
                 type="checkbox"
                 onclick="toggleDevPassword()"
-                >
+                style="width:auto;"
+            >
+
             Show Password
+
         </label>
 
         <button onclick="developerLogin()">
@@ -40,24 +44,6 @@
         </a>
 
     </div>
-    function toggleDevPassword(){
-
-    let pass =
-        document.getElementById(
-            "developerPass"
-        );
-
-    if(pass.type === "password"){
-
-        pass.type = "text";
-
-    }else{
-
-        pass.type = "password";
-
-    }
-
-}
 
     <script>
 
@@ -73,7 +59,7 @@
                     "developerPass"
                 ).value;
 
-            /* OWNER */
+            /* OWNER 1 */
 
             if(
                 id === "Evan01" &&
@@ -177,7 +163,25 @@
             );
 
         }
-        
+
+        function toggleDevPassword(){
+
+            let pass =
+                document.getElementById(
+                    "developerPass"
+                );
+
+            if(pass.type === "password"){
+
+                pass.type = "text";
+
+            }else{
+
+                pass.type = "password";
+
+            }
+
+        }
 
     </script>
 
