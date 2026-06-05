@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 <head>
     <title>IX</title>
@@ -7,62 +8,149 @@
 
 <body>
 
-    <nav>
-        <a href=""index.html"">Home</a>
-        <a href="#" onclick="goComic()">Comic</a>
-        <a href="#">Character</a>
-        <a href="#">About Us</a>
+```
+<nav>
 
-        <!-- PROFILE (CEK LOGIN) -->
-        <a href="#" onclick="goProfile()">Profile</a>
-    </nav>
+    <a href="index.html">Home</a>
 
-    <div class="hero">
+    <a href="#" onclick="goComic()">
+        Comic
+    </a>
 
-        <h1>Infinite X</h1>
-        <p>A New World Awaits</p>
+    <a href="#">
+        Character
+    </a>
 
-        <!-- START READING (CEK LOGIN) -->
-        <a href="#" class="btn" id="startBtn">
-            Start Reading
-        </a>
+    <a href="#">
+        About Us
+    </a>
 
-    </div>
+    <a href="#" onclick="goProfile()">
+        Profile
+    </a>
 
-    <script>
-        function isLoggedIn() {
-            return localStorage.getItem("user") !== null;
-        }
+    <a
+        href="developer.html"
+        id="devButton"
+        style="display:none;"
+    >
+        ⚙️ Dev Panel
+    </a>
 
-        // START READING
-        document.getElementById("startBtn").addEventListener("click", function(e){
+</nav>
+
+<div class="hero">
+
+    <h1>Infinite X</h1>
+
+    <p>
+        A New World Awaits
+    </p>
+
+    <a
+        href="#"
+        class="btn"
+        id="startBtn"
+    >
+        Start Reading
+    </a>
+
+</div>
+
+<script>
+
+    function isLoggedIn(){
+
+        return (
+            localStorage.getItem(
+                "user"
+            ) !== null
+        );
+
+    }
+
+    document
+    .getElementById(
+        "startBtn"
+    )
+    .addEventListener(
+        "click",
+        function(e){
+
             e.preventDefault();
 
-            if(!isLoggedIn()){
-                window.location.href = "whoareyou.html";
-            } else {
-                window.location.href = "comic.html";
-            }
-        });
+            if(
+                !isLoggedIn()
+            ){
 
-        // PROFILE
-        function goProfile(){
-            if(!isLoggedIn()){
-                window.location.href = "whoareyou.html";
-            } else {
-                window.location.href = "profile.html";
+                window.location.href =
+                    "whoareyou.html";
+
+            }else{
+
+                window.location.href =
+                    "comic.html";
+
             }
+
+        }
+    );
+
+    function goProfile(){
+
+        if(
+            !isLoggedIn()
+        ){
+
+            window.location.href =
+                "whoareyou.html";
+
+        }else{
+
+            window.location.href =
+                "profile.html";
+
         }
 
-         // PROFILE
-        function goComic(){
-            if(!isLoggedIn()){
-                window.location.href = "whoareyou.html";
-            } else {
-                window.location.href = "comic.html";
-            }
+    }
+
+    function goComic(){
+
+        if(
+            !isLoggedIn()
+        ){
+
+            window.location.href =
+                "whoareyou.html";
+
+        }else{
+
+            window.location.href =
+                "comic.html";
+
         }
-    </script>
+
+    }
+
+    if(
+
+        localStorage.getItem(
+            "developerLogged"
+        ) === "true"
+
+    ){
+
+        document
+        .getElementById(
+            "devButton"
+        )
+        .style.display =
+            "block";
+
+    }
+
+</script>
+```
 
 </body>
 </html>
