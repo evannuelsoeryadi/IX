@@ -586,6 +586,7 @@ color:white;
 }
 
 .chapter-card{
+
     background:#0f172a;
 
     color:white;
@@ -594,12 +595,23 @@ color:white;
 
     margin-bottom:20px;
 
-    border-radius:15px;
+    border-radius:18px;
 
     display:flex;
 
     justify-content:space-between;
     align-items:center;
+
+    transition:0.3s;
+
+}
+
+.chapter-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.4);
+
 }
 
 .action-buttons{
