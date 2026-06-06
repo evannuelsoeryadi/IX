@@ -640,3 +640,55 @@ color:white;
 
     border-radius:10px;
 }
+
+.member-card{
+
+```
+background:#0f172a;
+
+color:white;
+
+padding:25px;
+
+margin-bottom:20px;
+
+border-radius:18px;
+
+display:flex;
+
+justify-content:space-between;
+align-items:center;
+
+box-shadow:
+    0 0 15px rgba(0,0,0,.35);
+
+transition:.3s;
+```
+
+}
+
+.member-card:hover{
+
+```
+transform:translateY(-5px);
+```
+
+}
+
+.member-card h2{
+
+```
+margin:0;
+```
+
+}
+
+.member-card p{
+
+```
+margin-top:8px;
+
+color:#cbd5e1;
+```
+
+}
