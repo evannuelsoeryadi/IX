@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Manage Comics - Infinite X</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+```
+<nav>
+
+    <a href="index.html">🏠</a>
+    <a href="comic.html">Comic</a>
+    <a href="#">Character</a>
+    <a href="#">About Us</a>
+    <a href="profile.html">Profile</a>
+    <a href="developer.html">⚙️ Dev Panel</a>
+
+</nav>
+
+<div class="dashboard">
+
+    <h1>Manage Comics</h1>
+
+    <button class="add-btn">
+        + Add Chapter
+    </button>
+
+    <div class="chapter-list">
+
+        <div class="chapter-item">
+
+            <span>Chapter 1</span>
+
+            <div>
+
+                <button>
+                    Edit
+                </button>
+
+                <button class="delete-btn">
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="chapter-item">
+
+            <span>Chapter 2</span>
+
+            <div>
+
+                <button>
+                    Edit
+                </button>
+
+                <button class="delete-btn">
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="chapter-item">
+
+            <span>Chapter 3</span>
+
+            <div>
+
+                <button>
+                    Edit
+                </button>
+
+                <button class="delete-btn">
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="chapter-item">
+
+            <span>Chapter 4</span>
+
+            <div>
+
+                <button>
+                    Edit
+                </button>
+
+                <button class="delete-btn">
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    if(
+        localStorage.getItem(
+            "developerLogged"
+        ) !== "true"
+    ){
+
+        window.location.href =
+            "developer-login.html";
+
+    }
+
+</script>
+```
+
+</body>
+</html>
