@@ -13,7 +13,13 @@
         <a href="#">Character</a>
         <a href="#">About Us</a>
         <a href="profile.html">Profile</a>
-        <a href="developer.html"id="devButton"style="display:none;">⚙️ Dev Panel</a>
+        <a 
+            href="developer.html"
+            id="devButton"
+            style="display:none;"
+        >
+            ⚙️ Dev Panel
+        </a>
     </nav>
 
     <div class="comic-page">
@@ -108,14 +114,34 @@
 
     <script>
 
-        let user = localStorage.getItem("user");
+    let user =
+        localStorage.getItem("user");
 
-        if(!user){
-            window.location.href = "login.html";
-        }
-        
+    let isDeveloper =
+        localStorage.getItem(
+            "developerLogged"
+        );
 
-    </script>
+    if(
+        !user &&
+        isDeveloper !== "true"
+    ){
+        window.location.href =
+            "whoareyou.html";
+    }
+
+    if(
+        isDeveloper === "true"
+    ){
+
+        document.getElementById(
+            "devButton"
+        ).style.display =
+            "inline-block";
+
+    }
+
+</script>
 
 </body>
 </html>
