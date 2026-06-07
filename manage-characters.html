@@ -5,6 +5,7 @@
 
 ```
 <title>Manage Characters - Infinite X</title>
+
 <link rel="stylesheet" href="style.css">
 ```
 
@@ -17,7 +18,7 @@
 
     <a href="index.html">Home</a>
     <a href="comic.html">Comic</a>
-    <a href="#">Character</a>
+    <a href="character.html">Character</a>
     <a href="#">About Us</a>
     <a href="profile.html">Profile</a>
 
@@ -31,87 +32,35 @@
 
     <h1>Manage Characters</h1>
 
-    <button class="add-btn">
-        + Add Character
-    </button>
+    <div class="character-form">
 
-    <div class="character-card">
+        <input
+            type="text"
+            id="charName"
+            placeholder="Character Name"
+        >
 
-        <div>
+        <input
+            type="text"
+            id="charPower"
+            placeholder="Character Power"
+        >
 
-            <h2>Aether</h2>
+        <textarea
+            id="charDesc"
+            placeholder="Character Description"
+        ></textarea>
 
-            <p>
-                Power : Void Energy
-            </p>
-
-        </div>
-
-        <div class="action-buttons">
-
-            <button class="edit-btn">
-                Edit
-            </button>
-
-            <button class="delete-btn">
-                Delete
-            </button>
-
-        </div>
+        <button
+            class="add-btn"
+            onclick="addCharacter()"
+        >
+            + Add Character
+        </button>
 
     </div>
 
-    <div class="character-card">
-
-        <div>
-
-            <h2>Luna</h2>
-
-            <p>
-                Power : Light Magic
-            </p>
-
-        </div>
-
-        <div class="action-buttons">
-
-            <button class="edit-btn">
-                Edit
-            </button>
-
-            <button class="delete-btn">
-                Delete
-            </button>
-
-        </div>
-
-    </div>
-
-    <div class="character-card">
-
-        <div>
-
-            <h2>Kai</h2>
-
-            <p>
-                Power : Shadow Blade
-            </p>
-
-        </div>
-
-        <div class="action-buttons">
-
-            <button class="edit-btn">
-                Edit
-            </button>
-
-            <button class="delete-btn">
-                Delete
-            </button>
-
-        </div>
-
-    </div>
+    <div id="characterList"></div>
 
 </div>
 
@@ -125,6 +74,149 @@
 
         window.location.href =
             "developer-login.html";
+
+    }
+
+    let characters =
+        JSON.parse(
+            localStorage.getItem(
+                "characters"
+            )
+        ) || [];
+
+    renderCharacters();
+
+    function addCharacter(){
+
+        let name =
+            document.getElementById(
+                "charName"
+            ).value;
+
+        let power =
+            document.getElementById(
+                "charPower"
+            ).value;
+
+        let desc =
+            document.getElementById(
+                "charDesc"
+            ).value;
+
+        if(
+            name === "" ||
+            power === ""
+        ){
+
+            alert(
+                "Lengkapi data dulu!"
+            );
+
+            return;
+
+        }
+
+        characters.push({
+
+            name:name,
+            power:power,
+            desc:desc
+
+        });
+
+        localStorage.setItem(
+
+            "characters",
+
+            JSON.stringify(
+                characters
+            )
+
+        );
+
+        renderCharacters();
+
+        document.getElementById(
+            "charName"
+        ).value = "";
+
+        document.getElementById(
+            "charPower"
+        ).value = "";
+
+        document.getElementById(
+            "charDesc"
+        ).value = "";
+
+    }
+
+    function deleteCharacter(index){
+
+        characters.splice(
+            index,
+            1
+        );
+
+        localStorage.setItem(
+
+            "characters",
+
+            JSON.stringify(
+                characters
+            )
+
+        );
+
+        renderCharacters();
+
+    }
+
+    function renderCharacters(){
+
+        let html = "";
+
+        characters.forEach(
+            (character,index)=>{
+
+            html += `
+
+            <div class="character-card">
+
+                <div>
+
+                    <h2>
+                        ${character.name}
+                    </h2>
+
+                    <p>
+                        Power :
+                        ${character.power}
+                    </p>
+
+                    <p>
+                        ${character.desc}
+                    </p>
+
+                </div>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteCharacter(${index})"
+                >
+
+                    Delete
+
+                </button>
+
+            </div>
+
+            `;
+
+        });
+
+        document.getElementById(
+            "characterList"
+        ).innerHTML = html;
 
     }
 
