@@ -829,15 +829,13 @@ margin-top:15px;
 
 .character-form{
 
-```
-background:#0f172a;
+    display:flex;
 
-padding:25px;
+    align-items:flex-end;
 
-border-radius:18px;
+    gap:15px;
 
-margin-bottom:30px;
-```
+    flex-wrap:wrap;
 
 }
 
@@ -862,11 +860,11 @@ box-sizing:border-box;
 
 .character-form textarea{
 
-```
-height:100px;
+    height:80px;
 
-resize:none;
-```
+    resize:none;
+
+    padding:12px;
 
 }
 
