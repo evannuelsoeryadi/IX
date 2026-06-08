@@ -468,26 +468,6 @@ font-size:18px;
 }
 
 
-.add-btn{
-
-
-background:#22c55e;
-color:white;
-
-border:none;
-
-padding:15px 25px;
-
-border-radius:10px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-margin-bottom:30px;
-
-
-}
 
 .chapter-list{
 
@@ -706,18 +686,20 @@ box-shadow:
 
 }
 
-.character-card h2{
+.chapter-card h2{
 
 margin:0;
 
+margin-bottom:8px;
+
 }
 
-.character-card p{
+.chapter-card p{
 
-margin-top:8px;
+margin:0;
 
 color:#cbd5e1;
-    
+
 }
 
 .character-page{
