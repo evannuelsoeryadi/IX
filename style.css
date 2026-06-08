@@ -1183,3 +1183,20 @@ flex:1;
 ```
 
 }
+
+.chapter-card h2{
+    margin:0 0 8px 0;
+    line-height:1.2;
+}
+
+.chapter-card p{
+    margin:0;
+    line-height:1.5;
+    color:#cbd5e1;
+}
+
+.chapter-card > div:first-child{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
