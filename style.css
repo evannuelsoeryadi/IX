@@ -1177,9 +1177,19 @@ gap:10px;
 
 .modal-buttons button{
 
-```
-flex:1;
-```
+    flex:1;
+
+    padding:15px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
 
 }
 
@@ -1247,5 +1257,17 @@ background:#22c55e;
 
 color:white;
 ```
+
+}
+
+.modal-content h2{
+
+    color:white;
+
+    font-size:32px;
+
+    margin-bottom:25px;
+
+    text-align:center;
 
 }
