@@ -13,16 +13,9 @@
 
 <nav>
 
-<a href="index.html">Home</a>
-<a href="comic.html">Comic</a>
-<a href="#">Character</a>
-<a href="#">About Us</a>
-<a href="profile.html">Profile</a>
+<a href="index.html">Home</a> <a href="comic.html">Comic</a> <a href="#">Character</a> <a href="#">About Us</a> <a href="profile.html">Profile</a>
 
-<a
-    href="developer.html"
-    id="devButton"
->
+<a href="developer.html" id="devButton">
     ⚙️ Dev Panel
 </a>
 
@@ -30,23 +23,26 @@
 
 <div class="manage-container">
 
+
 <h1>Manage Comics</h1>
 
 <p class="chapter-count">
-    Total Chapters: 4
+    Total Chapters: 0
 </p>
 
-<button
-    class="add-btn"
-    onclick="openModal()"
->
+<button class="add-btn" onclick="openModal()">
     + Add Chapter
 </button>
 
-<div
-    id="addChapterModal"
-    class="modal"
->
+<div id="chapterList"></div>
+
+
+</div>
+
+<!-- MODAL -->
+
+<div id="addChapterModal" class="modal">
+
 
 <div class="modal-content">
 
@@ -56,6 +52,24 @@
         type="text"
         id="chapterTitle"
         placeholder="Chapter Title"
+    >
+
+    <input
+        type="file"
+        id="chapterCover"
+        accept="image/*"
+    >
+
+    <input
+        type="number"
+        id="chapterPrice"
+        placeholder="Price (0 = Free)"
+    >
+
+    <input
+        type="number"
+        id="chapterPages"
+        placeholder="Total Pages"
     >
 
     <textarea
@@ -69,10 +83,7 @@
             Save
         </button>
 
-        <button
-            onclick="closeModal()"
-            class="delete-btn"
-        >
+        <button onclick="closeModal()" class="delete-btn">
             Cancel
         </button>
 
@@ -80,69 +91,102 @@
 
 </div>
 
+
 </div>
 
 <script>
 
-    if(
-        localStorage.getItem(
-            "developerLogged"
-        ) !== "true"
-    ){
+if(
+    localStorage.getItem("developerLogged") !== "true"
+){
+    window.location.href = "developer-login.html";
+}
 
-        window.location.href =
-            "developer-login.html";
+let totalChapter = 0;
 
+function openModal(){
+    document.getElementById("addChapterModal").style.display = "flex";
+}
+
+function closeModal(){
+    document.getElementById("addChapterModal").style.display = "none";
+}
+
+function saveChapter(){
+
+    let title = document.getElementById("chapterTitle").value;
+    let desc = document.getElementById("chapterDesc").value;
+    let price = document.getElementById("chapterPrice").value;
+    let pages = document.getElementById("chapterPages").value;
+    let cover = document.getElementById("chapterCover").files[0];
+
+    if(!title || !desc){
+        alert("Lengkapi data dulu!");
+        return;
     }
 
-    function openModal(){
+    totalChapter++;
 
-        document.getElementById(
-            "addChapterModal"
-        ).style.display = "flex";
+    document.querySelector(".chapter-count").innerText =
+        "Total Chapters: " + totalChapter;
 
-    }
+    let card = document.createElement("div");
+    card.className = "chapter-card";
 
-    function closeModal(){
+    let coverURL = cover ? URL.createObjectURL(cover) : "";
 
-        document.getElementById(
-            "addChapterModal"
-        ).style.display = "none";
+    card.innerHTML = `
 
-    }
+        <div style="display:flex; gap:15px; align-items:center;">
 
-    function saveChapter(){
+            ${coverURL ? `<img src="${coverURL}" style="width:60px;height:80px;border-radius:8px;object-fit:cover;">` : ""}
 
-        let title =
-            document.getElementById(
-                "chapterTitle"
-            ).value;
+            <div>
 
-        let desc =
-            document.getElementById(
-                "chapterDesc"
-            ).value;
+                <h2>${title}</h2>
 
-        if(
-            title === "" ||
-            desc === ""
-        ){
+                <p>${desc}</p>
 
-            alert(
-                "Lengkapi data dulu!"
-            );
+                <small style="color:#aaa;">
+                    Pages: ${pages || 0} | Price: ${price == 0 ? "Free" : price}
+                </small>
 
-            return;
+            </div>
 
-        }
+        </div>
 
-        alert(
-            "Chapter berhasil ditambahkan!"
-        );
+        <div class="action-buttons">
 
-        closeModal();
+            <button class="edit-btn">Edit</button>
 
-    }
+            <button class="delete-btn" onclick="deleteChapter(this)">Delete</button>
+
+        </div>
+
+    `;
+
+    document.getElementById("chapterList").appendChild(card);
+
+    closeModal();
+
+    document.getElementById("chapterTitle").value = "";
+    document.getElementById("chapterDesc").value = "";
+    document.getElementById("chapterPrice").value = "";
+    document.getElementById("chapterPages").value = "";
+    document.getElementById("chapterCover").value = "";
+
+}
+
+function deleteChapter(btn){
+
+    btn.closest(".chapter-card").remove();
+
+    totalChapter--;
+
+    document.querySelector(".chapter-count").innerText =
+        "Total Chapters: " + totalChapter;
+
+}
 
 </script>
 
