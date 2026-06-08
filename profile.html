@@ -1,112 +1,177 @@
 <!DOCTYPE html>
+
 <html>
 <head>
-    <title>Profile - Infinite X</title>
 
-    <style>
-        body{
-            margin:0;
-            font-family:Arial;
-            height:100vh;
+```
+<title>Profile - Infinite X</title>
 
-            display:flex;
-            justify-content:center;
-            align-items:center;
+<link rel="stylesheet" href="style.css">
+```
 
-            background:linear-gradient(180deg,#3B82F6,#A855F7,#EC4899);
-        }
-
-        .box{
-            width:320px;
-            padding:40px;
-
-            background:#0f172a;
-            border-radius:15px;
-
-            box-shadow:0 0 20px rgba(0,0,0,0.5);
-            text-align:center;
-
-            color:white;
-        }
-
-        h2{
-            margin-bottom:10px;
-        }
-
-        .name{
-            font-size:22px;
-            font-weight:bold;
-
-            color:#22D3EE;
-
-            margin:20px 0;
-        }
-
-        button{
-            width:100%;
-            padding:12px;
-
-            margin-top:10px;
-
-            border:none;
-            border-radius:8px;
-
-            background:#ef4444;
-            color:white;
-
-            font-weight:bold;
-            cursor:pointer;
-
-            transition:0.3s;
-        }
-
-        button:hover{
-            background:#dc2626;
-        }
-
-        a{
-            display:block;
-            margin-top:15px;
-
-            color:#22D3EE;
-            text-decoration:none;
-        }
-    </style>
 </head>
 
 <body>
 
-    <div class="box">
-        <h2>Profile</h2>
+```
+<nav>
 
-        <div class="name" id="username">Guest</div>
+    <a href="index.html">Home</a>
+    <a href="comic.html">Comic</a>
+    <a href="character.html">Character</a>
+    <a href="#">About Us</a>
+    <a href="profile.html">Profile</a>
 
-        <button onclick="logout()">Logout</button>
+</nav>
 
-        <a href="index.html">← Back to Home</a>
+<div class="profile-page">
+
+    <div class="profile-top">
+
+        <div class="profile-card">
+
+            <div class="avatar">
+                👤
+            </div>
+
+            <h2 id="username">
+                User
+            </h2>
+
+            <p id="role">
+                Member
+            </p>
+
+            <button onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+        <div class="menu-card">
+
+            <div class="menu-icon">
+                ⚙️
+            </div>
+
+            <h3>Settings</h3>
+
+        </div>
+
+        <div class="menu-card">
+
+            <div class="menu-icon">
+                📜
+            </div>
+
+            <h3>Purchase History</h3>
+
+        </div>
+
+        <div class="menu-card">
+
+            <div class="menu-icon">
+                ℹ️
+            </div>
+
+            <h3>About Infinite X</h3>
+
+        </div>
+
     </div>
 
-    <script>
-        // ambil user dari login
-        let user = localStorage.getItem("user");
+    <h2 class="history-title">
+        Reading History
+    </h2>
 
-        if(user){
-            document.getElementById("username").innerText = user;
-        } else {
-            document.getElementById("username").innerText = "Not Logged In";
-        }
+    <div class="history-container">
 
-        // logout
-        function logout(){
-            localStorage.removeItem("user");
-            window.location.href = "index.html";
-        }
+        <div class="history-card">
+            Chapter 1
+        </div>
 
-        // proteksi
-        if(!user){
-            window.location.href = "login.html";
-        }
-    </script>
+        <div class="history-card">
+            Chapter 2
+        </div>
+
+        <div class="history-card">
+            Chapter 3
+        </div>
+
+        <div class="history-card">
+            All History
+        </div>
+
+    </div>
+
+    <div
+        id="devPanel"
+        style="display:none;"
+    >
+
+        <button
+            onclick="location.href='developer.html'"
+            class="dev-btn"
+        >
+            ⚙️ Developer Dashboard
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+    let user =
+        localStorage.getItem(
+            "user"
+        );
+
+    if(user){
+
+        document.getElementById(
+            "username"
+        ).innerText = user;
+
+    }
+
+    if(
+
+        localStorage.getItem(
+            "developerLogged"
+        ) === "true"
+
+    ){
+
+        document.getElementById(
+            "role"
+        ).innerText =
+            "Owner";
+
+        document.getElementById(
+            "devPanel"
+        ).style.display =
+            "block";
+
+    }
+
+    function logout(){
+
+        localStorage.removeItem(
+            "user"
+        );
+
+        localStorage.removeItem(
+            "developerLogged"
+        );
+
+        window.location.href =
+            "index.html";
+
+    }
+
+</script>
+```
 
 </body>
 </html>
