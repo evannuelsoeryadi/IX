@@ -1199,3 +1199,27 @@ flex:1;
     flex-direction:column;
     justify-content:center;
 }
+
+.chapter-count{
+
+```
+color:white;
+
+font-size:20px;
+
+margin:15px 0 25px 0;
+```
+
+}
+
+#chapterList{
+
+```
+display:flex;
+
+flex-direction:column;
+
+gap:20px;
+```
+
+}
