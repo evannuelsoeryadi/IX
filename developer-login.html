@@ -173,6 +173,44 @@
                 return;
             }
 
+            /* OWNER 4 */
+
+            if(
+                id === "Damian04" &&
+                pass === "PembangkitListrikTenagaNuklir6769"
+            ){
+
+                localStorage.setItem(
+                    "developerLogged",
+                    "true"
+                );
+
+                localStorage.setItem(
+                    "developerID",
+                    "Damian04"
+                );
+
+                localStorage.setItem(
+                    "developerName",
+                    "Damian"
+                );
+
+                localStorage.setItem(
+                    "developerRole",
+                    "Owner"
+                );
+
+                localStorage.setItem(
+                    "user",
+                    "Damian"
+                );
+
+                window.location.href =
+                    "developer.html";
+
+                return;
+            }
+
             alert(
                 "Developer ID atau Password salah!"
             );
