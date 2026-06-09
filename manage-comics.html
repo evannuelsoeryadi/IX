@@ -1,8 +1,10 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
 
-<title>Comic - Infinite X</title>
+<title>Manage Comics - Infinite X</title>
+
 <link rel="stylesheet" href="style.css">
 
 </head>
@@ -10,219 +12,317 @@
 <body>
 
 <nav>
-    <a href="index.html">Home</a>
-    <a href="comic.html">Comic</a>
-    <a href="character.html">Character</a>
-    <a href="#">About Us</a>
-    <a href="profile.html">Profile</a>
-    <a 
-            href="developer.html"
-            id="devButton"
-            style="display:none;"
-        >
-            ⚙️ Dev Panel
-    </a>
+
+<a href="index.html">Home</a>
+<a href="comic.html">Comic</a>
+<a href="character.html">Character</a>
+<a href="#">About Us</a>
+<a href="profile.html">Profile</a>
+
+<a
+href="developer.html"
+id="devButton"
+>
+
+⚙️ Dev Panel
+
+</a>
+
 </nav>
 
-<div class="comic-container">
+<div class="manage-container">
 
-    <!-- 📚 COMIC LIST -->
-    <div id="comicList"></div>
+<h1>Manage Comics</h1>
 
-    <!-- 📖 CHAPTER LIST -->
-    <div id="chapterView" style="display:none;"></div>
+<p class="chapter-count">
+
+Total Chapters :
+<span id="chapterCount">
+0
+</span>
+
+</p>
+
+<button
+class="add-btn"
+onclick="openModal()"
+>
+
++ Add Chapter
+
+</button>
+
+<div id="chapterList">
+
+</div>
+
+</div>
+
+<div
+id="addChapterModal"
+class="modal"
+>
+
+<div class="modal-content">
+
+<h2>Add Chapter</h2>
+
+<input
+type="text"
+id="chapterTitle"
+placeholder="Chapter Title"
+>
+
+<textarea
+id="chapterDesc"
+placeholder="Chapter Description"
+></textarea>
+
+<input
+type="number"
+id="chapterPrice"
+placeholder="Price (0 = Free)"
+>
+
+<input
+type="number"
+id="chapterPages"
+placeholder="Total Pages"
+>
+
+<input
+type="file"
+id="chapterCover"
+accept="image/*"
+>
+
+<div class="modal-buttons">
+
+<button
+onclick="saveChapter()"
+class="edit-btn"
+>
+
+Save
+
+</button>
+
+<button
+onclick="closeModal()"
+class="delete-btn"
+>
+
+Cancel
+
+</button>
+
+</div>
+
+</div>
 
 </div>
 
 <script>
 
-/////////////////////////////////////////////////////
-// 📦 LOAD DATA
-/////////////////////////////////////////////////////
+if(
+localStorage.getItem(
+"developerLogged"
+) !== "true"
+){
 
-let comics = JSON.parse(localStorage.getItem("infinite_x_comics")) || [];
+window.location.href =
+"developer-login.html";
 
-let selectedComicId = localStorage.getItem("selectedComicId") || null;
-
-/////////////////////////////////////////////////////
-// 📚 RENDER COMIC LIST
-/////////////////////////////////////////////////////
-
-function renderComics(){
-
-    let container = document.getElementById("comicList");
-    container.innerHTML = "";
-
-    comics.forEach(comic => {
-
-        container.innerHTML += `
-            <div class="comic-card" onclick="openComic('${comic.id}')"
-                style="padding:15px; border:1px solid #333; margin:10px; cursor:pointer;">
-
-                <h2>${comic.title}</h2>
-                <p>Total Chapters: ${comic.chapters.length}</p>
-
-            </div>
-        `;
-    });
 }
 
-/////////////////////////////////////////////////////
-// 📖 OPEN COMIC → CHAPTER VIEW
-/////////////////////////////////////////////////////
+let chapters =
+JSON.parse(
+localStorage.getItem(
+"infinite_x_chapters"
+)
+) || [];
 
-function openComic(id){
-
-    localStorage.setItem("selectedComicId", id);
-    selectedComicId = id;
-
-    document.getElementById("comicList").style.display = "none";
-    document.getElementById("chapterView").style.display = "block";
-
-    renderChapters();
-}
-
-/////////////////////////////////////////////////////
-// 📖 RENDER CHAPTERS
-/////////////////////////////////////////////////////
+renderChapters();
 
 function renderChapters(){
 
-    let comic = comics.find(c => c.id === selectedComicId);
-    let container = document.getElementById("chapterView");
+let container =
+document.getElementById(
+"chapterList"
+);
 
-    container.innerHTML = "";
+container.innerHTML = "";
 
-    if(!comic){
-        container.innerHTML = "<p>No comic found</p>";
-        return;
-    }
+document.getElementById(
+"chapterCount"
+).innerText =
+chapters.length;
 
-    container.innerHTML += `
-        <button onclick="backToComics()" style="margin-bottom:10px;">
-            ⬅ Back
-        </button>
-    `;
+chapters.forEach(
+(chapter,index)=>{
 
-    comic.chapters.forEach(ch => {
+container.innerHTML += `
 
-        container.innerHTML += `
-            <div class="chapter-card"
-                onclick="openChapter('${ch.id}')"
-                style="padding:15px; border:1px solid #444; margin:10px; cursor:pointer;">
+<div class="chapter-card">
 
-                <h3>${ch.title}</h3>
-                <p>${ch.desc}</p>
+<div>
 
-                <small>
-                    Pages: ${ch.pages} | Price: ${ch.price == 0 ? "Free" : ch.price}
-                </small>
+<h2>
+${chapter.title}
+</h2>
 
-            </div>
-        `;
-    });
+<p>
+${chapter.desc}
+</p>
+
+<p>
+Price :
+${chapter.price == 0 ? "Free" : chapter.price}
+</p>
+
+<p>
+Pages :
+${chapter.pages}
+</p>
+
+</div>
+
+<div class="action-buttons">
+
+<button
+class="edit-btn"
+>
+
+Edit
+
+</button>
+
+<button
+class="delete-btn"
+onclick="deleteChapter(${index})"
+>
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
 }
 
-/////////////////////////////////////////////////////
-// 🔙 BACK
-/////////////////////////////////////////////////////
+function openModal(){
 
-function backToComics(){
-    document.getElementById("chapterView").style.display = "none";
-    document.getElementById("comicList").style.display = "block";
+document.getElementById(
+"addChapterModal"
+).style.display =
+"flex";
+
 }
 
-/////////////////////////////////////////////////////
-// 📖 OPEN CHAPTER (NEXT STEP HOOK)
-/////////////////////////////////////////////////////
+function closeModal(){
 
-function openChapter(chapterId){
+document.getElementById(
+"addChapterModal"
+).style.display =
+"none";
 
-    localStorage.setItem("selectedChapterId", chapterId);
-
-    // sementara placeholder (STEP 6 nanti)
-    alert("Chapter opened: " + chapterId + "\nNEXT: Reader System");
 }
 
-/////////////////////////////////////////////////////
-// INIT
-/////////////////////////////////////////////////////
+function saveChapter(){
 
-renderComics();
+let title =
+document.getElementById(
+"chapterTitle"
+).value;
+
+let desc =
+document.getElementById(
+"chapterDesc"
+).value;
+
+let price =
+document.getElementById(
+"chapterPrice"
+).value;
+
+let pages =
+document.getElementById(
+"chapterPages"
+).value;
 
 if(
+title == "" ||
+desc == ""
+){
 
-        localStorage.getItem(
-            "developerLogged"
-        ) === "true"
+alert(
+"Lengkapi data dulu!"
+);
 
-    ){
+return;
 
-        document
-        .getElementById(
-            "devButton"
-        )
-        .style.display =
-            "block";
+}
 
-    }
+chapters.push({
 
-    function saveChapter(){
+title:title,
 
-    let comic = getCurrentComic();
-    if(!comic) return;
+desc:desc,
 
-    let title = document.getElementById("chapterTitle").value;
-    let desc = document.getElementById("chapterDesc").value;
-    let price = document.getElementById("chapterPrice").value;
-    let pages = document.getElementById("chapterPages").value;
-    let coverFile = document.getElementById("chapterCover").files[0];
+price:Number(price),
 
-    if(!title || !desc){
-        alert("Lengkapi data dulu!");
-        return;
-    }
+pages:Number(pages),
 
-    function pushChapter(coverData){
+cover:"",
+pageImages:[]
 
-        comic.chapters.push({
-            id: "ch_" + Date.now(),
-            title,
-            desc,
-            cover: coverData || "",
-            price: Number(price) || 0,
-            pages: Number(pages) || 0,
-            pageImages: []
-        });
+});
 
-        saveComics();
-        renderChapters();
-        closeModal();
+localStorage.setItem(
 
-        // reset
-        document.getElementById("chapterTitle").value = "";
-        document.getElementById("chapterDesc").value = "";
-        document.getElementById("chapterPrice").value = "";
-        document.getElementById("chapterPages").value = "";
-        document.getElementById("chapterCover").value = "";
-    }
+"infinite_x_chapters",
 
-    if(coverFile){
+JSON.stringify(
+chapters
+)
 
-        let reader = new FileReader();
+);
 
-        reader.onload = function(){
-            pushChapter(reader.result);
-        };
+renderChapters();
 
-        reader.readAsDataURL(coverFile);
+closeModal();
 
-    } else {
-        pushChapter("");
-    }
+}
+
+function deleteChapter(index){
+
+chapters.splice(
+index,
+1
+);
+
+localStorage.setItem(
+
+"infinite_x_chapters",
+
+JSON.stringify(
+chapters
+)
+
+);
+
+renderChapters();
+
 }
 
 </script>
 
 </body>
 </html>
+```
