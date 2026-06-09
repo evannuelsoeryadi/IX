@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<title>Manage Comics - Infinite X</title>
+<title>Comic - Infinite X</title>
 <link rel="stylesheet" href="style.css">
 
 </head>
@@ -12,217 +12,143 @@
 <nav>
     <a href="index.html">Home</a>
     <a href="comic.html">Comic</a>
-    <a href="#">Character</a>
+    <a href="character.html">Character</a>
     <a href="#">About Us</a>
     <a href="profile.html">Profile</a>
-
-    <a href="developer.html" id="devButton">⚙️ Dev Panel</a>
+    <a 
+            href="developer.html"
+            id="devButton"
+            style="display:none;"
+        >
+            ⚙️ Dev Panel
+    </a>
 </nav>
 
-<div class="manage-container">
+<div class="comic-container">
 
-    <h1>Manage Comics</h1>
+    <!-- 📚 COMIC LIST -->
+    <div id="comicList"></div>
 
-    <p class="chapter-count">Total Chapters: 0</p>
-
-    <button class="add-btn" onclick="openModal()">
-        + Add Chapter
-    </button>
-
-    <div id="chapterList"></div>
-
-</div>
-
-<!-- MODAL -->
-<div id="addChapterModal" class="modal">
-
-    <div class="modal-content">
-
-        <h2>Add Chapter</h2>
-
-        <input type="text" id="chapterTitle" placeholder="Chapter Title">
-        <input type="file" id="chapterCover" accept="image/*">
-        <input type="number" id="chapterPrice" placeholder="Price (0 = Free)">
-        <input type="number" id="chapterPages" placeholder="Total Pages">
-        <textarea id="chapterDesc" placeholder="Chapter Description"></textarea>
-
-        <div class="modal-buttons">
-            <button class="btn-primary" onclick="saveChapter()">Save</button>
-            <button class="btn-danger" onclick="closeModal()">Cancel</button>
-        </div>
-
-    </div>
+    <!-- 📖 CHAPTER LIST -->
+    <div id="chapterView" style="display:none;"></div>
 
 </div>
 
 <script>
 
 /////////////////////////////////////////////////////
-// 🔐 DEV CHECK
-/////////////////////////////////////////////////////
-
-if(localStorage.getItem("developerLogged") !== "true"){
-    window.location.href = "developer-login.html";
-}
-
-/////////////////////////////////////////////////////
-// 📦 COMIC SYSTEM
+// 📦 LOAD DATA
 /////////////////////////////////////////////////////
 
 let comics = JSON.parse(localStorage.getItem("infinite_x_comics")) || [];
 
-if(comics.length === 0){
-    comics.push({
-        id: "comic_1",
-        title: "Default Comic",
-        chapters: []
-    });
-    saveComics();
-}
-
-let currentComicId = "comic_1";
-
-function saveComics(){
-    localStorage.setItem("infinite_x_comics", JSON.stringify(comics));
-}
-
-function getCurrentComic(){
-    return comics.find(c => c.id === currentComicId);
-}
+let selectedComicId = localStorage.getItem("selectedComicId") || null;
 
 /////////////////////////////////////////////////////
-// 📊 RENDER CHAPTERS
+// 📚 RENDER COMIC LIST
 /////////////////////////////////////////////////////
 
-function renderChapters(){
+function renderComics(){
 
-    let comic = getCurrentComic();
-    let list = document.getElementById("chapterList");
-    list.innerHTML = "";
+    let container = document.getElementById("comicList");
+    container.innerHTML = "";
 
-    let chapters = comic.chapters;
+    comics.forEach(comic => {
 
-    document.querySelector(".chapter-count").innerText =
-        "Total Chapters: " + chapters.length;
+        container.innerHTML += `
+            <div class="comic-card" onclick="openComic('${comic.id}')"
+                style="padding:15px; border:1px solid #333; margin:10px; cursor:pointer;">
 
-    chapters.forEach((c, i) => {
-
-        list.innerHTML += `
-            <div class="chapter-card">
-
-                <div style="display:flex; gap:15px; align-items:center;">
-
-                    ${c.cover ? `
-                        <img src="${c.cover}" style="width:60px;height:80px;border-radius:8px;object-fit:cover;">
-                    ` : ""}
-
-                    <div>
-                        <h2>${c.title}</h2>
-                        <p>${c.desc}</p>
-
-                        <small style="color:#aaa;">
-                            Pages: ${c.pages || 0} | Price: ${c.price == 0 ? "Free" : c.price}
-                        </small>
-                    </div>
-
-                </div>
-
-                <div class="action-buttons">
-
-                    <button class="edit-btn">Edit</button>
-
-                    <button class="btn-danger" onclick="deleteChapter(${i})">
-                        Delete
-                    </button>
-
-                </div>
+                <h2>${comic.title}</h2>
+                <p>Total Chapters: ${comic.chapters.length}</p>
 
             </div>
         `;
     });
-
-    saveComics();
 }
 
 /////////////////////////////////////////////////////
-// ➕ MODAL
+// 📖 OPEN COMIC → CHAPTER VIEW
 /////////////////////////////////////////////////////
 
-function openModal(){
-    document.getElementById("addChapterModal").style.display = "flex";
+function openComic(id){
+
+    localStorage.setItem("selectedComicId", id);
+    selectedComicId = id;
+
+    document.getElementById("comicList").style.display = "none";
+    document.getElementById("chapterView").style.display = "block";
+
+    renderChapters();
 }
 
-function closeModal(){
-    document.getElementById("addChapterModal").style.display = "none";
-}
-
 /////////////////////////////////////////////////////
-// 💾 SAVE CHAPTER
+// 📖 RENDER CHAPTERS
 /////////////////////////////////////////////////////
 
-function saveChapter(){
+function renderChapters(){
 
-    let comic = getCurrentComic();
+    let comic = comics.find(c => c.id === selectedComicId);
+    let container = document.getElementById("chapterView");
 
-    let title = document.getElementById("chapterTitle").value;
-    let desc = document.getElementById("chapterDesc").value;
-    let price = document.getElementById("chapterPrice").value;
-    let pages = document.getElementById("chapterPages").value;
-    let coverFile = document.getElementById("chapterCover").files[0];
+    container.innerHTML = "";
 
-    if(!title || !desc){
-        alert("Lengkapi data dulu!");
+    if(!comic){
+        container.innerHTML = "<p>No comic found</p>";
         return;
     }
 
-    let reader = new FileReader();
+    container.innerHTML += `
+        <button onclick="backToComics()" style="margin-bottom:10px;">
+            ⬅ Back
+        </button>
+    `;
 
-    reader.onload = function(){
+    comic.chapters.forEach(ch => {
 
-        comic.chapters.push({
-            id: "ch_" + Date.now(),
-            title,
-            desc,
-            cover: reader.result,
-            price: Number(price),
-            pages: Number(pages),
-            pageImages: []
-        });
+        container.innerHTML += `
+            <div class="chapter-card"
+                onclick="openChapter('${ch.id}')"
+                style="padding:15px; border:1px solid #444; margin:10px; cursor:pointer;">
 
-        saveComics();
-        renderChapters();
-        closeModal();
+                <h3>${ch.title}</h3>
+                <p>${ch.desc}</p>
 
-        document.getElementById("chapterTitle").value = "";
-        document.getElementById("chapterDesc").value = "";
-        document.getElementById("chapterPrice").value = "";
-        document.getElementById("chapterPages").value = "";
-        document.getElementById("chapterCover").value = "";
-    };
+                <small>
+                    Pages: ${ch.pages} | Price: ${ch.price == 0 ? "Free" : ch.price}
+                </small>
 
-    if(coverFile){
-        reader.readAsDataURL(coverFile);
-    } else {
-        reader.onload();
-    }
+            </div>
+        `;
+    });
 }
 
 /////////////////////////////////////////////////////
-// 🗑️ DELETE
+// 🔙 BACK
 /////////////////////////////////////////////////////
 
-function deleteChapter(index){
-    let comic = getCurrentComic();
-    comic.chapters.splice(index, 1);
-    saveComics();
-    renderChapters();
+function backToComics(){
+    document.getElementById("chapterView").style.display = "none";
+    document.getElementById("comicList").style.display = "block";
+}
+
+/////////////////////////////////////////////////////
+// 📖 OPEN CHAPTER (NEXT STEP HOOK)
+/////////////////////////////////////////////////////
+
+function openChapter(chapterId){
+
+    localStorage.setItem("selectedChapterId", chapterId);
+
+    // sementara placeholder (STEP 6 nanti)
+    alert("Chapter opened: " + chapterId + "\nNEXT: Reader System");
 }
 
 /////////////////////////////////////////////////////
 // INIT
 /////////////////////////////////////////////////////
 
-renderChapters();
+renderComics();
 
 </script>
 
