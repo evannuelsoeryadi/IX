@@ -167,6 +167,61 @@ if(
 
     }
 
+    function saveChapter(){
+
+    let comic = getCurrentComic();
+    if(!comic) return;
+
+    let title = document.getElementById("chapterTitle").value;
+    let desc = document.getElementById("chapterDesc").value;
+    let price = document.getElementById("chapterPrice").value;
+    let pages = document.getElementById("chapterPages").value;
+    let coverFile = document.getElementById("chapterCover").files[0];
+
+    if(!title || !desc){
+        alert("Lengkapi data dulu!");
+        return;
+    }
+
+    function pushChapter(coverData){
+
+        comic.chapters.push({
+            id: "ch_" + Date.now(),
+            title,
+            desc,
+            cover: coverData || "",
+            price: Number(price) || 0,
+            pages: Number(pages) || 0,
+            pageImages: []
+        });
+
+        saveComics();
+        renderChapters();
+        closeModal();
+
+        // reset
+        document.getElementById("chapterTitle").value = "";
+        document.getElementById("chapterDesc").value = "";
+        document.getElementById("chapterPrice").value = "";
+        document.getElementById("chapterPages").value = "";
+        document.getElementById("chapterCover").value = "";
+    }
+
+    if(coverFile){
+
+        let reader = new FileReader();
+
+        reader.onload = function(){
+            pushChapter(reader.result);
+        };
+
+        reader.readAsDataURL(coverFile);
+
+    } else {
+        pushChapter("");
+    }
+}
+
 </script>
 
 </body>
