@@ -23,9 +23,7 @@
 
     <h1>Manage Comics</h1>
 
-    <p class="chapter-count">
-        Total Chapters: 0
-    </p>
+    <p class="chapter-count">Total Chapters: 0</p>
 
     <button class="add-btn" onclick="openModal()">
         + Add Chapter
@@ -49,8 +47,8 @@
         <textarea id="chapterDesc" placeholder="Chapter Description"></textarea>
 
         <div class="modal-buttons">
-            <button onclick="saveChapter()">Save</button>
-            <button onclick="closeModal()" class="delete-btn">Cancel</button>
+            <button class="btn-primary" onclick="saveChapter()">Save</button>
+            <button class="btn-danger" onclick="closeModal()">Cancel</button>
         </div>
 
     </div>
@@ -59,19 +57,50 @@
 
 <script>
 
-// 🔐 dev check
+/////////////////////////////////////////////////////
+// 🔐 DEV CHECK
+/////////////////////////////////////////////////////
+
 if(localStorage.getItem("developerLogged") !== "true"){
     window.location.href = "developer-login.html";
 }
 
-// 📦 LOAD DATA
-let chapters = JSON.parse(localStorage.getItem("chapters")) || [];
+/////////////////////////////////////////////////////
+// 📦 COMIC SYSTEM
+/////////////////////////////////////////////////////
 
-// 📊 UPDATE UI
+let comics = JSON.parse(localStorage.getItem("infinite_x_comics")) || [];
+
+if(comics.length === 0){
+    comics.push({
+        id: "comic_1",
+        title: "Default Comic",
+        chapters: []
+    });
+    saveComics();
+}
+
+let currentComicId = "comic_1";
+
+function saveComics(){
+    localStorage.setItem("infinite_x_comics", JSON.stringify(comics));
+}
+
+function getCurrentComic(){
+    return comics.find(c => c.id === currentComicId);
+}
+
+/////////////////////////////////////////////////////
+// 📊 RENDER CHAPTERS
+/////////////////////////////////////////////////////
+
 function renderChapters(){
 
+    let comic = getCurrentComic();
     let list = document.getElementById("chapterList");
     list.innerHTML = "";
+
+    let chapters = comic.chapters;
 
     document.querySelector(".chapter-count").innerText =
         "Total Chapters: " + chapters.length;
@@ -102,7 +131,7 @@ function renderChapters(){
 
                     <button class="edit-btn">Edit</button>
 
-                    <button class="delete-btn" onclick="deleteChapter(${i})">
+                    <button class="btn-danger" onclick="deleteChapter(${i})">
                         Delete
                     </button>
 
@@ -112,21 +141,28 @@ function renderChapters(){
         `;
     });
 
-    localStorage.setItem("chapters", JSON.stringify(chapters));
+    saveComics();
 }
 
-// ➕ OPEN MODAL
+/////////////////////////////////////////////////////
+// ➕ MODAL
+/////////////////////////////////////////////////////
+
 function openModal(){
     document.getElementById("addChapterModal").style.display = "flex";
 }
 
-// ❌ CLOSE MODAL
 function closeModal(){
     document.getElementById("addChapterModal").style.display = "none";
 }
 
-// 💾 SAVE CHAPTER (STEP 1 FIXED MODEL)
+/////////////////////////////////////////////////////
+// 💾 SAVE CHAPTER
+/////////////////////////////////////////////////////
+
 function saveChapter(){
+
+    let comic = getCurrentComic();
 
     let title = document.getElementById("chapterTitle").value;
     let desc = document.getElementById("chapterDesc").value;
@@ -143,16 +179,17 @@ function saveChapter(){
 
     reader.onload = function(){
 
-        // 🔥 FIXED DATA STRUCTURE (STEP 1)
-        chapters.push({
-            title: title,
-            desc: desc,
+        comic.chapters.push({
+            id: "ch_" + Date.now(),
+            title,
+            desc,
             cover: reader.result,
             price: Number(price),
             pages: Number(pages),
             pageImages: []
         });
 
+        saveComics();
         renderChapters();
         closeModal();
 
@@ -170,13 +207,21 @@ function saveChapter(){
     }
 }
 
+/////////////////////////////////////////////////////
 // 🗑️ DELETE
+/////////////////////////////////////////////////////
+
 function deleteChapter(index){
-    chapters.splice(index, 1);
+    let comic = getCurrentComic();
+    comic.chapters.splice(index, 1);
+    saveComics();
     renderChapters();
 }
 
-// init
+/////////////////////////////////////////////////////
+// INIT
+/////////////////////////////////////////////////////
+
 renderChapters();
 
 </script>
