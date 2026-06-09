@@ -32,20 +32,26 @@ id="devButton"
 
 <div class="manage-container">
 
-<h1>Manage Comics</h1>
+<h1>
+
+Manage Comics
+
+</h1>
 
 <p class="chapter-count">
 
 Total Chapters :
 <span id="chapterCount">
+
 0
+
 </span>
 
 </p>
 
 <button
 class="add-btn"
-onclick="openModal()"
+onclick="window.location.href='manage-pages.html'"
 >
 
 + Add Chapter
@@ -58,76 +64,14 @@ onclick="openModal()"
 
 </div>
 
-<div
-id="addChapterModal"
-class="modal"
->
-
-<div class="modal-content">
-
-<h2>Add Chapter</h2>
-
-<input
-type="text"
-id="chapterTitle"
-placeholder="Chapter Title"
->
-
-<textarea
-id="chapterDesc"
-placeholder="Chapter Description"
-></textarea>
-
-<input
-type="number"
-id="chapterPrice"
-placeholder="Price (0 = Free)"
->
-
-<input
-type="number"
-id="chapterPages"
-placeholder="Total Pages"
->
-
-<input
-type="file"
-id="chapterCover"
-accept="image/*"
->
-
-<div class="modal-buttons">
-
-<button
-onclick="saveChapter()"
-class="edit-btn"
->
-
-Save
-
-</button>
-
-<button
-onclick="closeModal()"
-class="delete-btn"
->
-
-Cancel
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
 <script>
 
 if(
+
 localStorage.getItem(
 "developerLogged"
 ) !== "true"
+
 ){
 
 window.location.href =
@@ -136,10 +80,13 @@ window.location.href =
 }
 
 let chapters =
+
 JSON.parse(
+
 localStorage.getItem(
 "infinite_x_chapters"
 )
+
 ) || [];
 
 renderChapters();
@@ -147,6 +94,7 @@ renderChapters();
 function renderChapters(){
 
 let container =
+
 document.getElementById(
 "chapterList"
 );
@@ -168,21 +116,29 @@ container.innerHTML += `
 <div>
 
 <h2>
+
 ${chapter.title}
+
 </h2>
 
 <p>
+
 ${chapter.desc}
+
 </p>
 
 <p>
+
 Price :
 ${chapter.price == 0 ? "Free" : chapter.price}
+
 </p>
 
 <p>
+
 Pages :
 ${chapter.pages}
+
 </p>
 
 </div>
@@ -213,90 +169,6 @@ Delete
 `;
 
 });
-
-}
-
-function openModal(){
-
-document.getElementById(
-"addChapterModal"
-).style.display =
-"flex";
-
-}
-
-function closeModal(){
-
-document.getElementById(
-"addChapterModal"
-).style.display =
-"none";
-
-}
-
-function saveChapter(){
-
-let title =
-document.getElementById(
-"chapterTitle"
-).value;
-
-let desc =
-document.getElementById(
-"chapterDesc"
-).value;
-
-let price =
-document.getElementById(
-"chapterPrice"
-).value;
-
-let pages =
-document.getElementById(
-"chapterPages"
-).value;
-
-if(
-title == "" ||
-desc == ""
-){
-
-alert(
-"Lengkapi data dulu!"
-);
-
-return;
-
-}
-
-chapters.push({
-
-title:title,
-
-desc:desc,
-
-price:Number(price),
-
-pages:Number(pages),
-
-cover:"",
-pageImages:[]
-
-});
-
-localStorage.setItem(
-
-"infinite_x_chapters",
-
-JSON.stringify(
-chapters
-)
-
-);
-
-renderChapters();
-
-closeModal();
 
 }
 
