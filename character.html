@@ -81,7 +81,24 @@
     </div>
 
 </div>
-```
+<script>
+    if(
+
+        localStorage.getItem(
+            "developerLogged"
+        ) === "true"
+
+    ){
+
+        document
+        .getElementById(
+            "devButton"
+        )
+        .style.display =
+            "block";
+
+    }
+</script>
 
 </body>
 </html>
