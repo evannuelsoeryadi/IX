@@ -1,0 +1,93 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Manage Pages - Infinite X</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<nav>
+
+<a href="index.html">Home</a>
+<a href="comic.html">Comic</a>
+<a href="character.html">Character</a>
+<a href="#">About Us</a>
+<a href="profile.html">Profile</a>
+
+<a
+href="developer.html"
+id="devButton"
+>
+
+⚙️ Dev Panel
+
+</a>
+
+</nav>
+
+<div class="manage-container">
+
+<h1>
+
+Manage Pages
+
+</h1>
+
+<h2>
+
+Chapter 1
+
+</h2>
+
+<p class="chapter-count">
+
+Total Pages :
+<span id="pageCount">
+
+0
+
+</span>
+
+</p>
+
+<button
+class="add-btn"
+>
+
++ Add Page
+
+</button>
+
+<div id="pageList">
+
+<!-- Page card akan muncul di sini -->
+
+</div>
+
+</div>
+
+<script>
+
+if(
+
+localStorage.getItem(
+"developerLogged"
+) !== "true"
+
+){
+
+window.location.href =
+"developer-login.html";
+
+}
+
+</script>
+
+</body>
+</html>
+```
