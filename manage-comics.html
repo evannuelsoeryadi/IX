@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-
 <html>
 <head>
 
 <title>Manage Comics - Infinite X</title>
-
 <link rel="stylesheet" href="style.css">
 
 </head>
@@ -12,181 +10,174 @@
 <body>
 
 <nav>
+    <a href="index.html">Home</a>
+    <a href="comic.html">Comic</a>
+    <a href="#">Character</a>
+    <a href="#">About Us</a>
+    <a href="profile.html">Profile</a>
 
-<a href="index.html">Home</a> <a href="comic.html">Comic</a> <a href="#">Character</a> <a href="#">About Us</a> <a href="profile.html">Profile</a>
-
-<a href="developer.html" id="devButton">
-    ⚙️ Dev Panel
-</a>
-
+    <a href="developer.html" id="devButton">⚙️ Dev Panel</a>
 </nav>
 
 <div class="manage-container">
 
+    <h1>Manage Comics</h1>
 
-<h1>Manage Comics</h1>
+    <p class="chapter-count">
+        Total Chapters: 0
+    </p>
 
-<p class="chapter-count">
-    Total Chapters: 0
-</p>
+    <button class="add-btn" onclick="openModal()">
+        + Add Chapter
+    </button>
 
-<button class="add-btn" onclick="openModal()">
-    + Add Chapter
-</button>
-
-<div id="chapterList"></div>
-
+    <div id="chapterList"></div>
 
 </div>
 
 <!-- MODAL -->
-
 <div id="addChapterModal" class="modal">
 
+    <div class="modal-content">
 
-<div class="modal-content">
+        <h2>Add Chapter</h2>
 
-    <h2>Add Chapter</h2>
+        <input type="text" id="chapterTitle" placeholder="Chapter Title">
+        <input type="file" id="chapterCover" accept="image/*">
+        <input type="number" id="chapterPrice" placeholder="Price (0 = Free)">
+        <input type="number" id="chapterPages" placeholder="Total Pages">
+        <textarea id="chapterDesc" placeholder="Chapter Description"></textarea>
 
-    <input
-        type="text"
-        id="chapterTitle"
-        placeholder="Chapter Title"
-    >
-
-    <input
-        type="file"
-        id="chapterCover"
-        accept="image/*"
-    >
-
-    <input
-        type="number"
-        id="chapterPrice"
-        placeholder="Price (0 = Free)"
-    >
-
-    <input
-        type="number"
-        id="chapterPages"
-        placeholder="Total Pages"
-    >
-
-    <textarea
-        id="chapterDesc"
-        placeholder="Chapter Description"
-    ></textarea>
-
-    <div class="modal-buttons">
-
-        <button onclick="saveChapter()">
-            Save
-        </button>
-
-        <button onclick="closeModal()" class="delete-btn">
-            Cancel
-        </button>
+        <div class="modal-buttons">
+            <button onclick="saveChapter()">Save</button>
+            <button onclick="closeModal()" class="delete-btn">Cancel</button>
+        </div>
 
     </div>
 
 </div>
 
-
-</div>
-
 <script>
 
-if(
-    localStorage.getItem("developerLogged") !== "true"
-){
+// 🔐 dev check
+if(localStorage.getItem("developerLogged") !== "true"){
     window.location.href = "developer-login.html";
 }
 
-let totalChapter = 0;
+// 📦 LOAD DATA
+let chapters = JSON.parse(localStorage.getItem("chapters")) || [];
 
+// 📊 UPDATE UI
+function renderChapters(){
+
+    let list = document.getElementById("chapterList");
+    list.innerHTML = "";
+
+    document.querySelector(".chapter-count").innerText =
+        "Total Chapters: " + chapters.length;
+
+    chapters.forEach((c, i) => {
+
+        list.innerHTML += `
+            <div class="chapter-card">
+
+                <div style="display:flex; gap:15px; align-items:center;">
+
+                    ${c.cover ? `
+                        <img src="${c.cover}" style="width:60px;height:80px;border-radius:8px;object-fit:cover;">
+                    ` : ""}
+
+                    <div>
+                        <h2>${c.title}</h2>
+                        <p>${c.desc}</p>
+
+                        <small style="color:#aaa;">
+                            Pages: ${c.pages || 0} | Price: ${c.price == 0 ? "Free" : c.price}
+                        </small>
+                    </div>
+
+                </div>
+
+                <div class="action-buttons">
+
+                    <button class="edit-btn">Edit</button>
+
+                    <button class="delete-btn" onclick="deleteChapter(${i})">
+                        Delete
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+    });
+
+    localStorage.setItem("chapters", JSON.stringify(chapters));
+}
+
+// ➕ OPEN MODAL
 function openModal(){
     document.getElementById("addChapterModal").style.display = "flex";
 }
 
+// ❌ CLOSE MODAL
 function closeModal(){
     document.getElementById("addChapterModal").style.display = "none";
 }
 
+// 💾 SAVE CHAPTER (STEP 1 FIXED MODEL)
 function saveChapter(){
 
     let title = document.getElementById("chapterTitle").value;
     let desc = document.getElementById("chapterDesc").value;
     let price = document.getElementById("chapterPrice").value;
     let pages = document.getElementById("chapterPages").value;
-    let cover = document.getElementById("chapterCover").files[0];
+    let coverFile = document.getElementById("chapterCover").files[0];
 
     if(!title || !desc){
         alert("Lengkapi data dulu!");
         return;
     }
 
-    totalChapter++;
+    let reader = new FileReader();
 
-    document.querySelector(".chapter-count").innerText =
-        "Total Chapters: " + totalChapter;
+    reader.onload = function(){
 
-    let card = document.createElement("div");
-    card.className = "chapter-card";
+        // 🔥 FIXED DATA STRUCTURE (STEP 1)
+        chapters.push({
+            title: title,
+            desc: desc,
+            cover: reader.result,
+            price: Number(price),
+            pages: Number(pages),
+            pageImages: []
+        });
 
-    let coverURL = cover ? URL.createObjectURL(cover) : "";
+        renderChapters();
+        closeModal();
 
-    card.innerHTML = `
+        document.getElementById("chapterTitle").value = "";
+        document.getElementById("chapterDesc").value = "";
+        document.getElementById("chapterPrice").value = "";
+        document.getElementById("chapterPages").value = "";
+        document.getElementById("chapterCover").value = "";
+    };
 
-        <div style="display:flex; gap:15px; align-items:center;">
-
-            ${coverURL ? `<img src="${coverURL}" style="width:60px;height:80px;border-radius:8px;object-fit:cover;">` : ""}
-
-            <div>
-
-                <h2>${title}</h2>
-
-                <p>${desc}</p>
-
-                <small style="color:#aaa;">
-                    Pages: ${pages || 0} | Price: ${price == 0 ? "Free" : price}
-                </small>
-
-            </div>
-
-        </div>
-
-        <div class="action-buttons">
-
-            <button class="edit-btn">Edit</button>
-
-            <button class="delete-btn" onclick="deleteChapter(this)">Delete</button>
-
-        </div>
-
-    `;
-
-    document.getElementById("chapterList").appendChild(card);
-
-    closeModal();
-
-    document.getElementById("chapterTitle").value = "";
-    document.getElementById("chapterDesc").value = "";
-    document.getElementById("chapterPrice").value = "";
-    document.getElementById("chapterPages").value = "";
-    document.getElementById("chapterCover").value = "";
-
+    if(coverFile){
+        reader.readAsDataURL(coverFile);
+    } else {
+        reader.onload();
+    }
 }
 
-function deleteChapter(btn){
-
-    btn.closest(".chapter-card").remove();
-
-    totalChapter--;
-
-    document.querySelector(".chapter-count").innerText =
-        "Total Chapters: " + totalChapter;
-
+// 🗑️ DELETE
+function deleteChapter(index){
+    chapters.splice(index, 1);
+    renderChapters();
 }
+
+// init
+renderChapters();
 
 </script>
 
