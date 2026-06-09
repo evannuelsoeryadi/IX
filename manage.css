@@ -1,0 +1,134 @@
+```css id="7jzh2k"
+/* ==========================
+   MANAGE PAGES
+========================== */
+
+.page-card{
+
+    background:#0f172a;
+
+    color:white;
+
+    padding:25px;
+
+    margin-bottom:20px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    transition:.3s;
+
+}
+
+.page-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.page-preview{
+
+    width:120px;
+
+    border-radius:12px;
+
+}
+
+.page-info h2{
+
+    margin-bottom:10px;
+
+}
+
+.page-info p{
+
+    color:#cbd5e1;
+
+}
+
+.page-actions{
+
+    display:flex;
+
+    gap:10px;
+
+}
+```
+
+---
+
+# LAPORAN
+
+Status saat ini:
+
+✅ `.manage-container` sudah ada di style.css.
+
+✅ `.chapter-count` sudah ada.
+
+✅ `.add-btn` sudah ada.
+
+✅ `.edit-btn` sudah ada.
+
+✅ `.delete-btn` sudah ada.
+
+❌ `.page-card` belum ada.
+
+❌ `.page-preview` belum ada.
+
+❌ `.page-actions` belum ada.
+
+CSS di atas cukup ditambahkan di bagian paling bawah `style.css`.
+
+---
+
+# HARAPAN / NEXT STEP
+
+STEP 2:
+
+Saat tombol:
+
+```text id="q8nbjd"
++ Add Page
+```
+
+ditekan, akan muncul popup:
+
+```text id="eckh8u"
+Add Page
+
+[ Upload Image ]
+
+[ Save ]
+[ Cancel ]
+```
+
+Setelah Save:
+
+```text id="8r89sg"
+Page 1
+[Preview gambar]
+Delete
+
+Page 2
+[Preview gambar]
+Delete
+```
+
+Masing-masing gambar nantinya akan masuk ke:
+
+```javascript id="8zvntq"
+chapter.pageImages = []
+```
+
+dan akan dipakai oleh:
+
+```text id="71aqtw"
+reader.html
+```
+
+untuk sistem membaca comic Infinite X. 😎🔥
