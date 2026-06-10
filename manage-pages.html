@@ -34,17 +34,34 @@ id="devButton"
 
 <h1>
 
-Manage Pages
+Manage Chapter
 
 </h1>
 
-<h2>
+<input
+type="text"
+id="chapterTitle"
+placeholder="Chapter Title"
+>
 
-Chapter 1
+<textarea
+id="chapterDesc"
+placeholder="Chapter Description"
+></textarea>
 
-</h2>
+<input
+type="number"
+id="chapterPrice"
+placeholder="Price (0 = Free)"
+>
 
-<p class="chapter-count">
+<input
+type="file"
+id="chapterCover"
+accept="image/*"
+>
+
+<p>
 
 Total Pages :
 <span id="pageCount">
@@ -57,9 +74,23 @@ Total Pages :
 
 <button
 class="add-btn"
+onclick="addPage()"
 >
 
 + Add Page
+
+</button>
+
+<div id="pageList">
+
+</div>
+
+<button
+class="edit-btn"
+onclick="saveChapter()"
+>
+
+Save Chapter
 
 </button>
 
