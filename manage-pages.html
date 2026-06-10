@@ -61,6 +61,14 @@ id="chapterCover"
 accept="image/*"
 >
 
+<input
+type="file"
+id="pageInput"
+accept="image/*"
+style="display:none"
+onchange="uploadPage(event)"
+>
+
 <p>
 
 Total Pages :
@@ -83,6 +91,8 @@ onclick="addPage()"
 
 <div id="pageList">
 
+<!-- Page card akan muncul di sini -->
+
 </div>
 
 <button
@@ -93,12 +103,6 @@ onclick="saveChapter()"
 Save Chapter
 
 </button>
-
-<div id="pageList">
-
-<!-- Page card akan muncul di sini -->
-
-</div>
 
 </div>
 
@@ -121,99 +125,114 @@ let pageImages = [];
 
 function addPage(){
 
-    document
-    .getElementById(
-        "pageInput"
-    )
-    .click();
+document
+.getElementById(
+"pageInput"
+)
+.click();
 
 }
 
 function uploadPage(event){
 
-    let file =
-        event.target.files[0];
+let file =
+event.target.files[0];
 
-    if(!file){
+if(
+!file
+){
 
-        return;
+return;
 
-    }
+}
 
-    let reader =
-        new FileReader();
+let reader =
+new FileReader();
 
-    reader.onload = function(){
+reader.onload =
+function(){
 
-        pageImages.push(
-            reader.result
-        );
+pageImages.push(
+reader.result
+);
 
-        renderPages();
+renderPages();
 
-    };
+};
 
-    reader.readAsDataURL(
-        file
-    );
+reader.readAsDataURL(
+file
+);
 
 }
 
 function renderPages(){
 
-    let container =
-        document.getElementById(
-            "pageList"
-        );
+let container =
 
-    container.innerHTML = "";
+document.getElementById(
+"pageList"
+);
 
-    document.getElementById(
-        "pageCount"
-    ).innerText =
-        pageImages.length;
+container.innerHTML = "";
 
-    pageImages.forEach(
-        (img,index)=>{
+document.getElementById(
+"pageCount"
+).innerText =
+pageImages.length;
 
-            container.innerHTML += `
+pageImages.forEach(
 
-            <div class="page-card">
+(img,index)=>{
 
-                <img
-                src="${img}"
-                class="page-preview"
-                >
+container.innerHTML += `
 
-                <div class="page-actions">
+<div class="page-card">
 
-                    <button
-                    class="delete-btn"
-                    onclick="deletePage(${index})"
-                    >
+<img
+src="${img}"
+class="page-preview"
+>
 
-                    Delete
+<div class="page-actions">
 
-                    </button>
+<button
+class="delete-btn"
+onclick="deletePage(${index})"
+>
 
-                </div>
+Delete
 
-            </div>
+</button>
 
-            `;
+</div>
 
-        });
+</div>
+
+`;
+
+}
+
+);
 
 }
 
 function deletePage(index){
 
-    pageImages.splice(
-        index,
-        1
-    );
+pageImages.splice(
+index,
+1
+);
 
-    renderPages();
+renderPages();
+
+}
+
+function saveChapter(){
+
+alert(
+"Save Chapter akan dibuat pada step berikutnya"
+);
 
 }
 
@@ -221,4 +240,4 @@ function deletePage(index){
 
 </body>
 </html>
-```
+
