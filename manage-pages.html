@@ -228,13 +228,123 @@ renderPages();
 
 }
 
+
 function saveChapter(){
 
+let title =
+document.getElementById(
+"chapterTitle"
+).value;
+
+let desc =
+document.getElementById(
+"chapterDesc"
+).value;
+
+let price =
+document.getElementById(
+"chapterPrice"
+).value;
+
+let coverFile =
+document.getElementById(
+"chapterCover"
+).files[0];
+
+if(
+
+title == "" ||
+desc == ""
+
+){
+
 alert(
-"Save Chapter akan dibuat pada step berikutnya"
+"Lengkapi data dulu!"
+);
+
+return;
+
+}
+
+let chapters =
+
+JSON.parse(
+
+localStorage.getItem(
+"infinite_x_chapters"
+)
+
+) || [];
+
+function finishSave(coverData){
+
+chapters.push({
+
+title:title,
+
+desc:desc,
+
+price:Number(price),
+
+cover:coverData,
+
+pages:pageImages.length,
+
+pageImages:pageImages
+
+});
+
+localStorage.setItem(
+
+"infinite_x_chapters",
+
+JSON.stringify(
+chapters
+)
+
+);
+
+alert(
+"Chapter berhasil disimpan!"
+);
+
+window.location.href =
+"manage-comics.html";
+
+}
+
+if(
+
+coverFile
+
+){
+
+let reader =
+new FileReader();
+
+reader.onload =
+function(){
+
+finishSave(
+reader.result
+);
+
+};
+
+reader.readAsDataURL(
+coverFile
 );
 
 }
+
+else{
+
+finishSave("");
+
+}
+
+}
+
 
 </script>
 
