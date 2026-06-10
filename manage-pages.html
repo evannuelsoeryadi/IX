@@ -117,6 +117,106 @@ window.location.href =
 
 }
 
+let pageImages = [];
+
+function addPage(){
+
+    document
+    .getElementById(
+        "pageInput"
+    )
+    .click();
+
+}
+
+function uploadPage(event){
+
+    let file =
+        event.target.files[0];
+
+    if(!file){
+
+        return;
+
+    }
+
+    let reader =
+        new FileReader();
+
+    reader.onload = function(){
+
+        pageImages.push(
+            reader.result
+        );
+
+        renderPages();
+
+    };
+
+    reader.readAsDataURL(
+        file
+    );
+
+}
+
+function renderPages(){
+
+    let container =
+        document.getElementById(
+            "pageList"
+        );
+
+    container.innerHTML = "";
+
+    document.getElementById(
+        "pageCount"
+    ).innerText =
+        pageImages.length;
+
+    pageImages.forEach(
+        (img,index)=>{
+
+            container.innerHTML += `
+
+            <div class="page-card">
+
+                <img
+                src="${img}"
+                class="page-preview"
+                >
+
+                <div class="page-actions">
+
+                    <button
+                    class="delete-btn"
+                    onclick="deletePage(${index})"
+                    >
+
+                    Delete
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            `;
+
+        });
+
+}
+
+function deletePage(index){
+
+    pageImages.splice(
+        index,
+        1
+    );
+
+    renderPages();
+
+}
+
 </script>
 
 </body>
