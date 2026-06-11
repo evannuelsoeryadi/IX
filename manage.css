@@ -142,3 +142,24 @@ display:block;
 margin:40px auto;
 
 }
+
+#progressContainer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #222;
+}
+
+#progressBar{
+    height: 4px;
+    width: 0%;
+    background: #00f5ff;
+}
+
+.reader-page{
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+}
