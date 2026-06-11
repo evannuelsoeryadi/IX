@@ -1,1 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Reader - Infinite X</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="manage.css">
+
+</head>
+
+<body>
+
+<nav>
+
+<a href="index.html">Home</a>
+<a href="comic.html">Comic</a>
+<a href="character.html">Character</a>
+<a href="#">About Us</a>
+<a href="profile.html">Profile</a>
+
+<a
+href="developer.html"
+id="devButton"
+style="display:none;"
+>
+
+⚙️ Dev Panel
+
+</a>
+
+</nav>
+
+<div class="manage-container">
+
+<h1 id="chapterTitle">
+
+Loading...
+
+</h1>
+
+<div id="codeBox">
+
+<input
+type="text"
+id="readerCode"
+placeholder="Enter Code"
+>
+
+<button
+class="add-btn"
+onclick="unlockChapter()"
+>
+
+Unlock
+
+</button>
+
+</div>
+
+<div
+id="readerPages"
+style="display:none;"
+>
+
+</div>
+
+<button
+id="nextBtn"
+class="edit-btn"
+style="display:none;"
+onclick="nextPages()"
+>
+
+Next
+
+</button>
+
+</div>
+
+<script>
+
+let chapters =
+
+JSON.parse(
+
+localStorage.getItem(
+"infinite_x_chapters"
+)
+
+) || [];
+
+let index =
+
+localStorage.getItem(
+"currentChapter"
+);
+
+let chapter = chapters[index];
+
+let currentPage = 0;
+
+document.getElementById(
+"chapterTitle"
+).innerText =
+chapter.title;
+
+function unlockChapter(){
+
+let code =
+
+document.getElementById(
+"readerCode"
+).value;
+
+if(
+code != chapter.unlockCode
+){
+
+alert(
+"Wrong code!"
+);
+
+return;
+
+}
+
+document.getElementById(
+"codeBox"
+).style.display =
+"none";
+
+document.getElementById(
+"readerPages"
+).style.display =
+"block";
+
+showPages();
+
+}
+
+function showPages(){
+
+let container =
+
+document.getElementById(
+"readerPages"
+);
+
+container.innerHTML = "";
+
+for(
+
+let i=currentPage;
+
+i<currentPage+10 &&
+i<chapter.pageImages.length;
+
+i++
+
+){
+
+container.innerHTML += `
+
+<img
+src="${chapter.pageImages[i]}"
+class="comic-image"
+>
+
+`;
+
+}
+
+if(
+
+currentPage + 10 <
+chapter.pageImages.length
+
+){
+
+document.getElementById(
+"nextBtn"
+).style.display =
+"block";
+
+}
+
+else{
+
+document.getElementById(
+"nextBtn"
+).style.display =
+"none";
+
+}
+
+}
+
+function nextPages(){
+
+currentPage += 10;
+
+showPages();
+
+}
+
+if(
+
+localStorage.getItem(
+"developerLogged"
+) === "true"
+
+){
+
+document.getElementById(
+"devButton"
+).style.display =
+"block";
+
+}
+
+</script>
+
+</body>
+</html>
 
