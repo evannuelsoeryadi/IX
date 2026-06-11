@@ -33,13 +33,17 @@ style="display:none;"
 
 <div class="manage-container">
 
-<h1 id="chapterTitle">
+<h1
+id="chapterTitle"
+>
 
 Loading...
 
 </h1>
 
-<div id="codeBox">
+<div
+id="codeBox"
+>
 
 <input
 type="text"
@@ -58,12 +62,35 @@ Unlock
 
 </div>
 
-<div
-id="readerPages"
+<p
+id="pageInfo"
 style="display:none;"
 >
 
+Page 1-10
+
+</p>
+
+<div
+id="readerPages"
+>
+
 </div>
+
+<div
+class="reader-buttons"
+>
+
+<button
+id="prevBtn"
+class="delete-btn"
+style="display:none;"
+onclick="prevPages()"
+>
+
+⬅ Previous
+
+</button>
 
 <button
 id="nextBtn"
@@ -72,14 +99,37 @@ style="display:none;"
 onclick="nextPages()"
 >
 
-Next
+Next ➡
 
 </button>
 
 </div>
 
-<script>
+<button
+id="finishBtn"
+class="add-btn"
+style="display:none;"
+onclick="finishChapter()"
+>
 
+Finish Chapter
+
+</button>
+
+<br><br>
+
+<a
+href="comic.html"
+class="chapter-btn"
+>
+
+⬅ Back to Comics
+
+</a>
+
+</div>
+
+<script src="reader.js">
 let chapters =
 
 JSON.parse(
@@ -90,19 +140,22 @@ localStorage.getItem(
 
 ) || [];
 
-let index =
+let currentChapter =
 
 localStorage.getItem(
 "currentChapter"
 );
 
-let chapter = chapters[index];
+let chapter =
+
+chapters[currentChapter];
 
 let currentPage = 0;
 
 document.getElementById(
 "chapterTitle"
 ).innerText =
+
 chapter.title;
 
 function unlockChapter(){
@@ -114,7 +167,9 @@ document.getElementById(
 ).value;
 
 if(
+
 code != chapter.unlockCode
+
 ){
 
 alert(
@@ -131,7 +186,7 @@ document.getElementById(
 "none";
 
 document.getElementById(
-"readerPages"
+"pageInfo"
 ).style.display =
 "block";
 
@@ -171,9 +226,62 @@ class="comic-image"
 
 }
 
+document.getElementById(
+"pageInfo"
+).innerText =
+
+"Page " +
+
+(currentPage + 1)
+
++
+
+" - "
+
++
+
+Math.min(
+
+currentPage + 10,
+
+chapter.pageImages.length
+
+)
+
++
+
+" / "
+
++
+
+chapter.pageImages.length;
+
+if(
+
+currentPage == 0
+
+){
+
+document.getElementById(
+"prevBtn"
+).style.display =
+"none";
+
+}
+
+else{
+
+document.getElementById(
+"prevBtn"
+).style.display =
+"inline-block";
+
+}
+
 if(
 
 currentPage + 10 <
+
 chapter.pageImages.length
 
 ){
@@ -181,7 +289,12 @@ chapter.pageImages.length
 document.getElementById(
 "nextBtn"
 ).style.display =
-"block";
+"inline-block";
+
+document.getElementById(
+"finishBtn"
+).style.display =
+"none";
 
 }
 
@@ -192,6 +305,11 @@ document.getElementById(
 ).style.display =
 "none";
 
+document.getElementById(
+"finishBtn"
+).style.display =
+"inline-block";
+
 }
 
 }
@@ -201,6 +319,35 @@ function nextPages(){
 currentPage += 10;
 
 showPages();
+
+}
+
+function prevPages(){
+
+currentPage -= 10;
+
+if(
+
+currentPage < 0
+
+){
+
+currentPage = 0;
+
+}
+
+showPages();
+
+}
+
+function finishChapter(){
+
+alert(
+"The End"
+);
+
+window.location.href =
+"comic.html";
 
 }
 
