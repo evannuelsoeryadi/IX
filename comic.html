@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<title>Our Comics - Infinite X</title>
+<title>Infinite X - Comics</title>
 
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="manage.css">
@@ -16,174 +16,120 @@
 <a href="index.html">Home</a>
 <a href="comic.html">Comic</a>
 <a href="character.html">Character</a>
-<a href="#">About Us</a>
 <a href="profile.html">Profile</a>
 
-<a
-href="developer.html"
-id="devButton"
-style="display:none;"
->
-
+<a href="developer.html" id="devButton" style="display:none;">
 ⚙️ Dev Panel
-
 </a>
 
 </nav>
 
-<div class="comic-page">
+<div class="manage-container">
 
-<h1 class="comic-title">
+<h1>Infinite X Comics</h1>
 
-Our Comics
-
-</h1>
-
-<div
-class="comic-container"
-id="comicContainer"
->
-
+<!-- 🔥 CONTINUE READING -->
+<div id="continueBox" style="display:none;">
+    <h3>Continue Reading</h3>
+    <button class="add-btn" onclick="continueReading()">
+        Resume Last Chapter
+    </button>
 </div>
+
+<h2>Latest Chapters</h2>
+
+<div id="chapterList"></div>
 
 </div>
 
 <script>
 
-let chapters =
+let chapters = JSON.parse(localStorage.getItem("infinite_x_chapters")) || [];
 
-JSON.parse(
+// =====================
+// CONTINUE READING CHECK
+// =====================
+function checkContinue(){
 
-localStorage.getItem(
-"infinite_x_chapters"
-)
+    let last = localStorage.getItem("lastReadChapter");
 
-) || [];
-
-let container =
-
-document.getElementById(
-"comicContainer"
-);
-
-container.innerHTML = "";
-
-if(
-chapters.length == 0
-){
-
-container.innerHTML =
-
-"<h2 style='color:white'>Belum ada chapter.</h2>";
-
+    if(last !== null && chapters[last]){
+        document.getElementById("continueBox").style.display = "block";
+    }
 }
 
-chapters.forEach(
-(chapter,index)=>{
+// =====================
+// CONTINUE FUNCTION
+// =====================
+function continueReading(){
 
-container.innerHTML += `
+    let last = localStorage.getItem("lastReadChapter");
 
-<div class="comic-card">
-
-<div class="card-inner">
-
-<div class="card-front">
-
-${
-chapter.cover
-
-?
-
-'<img src="' +
-chapter.cover +
-'" class="cover-img">'
-
-:
-
-'No Cover'
-
+    if(last !== null){
+        localStorage.setItem("currentChapter", last);
+        window.location.href = "reader.html";
+    }
 }
 
-</div>
+// =====================
+// RENDER CHAPTER LIST
+// =====================
+function renderChapters(){
 
-<div class="card-back">
+    let container = document.getElementById("chapterList");
+    container.innerHTML = "";
 
-${chapter.desc}
+    chapters.forEach((ch, index)=>{
 
-</div>
+        container.innerHTML += `
+        <div class="chapter-card">
 
-</div>
+            <img src="${ch.cover || "https://placehold.co/120x170"}">
 
-<p class="chapter-price">
+            <div class="chapter-info">
 
-Price :
-${chapter.price == 0 ? "Free" : chapter.price}
+                <h3>${ch.title}</h3>
+                <p>${ch.desc}</p>
+                <p>Pages: ${ch.pages}</p>
 
-</p>
+            </div>
 
-<button
-class="chapter-btn"
-onclick="openChapter(${index})"
->
+            <button class="edit-btn" onclick="openChapter(${index})">
+                Read
+            </button>
 
-${chapter.title}
+        </div>
+        `;
+    });
+}
 
-</button>
-
-</div>
-
-`;
-
-});
-
+// =====================
+// OPEN CHAPTER
+// =====================
 function openChapter(index){
 
-localStorage.setItem(
+    localStorage.setItem("currentChapter", index);
 
-"currentChapter",
+    // 🔥 save last read
+    localStorage.setItem("lastReadChapter", index);
 
-index
-
-);
-
-window.location.href =
-"reader.html";
-
+    window.location.href = "reader.html";
 }
 
-let user =
-localStorage.getItem(
-"user"
-);
-
-let isDeveloper =
-localStorage.getItem(
-"developerLogged"
-);
-
-if(
-!user &&
-isDeveloper !== "true"
-){
-
-window.location.href =
-"whoareyou.html";
-
+// =====================
+// DEV MODE
+// =====================
+if(localStorage.getItem("developerLogged") === "true"){
+    document.getElementById("devButton").style.display = "block";
 }
 
-if(
-isDeveloper === "true"
-){
-
-document.getElementById(
-"devButton"
-).style.display =
-"inline-block";
-
-}
+// =====================
+// INIT
+// =====================
+renderChapters();
+checkContinue();
 
 </script>
 
 </body>
 </html>
-
