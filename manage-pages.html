@@ -85,8 +85,22 @@ if(localStorage.getItem("developerLogged") !== "true"){
     window.location.href = "developer-login.html";
 }
 
+// =====================
+// STATE INIT
+// =====================
 let chapters = JSON.parse(localStorage.getItem("infinite_x_chapters")) || [];
+
 let editIndex = localStorage.getItem("editingChapter");
+
+// 🔥 SYNC + SAFETY
+if(editIndex !== null){
+    editIndex = Number(editIndex);
+
+    if(isNaN(editIndex) || editIndex < 0 || editIndex >= chapters.length){
+        localStorage.removeItem("editingChapter");
+        editIndex = null;
+    }
+}
 
 let pageImages = [];
 
@@ -97,11 +111,11 @@ if(editIndex !== null && chapters[editIndex]){
 
     let chapter = chapters[editIndex];
 
-    document.getElementById("chapterTitle").value = chapter.title;
-    document.getElementById("chapterDesc").value = chapter.desc;
-    document.getElementById("chapterPrice").value = chapter.price;
+    document.getElementById("chapterTitle").value = chapter.title || "";
+    document.getElementById("chapterDesc").value = chapter.desc || "";
+    document.getElementById("chapterPrice").value = chapter.price || 0;
 
-    pageImages = chapter.pageImages || [];
+    pageImages = [...(chapter.pageImages || [])];
 
     renderPages();
 }
@@ -170,7 +184,15 @@ function deletePage(index){
 }
 
 // =====================
-// SAVE (ADD + EDIT FIX)
+// CANCEL EDIT MODE
+// =====================
+function cancelEdit(){
+    localStorage.removeItem("editingChapter");
+    window.location.href = "manage-comics.html";
+}
+
+// =====================
+// SAVE CHAPTER (ADD + EDIT FIX)
 // =====================
 function saveChapter(){
 
@@ -179,7 +201,7 @@ function saveChapter(){
     let price = document.getElementById("chapterPrice").value;
     let coverFile = document.getElementById("chapterCover").files[0];
 
-    if(title == "" || desc == ""){
+    if(title === "" || desc === ""){
         alert("Lengkapi data dulu!");
         return;
     }
@@ -192,13 +214,15 @@ function saveChapter(){
             price: Number(price),
             cover: coverData,
             pages: pageImages.length,
-            pageImages: pageImages
+            pageImages: [...pageImages]
         };
 
-        // 🔥 EDIT MODE
+        // 🔥 EDIT MODE (UPDATE)
         if(editIndex !== null && chapters[editIndex]){
-            chapters[editIndex] = data;
-            localStorage.removeItem("editingChapter");
+            chapters[editIndex] = {
+                ...chapters[editIndex],
+                ...data
+            };
         }
         // ➕ ADD MODE
         else{
@@ -207,10 +231,16 @@ function saveChapter(){
 
         localStorage.setItem("infinite_x_chapters", JSON.stringify(chapters));
 
+        // 🔥 CLEAN STATE AFTER SAVE
+        localStorage.removeItem("editingChapter");
+
         alert("Chapter berhasil disimpan!");
         window.location.href = "manage-comics.html";
     }
 
+    // =====================
+    // COVER HANDLING
+    // =====================
     if(coverFile){
 
         let reader = new FileReader();
