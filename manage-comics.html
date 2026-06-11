@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,205 +19,126 @@
 <a href="#">About Us</a>
 <a href="profile.html">Profile</a>
 
-<a
-href="developer.html"
-id="devButton"
->
-
+<a href="developer.html" id="devButton">
 ⚙️ Dev Panel
-
 </a>
 
 </nav>
 
 <div class="manage-container">
 
-<h1>
-
-Manage Comics
-
-</h1>
+<h1>Manage Comics</h1>
 
 <p class="chapter-count">
-
 Total Chapters :
-<span id="chapterCount">
-
-0
-
-</span>
-
+<span id="chapterCount">0</span>
 </p>
 
 <button
 class="add-btn"
 onclick="window.location.href='manage-pages.html'"
 >
-
 + Add Chapter
-
 </button>
 
-<div id="chapterList">
-
-</div>
+<div id="chapterList"></div>
 
 </div>
 
 <script>
 
-if(
-
-localStorage.getItem(
-"developerLogged"
-) !== "true"
-
-){
-
-window.location.href =
-"developer-login.html";
-
+if(localStorage.getItem("developerLogged") !== "true"){
+    window.location.href = "developer-login.html";
 }
 
-let chapters =
+let chapters = JSON.parse(localStorage.getItem("infinite_x_chapters")) || [];
 
-JSON.parse(
-
-localStorage.getItem(
-"infinite_x_chapters"
-
-)
-
-) || [];
-
-renderChapters();
-
+// =====================
+// RENDER CHAPTERS
+// =====================
 function renderChapters(){
 
-let container =
+    let container = document.getElementById("chapterList");
+    container.innerHTML = "";
 
-document.getElementById(
-"chapterList"
-);
+    document.getElementById("chapterCount").innerText = chapters.length;
 
-container.innerHTML = "";
+    chapters.forEach((chapter,index)=>{
 
-document.getElementById(
-"chapterCount"
-).innerText =
-chapters.length;
+        container.innerHTML += `
+        <div class="chapter-card">
 
-chapters.forEach(
-(chapter,index)=>{
+            <img src="${chapter.cover || "https://placehold.co/120x170"}" class="chapter-cover">
 
-container.innerHTML += `
+            <div class="chapter-info">
 
-<div class="chapter-card">
+                <h2>${chapter.title}</h2>
 
-<img
-src="${
-chapter.cover || "https://placehold.co/120x170"
-}"
-class="chapter-cover"
->
+                <p>${chapter.desc}</p>
 
-<div class="chapter-info">
+                <p>Price : ${chapter.price == 0 ? "Free" : chapter.price}</p>
 
-<h2>
+                <p>Pages : ${chapter.pages}</p>
 
-${chapter.title}
+            </div>
 
-</h2>
+            <div class="action-buttons">
 
-<p>
+                <button class="edit-btn" onclick="editChapter(${index})">
+                    Edit
+                </button>
 
-${chapter.desc}
+                <button class="delete-btn" onclick="deleteChapter(${index})">
+                    Delete
+                </button>
 
-</p>
+            </div>
 
-<p>
-
-Price :
-${chapter.price == 0 ? "Free" : chapter.price}
-
-</p>
-
-<p>
-
-Pages :
-${chapter.pages}
-
-</p>
-
-</div>
-
-<div class="action-buttons">
-
-<button
-class="edit-btn"
-onclick="editChapter(${index})"
->
-
-Edit
-
-</button>
-
-<button
-class="delete-btn"
-onclick="deleteChapter(${index})"
->
-
-Delete
-
-</button>
-
-</div>
-
-</div>
-
-`;
-
-});
-
+        </div>
+        `;
+    });
 }
 
+// =====================
+// EDIT CHAPTER (SYNC SAFE)
+// =====================
 function editChapter(index){
 
-localStorage.setItem(
+    localStorage.setItem("editingChapter", index);
 
-"editingChapter",
-
-index
-
-);
-
-window.location.href =
-"manage-pages.html";
-
+    window.location.href = "manage-pages.html";
 }
 
+// =====================
+// DELETE CHAPTER (SAFE + CONFIRM)
+// =====================
 function deleteChapter(index){
 
-chapters.splice(
-index,
-1
-);
+    let confirmDelete = confirm("Yakin mau hapus chapter ini?");
 
-localStorage.setItem(
+    if(!confirmDelete) return;
 
-"infinite_x_chapters",
+    chapters.splice(index,1);
 
-JSON.stringify(
-chapters)
+    localStorage.setItem("infinite_x_chapters", JSON.stringify(chapters));
 
-);
-
-renderChapters();
-
+    renderChapters();
 }
+
+// =====================
+// SAFETY CLEANUP (ANTI NYANGKUT EDIT STATE)
+// =====================
+window.addEventListener("pageshow", ()=>{
+    // optional safety: kalau user balik tanpa save
+    localStorage.removeItem("editingChapter");
+});
+
+// =====================
+// INIT
+// =====================
+renderChapters();
 
 </script>
 
 </body>
 </html>
-```
