@@ -57,77 +57,31 @@
     gap:10px;
 
 }
-```
 
----
+.chapter-cover{
 
-# LAPORAN
+width:120px;
 
-Status saat ini:
+height:170px;
 
-✅ `.manage-container` sudah ada di style.css.
+object-fit:cover;
 
-✅ `.chapter-count` sudah ada.
+border-radius:15px;
 
-✅ `.add-btn` sudah ada.
+margin-right:25px;
 
-✅ `.edit-btn` sudah ada.
+}
 
-✅ `.delete-btn` sudah ada.
+.chapter-info{
 
-❌ `.page-card` belum ada.
+flex:1;
 
-❌ `.page-preview` belum ada.
+}
 
-❌ `.page-actions` belum ada.
+.chapter-info p{
 
-CSS di atas cukup ditambahkan di bagian paling bawah `style.css`.
+margin-top:8px;
 
----
+color:#cbd5e1;
 
-# HARAPAN / NEXT STEP
-
-STEP 2:
-
-Saat tombol:
-
-```text id="q8nbjd"
-+ Add Page
-```
-
-ditekan, akan muncul popup:
-
-```text id="eckh8u"
-Add Page
-
-[ Upload Image ]
-
-[ Save ]
-[ Cancel ]
-```
-
-Setelah Save:
-
-```text id="8r89sg"
-Page 1
-[Preview gambar]
-Delete
-
-Page 2
-[Preview gambar]
-Delete
-```
-
-Masing-masing gambar nantinya akan masuk ke:
-
-```javascript id="8zvntq"
-chapter.pageImages = []
-```
-
-dan akan dipakai oleh:
-
-```text id="71aqtw"
-reader.html
-```
-
-untuk sistem membaca comic Infinite X. 😎🔥
+}
