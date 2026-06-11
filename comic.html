@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,7 +74,7 @@ chapters.length == 0
 
 container.innerHTML =
 
-"<h2>Belum ada chapter.</h2>";
+"<h2 style='color:white'>Belum ada chapter.</h2>";
 
 }
 
@@ -90,6 +91,7 @@ container.innerHTML += `
 
 ${
 chapter.cover
+
 ?
 
 '<img src="' +
@@ -115,19 +117,18 @@ ${chapter.desc}
 <p class="chapter-price">
 
 Price :
-
 ${chapter.price == 0 ? "Free" : chapter.price}
 
 </p>
 
-<a
-href="chapter${index+1}.html"
+<button
 class="chapter-btn"
+onclick="openChapter(${index})"
 >
 
 ${chapter.title}
 
-</a>
+</button>
 
 </div>
 
@@ -135,18 +136,49 @@ ${chapter.title}
 
 });
 
-if(
+function openChapter(index){
 
+localStorage.setItem(
+
+"currentChapter",
+
+index
+
+);
+
+window.location.href =
+"reader.html";
+
+}
+
+let user =
+localStorage.getItem(
+"user"
+);
+
+let isDeveloper =
 localStorage.getItem(
 "developerLogged"
-) === "true"
+);
 
+if(
+!user &&
+isDeveloper !== "true"
+){
+
+window.location.href =
+"whoareyou.html";
+
+}
+
+if(
+isDeveloper === "true"
 ){
 
 document.getElementById(
 "devButton"
 ).style.display =
-"block";
+"inline-block";
 
 }
 
@@ -154,3 +186,4 @@ document.getElementById(
 
 </body>
 </html>
+```
