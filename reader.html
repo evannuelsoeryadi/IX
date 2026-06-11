@@ -15,15 +15,19 @@
 
 <a href="index.html">Home</a>
 <a href="comic.html">Comic</a>
-<a href="character.html">Character</a>
+<a href="character.html">Profile</a>
 <a href="#">About Us</a>
-<a href="profile.html">Profile</a>
 
 <a href="developer.html" id="devButton" style="display:none;">
 ⚙️ Dev Panel
 </a>
 
 </nav>
+
+<!-- 🔥 PROGRESS BAR -->
+<div id="progressContainer">
+    <div id="progressBar"></div>
+</div>
 
 <div class="manage-container">
 
@@ -61,9 +65,6 @@ Scroll to read...
 
 let chapters = JSON.parse(localStorage.getItem("infinite_x_chapters")) || [];
 
-// =====================
-// SAFE INDEX
-// =====================
 let currentChapter = Number(localStorage.getItem("currentChapter"));
 
 if(isNaN(currentChapter) || currentChapter < 0 || currentChapter >= chapters.length){
@@ -85,7 +86,7 @@ function isUnlocked(){
 }
 
 // =====================
-// UNLOCK SYSTEM
+// UNLOCK
 // =====================
 function unlockChapter(){
 
@@ -106,25 +107,70 @@ function unlockChapter(){
 }
 
 // =====================
-// WEBTOON RENDER (FULL SCROLL)
+// RENDER WEBTOON
 // =====================
 function renderPages(){
 
-    if(!isUnlocked()){
-        return;
-    }
+    if(!isUnlocked()) return;
 
     let container = document.getElementById("readerPages");
     container.innerHTML = "";
 
-    chapter.pageImages.forEach(img => {
+    chapter.pageImages.forEach((img, index) => {
 
         container.innerHTML += `
             <img src="${img}" class="comic-image webtoon-page">
         `;
 
     });
+
+    restoreScroll();
 }
+
+// =====================
+// SAVE SCROLL POSITION
+// =====================
+function saveScroll(){
+
+    localStorage.setItem(
+        "scroll_" + currentChapter,
+        window.scrollY
+    );
+
+    updateProgress();
+}
+
+// =====================
+// RESTORE SCROLL POSITION
+// =====================
+function restoreScroll(){
+
+    let saved = localStorage.getItem("scroll_" + currentChapter);
+
+    if(saved){
+        window.scrollTo(0, Number(saved));
+    }
+}
+
+// =====================
+// PROGRESS BAR
+// =====================
+function updateProgress(){
+
+    let scrollTop = window.scrollY;
+    let docHeight = document.body.scrollHeight - window.innerHeight;
+
+    let progress = (scrollTop / docHeight) * 100;
+
+    document.getElementById("progressBar").style.width = progress + "%";
+}
+
+// =====================
+// SCROLL LISTENER
+// =====================
+window.addEventListener("scroll", () => {
+    saveScroll();
+});
 
 // =====================
 // DEV MODE
@@ -134,7 +180,7 @@ if(localStorage.getItem("developerLogged") === "true"){
 }
 
 // =====================
-// AUTO LOAD IF UNLOCKED
+// AUTO INIT
 // =====================
 if(isUnlocked()){
     document.getElementById("codeBox").style.display = "none";
