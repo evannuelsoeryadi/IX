@@ -1,162 +1,154 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Our Comics - Infinite X</title>
-    <link rel="stylesheet" href="style.css">
+
+<title>Our Comics - Infinite X</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="comic.html">Comic</a>
-        <a href="character.html">Character</a>
-        <a href="#">About Us</a>
-        <a href="profile.html">Profile</a>
-        <a 
-            href="developer.html"
-            id="devButton"
-            style="display:none;"
-        >
-            ⚙️ Dev Panel
-        </a>
-    </nav>
+<nav>
 
-    <div class="comic-page">
+<a href="index.html">Home</a>
+<a href="comic.html">Comic</a>
+<a href="character.html">Character</a>
+<a href="#">About Us</a>
+<a href="profile.html">Profile</a>
 
-        <h1 class="comic-title">Our Comics</h1>
+<a
+href="developer.html"
+id="devButton"
+style="display:none;"
+>
 
-        <div class="comic-container">
+⚙️ Dev Panel
 
-            <div class="comic-card">
+</a>
 
-                <div class="card-inner">
+</nav>
 
-                    <div class="card-front">
-                        Cover Chapter 1
-                    </div>
+<div class="comic-page">
 
-                    <div class="card-back">
-                        Seorang anak menemukan dunia misterius yang mengubah hidupnya selamanya.
-                    </div>
+<h1 class="comic-title">
 
-                </div>
+Our Comics
 
-                <a href="chapter1.html" class="chapter-btn">
-                    Chapter 1
-                </a>
+</h1>
 
-            </div>
+<div
+class="comic-container"
+id="comicContainer"
+>
 
-            <div class="comic-card">
+</div>
 
-                <div class="card-inner">
+</div>
 
-                    <div class="card-front">
-                        Cover Chapter 2
-                    </div>
+<script>
 
-                    <div class="card-back">
-                        Ancaman baru muncul dan mulai mengincar para penjaga dunia.
-                    </div>
+let chapters =
 
-                </div>
+JSON.parse(
 
-                <a href="chapter2.html" class="chapter-btn">
-                    Chapter 2
-                </a>
+localStorage.getItem(
+"infinite_x_chapters"
+)
 
-            </div>
+) || [];
 
-            <div class="comic-card">
+let container =
 
-                <div class="card-inner">
+document.getElementById(
+"comicContainer"
+);
 
-                    <div class="card-front">
-                        Cover Chapter 3
-                    </div>
+container.innerHTML = "";
 
-                    <div class="card-back">
-                        Rahasia besar mulai terungkap dan masa depan dunia dipertaruhkan.
-                    </div>
+if(
+chapters.length == 0
+){
 
-                </div>
+container.innerHTML =
 
-                <a href="chapter3.html" class="chapter-btn">
-                    Chapter 3
-                </a>
+"<h2>Belum ada chapter.</h2>";
 
-            </div>
+}
 
-            <div class="comic-card">
+chapters.forEach(
+(chapter,index)=>{
 
-                <div class="card-inner">
+container.innerHTML += `
 
-                    <div class="card-front">
-                        Cover Chapter 4
-                    </div>
+<div class="comic-card">
 
-                    <div class="card-back">
-                        Ancaman baru muncul dan mulai mengincar para penjaga dunia. hahahaha
-                    </div>
+<div class="card-inner">
 
-                </div>
+<div class="card-front">
 
-                <a href="chapter2.html" class="chapter-btn">
-                    Chapter 4
-                </a>
+${
+chapter.cover
+?
 
-            </div>
+'<img src="' +
+chapter.cover +
+'" class="cover-img">'
 
-        </div>
+:
 
-    </div>
+'No Cover'
 
-    <script>
+}
 
-    let user =
-        localStorage.getItem("user");
+</div>
 
-    let isDeveloper =
-        localStorage.getItem(
-            "developerLogged"
-        );
+<div class="card-back">
 
-    if(
-        !user &&
-        isDeveloper !== "true"
-    ){
-        window.location.href =
-            "whoareyou.html";
-    }
+${chapter.desc}
 
-    if(
-        isDeveloper === "true"
-    ){
+</div>
 
-        document.getElementById(
-            "devButton"
-        ).style.display =
-            "inline-block";
+</div>
 
-    }
-    
-    if(
+<p class="chapter-price">
 
-        localStorage.getItem(
-            "developerLogged"
-        ) === "true"
+Price :
 
-    ){
+${chapter.price == 0 ? "Free" : chapter.price}
 
-        document
-        .getElementById(
-            "devButton"
-        )
-        .style.display =
-            "block";
+</p>
 
-    }
+<a
+href="chapter${index+1}.html"
+class="chapter-btn"
+>
+
+${chapter.title}
+
+</a>
+
+</div>
+
+`;
+
+});
+
+if(
+
+localStorage.getItem(
+"developerLogged"
+) === "true"
+
+){
+
+document.getElementById(
+"devButton"
+).style.display =
+"block";
+
+}
 
 </script>
 
