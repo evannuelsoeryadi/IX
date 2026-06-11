@@ -19,11 +19,7 @@
 <a href="#">About Us</a>
 <a href="profile.html">Profile</a>
 
-<a
-href="developer.html"
-id="devButton"
-style="display:none;"
->
+<a href="developer.html" id="devButton" style="display:none;">
 ⚙️ Dev Panel
 </a>
 
@@ -41,51 +37,17 @@ id="readerCode"
 placeholder="Enter Code"
 />
 
-<button
-class="add-btn"
-onclick="unlockChapter()"
->
+<button class="add-btn" onclick="unlockChapter()">
 Unlock
 </button>
 
 </div>
 
 <p id="pageInfo" style="display:none;">
-Page 1-10
+Scroll to read...
 </p>
 
 <div id="readerPages"></div>
-
-<div class="reader-buttons">
-
-<button
-id="prevBtn"
-class="delete-btn"
-style="display:none;"
-onclick="prevPages()"
->
-⬅ Previous
-</button>
-
-<button
-id="nextBtn"
-class="edit-btn"
-style="display:none;"
-onclick="nextPages()"
->
-Next ➡
-</button>
-
-</div>
-
-<button
-id="finishBtn"
-class="add-btn"
-style="display:none;"
-onclick="finishChapter()"
->
-Finish Chapter
-</button>
 
 <br><br>
 
@@ -109,7 +71,6 @@ if(isNaN(currentChapter) || currentChapter < 0 || currentChapter >= chapters.len
 }
 
 let chapter = chapters[currentChapter];
-let currentPage = 0;
 
 // =====================
 // TITLE
@@ -117,7 +78,7 @@ let currentPage = 0;
 document.getElementById("chapterTitle").innerText = chapter.title;
 
 // =====================
-// CHECK UNLOCK
+// UNLOCK CHECK
 // =====================
 function isUnlocked(){
     return localStorage.getItem("unlocked_" + currentChapter) === "true";
@@ -137,7 +98,7 @@ function unlockChapter(){
         document.getElementById("codeBox").style.display = "none";
         document.getElementById("pageInfo").style.display = "block";
 
-        showPages();
+        renderPages();
 
     } else {
         alert("Wrong code!");
@@ -145,9 +106,9 @@ function unlockChapter(){
 }
 
 // =====================
-// SHOW PAGES (10 SYSTEM)
+// WEBTOON RENDER (FULL SCROLL)
 // =====================
-function showPages(){
+function renderPages(){
 
     if(!isUnlocked()){
         return;
@@ -156,64 +117,13 @@ function showPages(){
     let container = document.getElementById("readerPages");
     container.innerHTML = "";
 
-    for(let i = currentPage; i < currentPage + 10 && i < chapter.pageImages.length; i++){
+    chapter.pageImages.forEach(img => {
 
         container.innerHTML += `
-            <img src="${chapter.pageImages[i]}" class="comic-image">
+            <img src="${img}" class="comic-image webtoon-page">
         `;
-    }
 
-    updateUI();
-}
-
-// =====================
-// UI UPDATE
-// =====================
-function updateUI(){
-
-    document.getElementById("pageInfo").innerText =
-    "Page " +
-    (currentPage + 1) +
-    " - " +
-    Math.min(currentPage + 10, chapter.pageImages.length) +
-    " / " +
-    chapter.pageImages.length;
-
-    document.getElementById("prevBtn").style.display =
-    currentPage === 0 ? "none" : "inline-block";
-
-    if(currentPage + 10 < chapter.pageImages.length){
-        document.getElementById("nextBtn").style.display = "inline-block";
-        document.getElementById("finishBtn").style.display = "none";
-    } else {
-        document.getElementById("nextBtn").style.display = "none";
-        document.getElementById("finishBtn").style.display = "inline-block";
-    }
-}
-
-// =====================
-// NEXT
-// =====================
-function nextPages(){
-    currentPage += 10;
-    showPages();
-}
-
-// =====================
-// PREV
-// =====================
-function prevPages(){
-    currentPage -= 10;
-    if(currentPage < 0) currentPage = 0;
-    showPages();
-}
-
-// =====================
-// FINISH
-// =====================
-function finishChapter(){
-    alert("The End");
-    window.location.href = "comic.html";
+    });
 }
 
 // =====================
@@ -224,12 +134,12 @@ if(localStorage.getItem("developerLogged") === "true"){
 }
 
 // =====================
-// AUTO START IF UNLOCKED
+// AUTO LOAD IF UNLOCKED
 // =====================
 if(isUnlocked()){
     document.getElementById("codeBox").style.display = "none";
     document.getElementById("pageInfo").style.display = "block";
-    showPages();
+    renderPages();
 }
 
 </script>
