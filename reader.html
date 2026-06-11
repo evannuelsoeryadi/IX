@@ -24,62 +24,39 @@ href="developer.html"
 id="devButton"
 style="display:none;"
 >
-
 ⚙️ Dev Panel
-
 </a>
 
 </nav>
 
 <div class="manage-container">
 
-<h1
-id="chapterTitle"
->
+<h1 id="chapterTitle">Loading...</h1>
 
-Loading...
-
-</h1>
-
-<div
-id="codeBox"
->
+<div id="codeBox">
 
 <input
 type="text"
 id="readerCode"
 placeholder="Enter Code"
->
+/>
 
 <button
 class="add-btn"
 onclick="unlockChapter()"
 >
-
 Unlock
-
 </button>
 
 </div>
 
-<p
-id="pageInfo"
-style="display:none;"
->
-
+<p id="pageInfo" style="display:none;">
 Page 1-10
-
 </p>
 
-<div
-id="readerPages"
->
+<div id="readerPages"></div>
 
-</div>
-
-<div
-class="reader-buttons"
->
+<div class="reader-buttons">
 
 <button
 id="prevBtn"
@@ -87,9 +64,7 @@ class="delete-btn"
 style="display:none;"
 onclick="prevPages()"
 >
-
 ⬅ Previous
-
 </button>
 
 <button
@@ -98,9 +73,7 @@ class="edit-btn"
 style="display:none;"
 onclick="nextPages()"
 >
-
 Next ➡
-
 </button>
 
 </div>
@@ -111,263 +84,155 @@ class="add-btn"
 style="display:none;"
 onclick="finishChapter()"
 >
-
 Finish Chapter
-
 </button>
 
 <br><br>
 
-<a
-href="comic.html"
-class="chapter-btn"
->
-
+<a href="comic.html" class="chapter-btn">
 ⬅ Back to Comics
-
 </a>
 
 </div>
 
-<script src="reader.js">
-let chapters =
+<script>
 
-JSON.parse(
+let chapters = JSON.parse(localStorage.getItem("infinite_x_chapters")) || [];
 
-localStorage.getItem(
-"infinite_x_chapters"
-)
+// =====================
+// SAFE INDEX
+// =====================
+let currentChapter = Number(localStorage.getItem("currentChapter"));
 
-) || [];
+if(isNaN(currentChapter) || currentChapter < 0 || currentChapter >= chapters.length){
+    document.body.innerHTML = "<h2>Chapter tidak valid</h2>";
+}
 
-let currentChapter =
-
-localStorage.getItem(
-"currentChapter"
-);
-
-let chapter =
-
-chapters[currentChapter];
-
+let chapter = chapters[currentChapter];
 let currentPage = 0;
 
-document.getElementById(
-"chapterTitle"
-).innerText =
+// =====================
+// TITLE
+// =====================
+document.getElementById("chapterTitle").innerText = chapter.title;
 
-chapter.title;
+// =====================
+// CHECK UNLOCK
+// =====================
+function isUnlocked(){
+    return localStorage.getItem("unlocked_" + currentChapter) === "true";
+}
 
+// =====================
+// UNLOCK SYSTEM
+// =====================
 function unlockChapter(){
 
-let code =
+    let code = document.getElementById("readerCode").value;
 
-document.getElementById(
-"readerCode"
-).value;
+    if(code === chapter.unlockCode){
 
-if(
+        localStorage.setItem("unlocked_" + currentChapter, "true");
 
-code != chapter.unlockCode
+        document.getElementById("codeBox").style.display = "none";
+        document.getElementById("pageInfo").style.display = "block";
 
-){
+        showPages();
 
-alert(
-"Wrong code!"
-);
-
-return;
-
+    } else {
+        alert("Wrong code!");
+    }
 }
 
-document.getElementById(
-"codeBox"
-).style.display =
-"none";
-
-document.getElementById(
-"pageInfo"
-).style.display =
-"block";
-
-showPages();
-
-}
-
+// =====================
+// SHOW PAGES (10 SYSTEM)
+// =====================
 function showPages(){
 
-let container =
+    if(!isUnlocked()){
+        return;
+    }
 
-document.getElementById(
-"readerPages"
-);
+    let container = document.getElementById("readerPages");
+    container.innerHTML = "";
 
-container.innerHTML = "";
+    for(let i = currentPage; i < currentPage + 10 && i < chapter.pageImages.length; i++){
 
-for(
+        container.innerHTML += `
+            <img src="${chapter.pageImages[i]}" class="comic-image">
+        `;
+    }
 
-let i=currentPage;
-
-i<currentPage+10 &&
-i<chapter.pageImages.length;
-
-i++
-
-){
-
-container.innerHTML += `
-
-<img
-src="${chapter.pageImages[i]}"
-class="comic-image"
->
-
-`;
-
+    updateUI();
 }
 
-document.getElementById(
-"pageInfo"
-).innerText =
+// =====================
+// UI UPDATE
+// =====================
+function updateUI(){
 
-"Page " +
+    document.getElementById("pageInfo").innerText =
+    "Page " +
+    (currentPage + 1) +
+    " - " +
+    Math.min(currentPage + 10, chapter.pageImages.length) +
+    " / " +
+    chapter.pageImages.length;
 
-(currentPage + 1)
+    document.getElementById("prevBtn").style.display =
+    currentPage === 0 ? "none" : "inline-block";
 
-+
-
-" - "
-
-+
-
-Math.min(
-
-currentPage + 10,
-
-chapter.pageImages.length
-
-)
-
-+
-
-" / "
-
-+
-
-chapter.pageImages.length;
-
-if(
-
-currentPage == 0
-
-){
-
-document.getElementById(
-"prevBtn"
-).style.display =
-"none";
-
+    if(currentPage + 10 < chapter.pageImages.length){
+        document.getElementById("nextBtn").style.display = "inline-block";
+        document.getElementById("finishBtn").style.display = "none";
+    } else {
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("finishBtn").style.display = "inline-block";
+    }
 }
 
-else{
-
-document.getElementById(
-"prevBtn"
-).style.display =
-"inline-block";
-
-}
-
-if(
-
-currentPage + 10 <
-
-chapter.pageImages.length
-
-){
-
-document.getElementById(
-"nextBtn"
-).style.display =
-"inline-block";
-
-document.getElementById(
-"finishBtn"
-).style.display =
-"none";
-
-}
-
-else{
-
-document.getElementById(
-"nextBtn"
-).style.display =
-"none";
-
-document.getElementById(
-"finishBtn"
-).style.display =
-"inline-block";
-
-}
-
-}
-
+// =====================
+// NEXT
+// =====================
 function nextPages(){
-
-currentPage += 10;
-
-showPages();
-
+    currentPage += 10;
+    showPages();
 }
 
+// =====================
+// PREV
+// =====================
 function prevPages(){
-
-currentPage -= 10;
-
-if(
-
-currentPage < 0
-
-){
-
-currentPage = 0;
-
+    currentPage -= 10;
+    if(currentPage < 0) currentPage = 0;
+    showPages();
 }
 
-showPages();
-
-}
-
+// =====================
+// FINISH
+// =====================
 function finishChapter(){
-
-alert(
-"The End"
-);
-
-window.location.href =
-"comic.html";
-
+    alert("The End");
+    window.location.href = "comic.html";
 }
 
-if(
+// =====================
+// DEV MODE
+// =====================
+if(localStorage.getItem("developerLogged") === "true"){
+    document.getElementById("devButton").style.display = "block";
+}
 
-localStorage.getItem(
-"developerLogged"
-) === "true"
-
-){
-
-document.getElementById(
-"devButton"
-).style.display =
-"block";
-
+// =====================
+// AUTO START IF UNLOCKED
+// =====================
+if(isUnlocked()){
+    document.getElementById("codeBox").style.display = "none";
+    document.getElementById("pageInfo").style.display = "block";
+    showPages();
 }
 
 </script>
 
 </body>
 </html>
-
