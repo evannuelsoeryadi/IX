@@ -1,57 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-<title>Manage Comics - Infinite X</title>
-
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="manage.css">
-
-</head>
-
-<body>
-
-<nav>
-
-<a href="index.html">Home</a>
-<a href="comic.html">Comic</a>
-<a href="character.html">Character</a>
-<a href="#">About Us</a>
-<a href="profile.html">Profile</a>
-
-<a href="developer.html" id="devButton">
-⚙️ Dev Panel
-</a>
-
-</nav>
-
-<div class="manage-container">
-
-<h1>Manage Comics</h1>
-
-<p class="chapter-count">
-Total Chapters :
-<span id="chapterCount">0</span>
-</p>
-
-<button
-class="add-btn"
-onclick="window.location.href='manage-pages.html'"
->
-+ Add Chapter
-</button>
-
-<div id="chapterList"></div>
-
-</div>
-
 <script>
 
 if(localStorage.getItem("developerLogged") !== "true"){
     window.location.href = "developer-login.html";
 }
 
-let chapters = JSON.parse(localStorage.getItem("infinite_x_chapters")) || [];
+// =====================
+// FIREBASE / LOCAL HYBRID
+// =====================
+let chapters = [];
 
 // =====================
 // RENDER CHAPTERS
@@ -84,11 +40,11 @@ function renderChapters(){
 
             <div class="action-buttons">
 
-                <button class="edit-btn" onclick="editChapter(${index})">
+                <button class="edit-btn" onclick="editChapter('${chapter.id || index}')">
                     Edit
                 </button>
 
-                <button class="delete-btn" onclick="deleteChapter(${index})">
+                <button class="delete-btn" onclick="deleteChapter('${chapter.id || index}')">
                     Delete
                 </button>
 
@@ -100,22 +56,51 @@ function renderChapters(){
 }
 
 // =====================
-// EDIT CHAPTER (SYNC SAFE)
+// LOAD FROM FIREBASE
 // =====================
-function editChapter(index){
+async function loadChapters(){
 
-    localStorage.setItem("editingChapter", index);
+    try {
+        const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js");
 
+        let snapshot = await getDocs(collection(window.db, "chapters"));
+
+        chapters = [];
+
+        snapshot.forEach(doc => {
+            chapters.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+
+        renderChapters();
+
+        console.log("Loaded from Firebase ✅");
+
+    } catch (e) {
+        console.error("Firebase load error:", e);
+
+        // fallback localStorage
+        chapters = JSON.parse(localStorage.getItem("infinite_x_chapters")) || [];
+        renderChapters();
+    }
+}
+
+// =====================
+// EDIT CHAPTER
+// =====================
+function editChapter(id){
+    localStorage.setItem("editingChapter", id);
     window.location.href = "manage-pages.html";
 }
 
 // =====================
-// DELETE CHAPTER (SAFE + CONFIRM)
+// DELETE CHAPTER (LOCAL ONLY FOR NOW SAFE MODE)
 // =====================
 function deleteChapter(index){
 
     let confirmDelete = confirm("Yakin mau hapus chapter ini?");
-
     if(!confirmDelete) return;
 
     chapters.splice(index,1);
@@ -126,44 +111,8 @@ function deleteChapter(index){
 }
 
 // =====================
-// SAFETY CLEANUP (ANTI NYANGKUT EDIT STATE)
-// =====================
-window.addEventListener("pageshow", ()=>{
-    // optional safety: kalau user balik tanpa save
-    localStorage.removeItem("editingChapter");
-});
-
-// =====================
 // INIT
 // =====================
-renderChapters();
+loadChapters();
 
 </script>
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
-  authDomain: "infinite-x-f37a2.firebaseapp.com",
-  projectId: "infinite-x-f37a2",
-  storageBucket: "infinite-x-f37a2.firebasestorage.app",
-  messagingSenderId: "32543278362",
-  appId: "1:32543278362:web:54e231f17c92596888d8a3"
-};
-
-// INIT FIREBASE
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// biar bisa dipakai nanti di function lain
-window.db = db;
-
-console.log("Firebase CONNECTED ✅");
-
-</script>
-    
-</body>
-</html>
