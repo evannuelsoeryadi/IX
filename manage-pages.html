@@ -19,30 +19,21 @@
 <a href="#">About Us</a>
 <a href="profile.html">Profile</a>
 
-<a
-href="developer.html"
-id="devButton"
->
-
+<a href="developer.html" id="devButton">
 ⚙️ Dev Panel
-
 </a>
 
 </nav>
 
 <div class="manage-container">
 
-<h1>
-
-Manage Chapter
-
-</h1>
+<h1>Manage Chapter</h1>
 
 <input
 type="text"
 id="chapterTitle"
 placeholder="Chapter Title"
->
+/>
 
 <textarea
 id="chapterDesc"
@@ -53,13 +44,13 @@ placeholder="Chapter Description"
 type="number"
 id="chapterPrice"
 placeholder="Price (0 = Free)"
->
+/>
 
 <input
 type="file"
 id="chapterCover"
 accept="image/*"
->
+/>
 
 <input
 type="file"
@@ -67,287 +58,176 @@ id="pageInput"
 accept="image/*"
 style="display:none"
 onchange="uploadPage(event)"
->
+/>
 
 <p>
-
 Total Pages :
-<span id="pageCount">
-
-0
-
-</span>
-
+<span id="pageCount">0</span>
 </p>
 
-<button
-class="add-btn"
-onclick="addPage()"
->
-
+<button class="add-btn" onclick="addPage()">
 + Add Page
-
 </button>
 
 <div id="pageList">
-
 <!-- Page card akan muncul di sini -->
-
 </div>
 
-<button
-class="edit-btn"
-onclick="saveChapter()"
->
-
+<button class="edit-btn" onclick="saveChapter()">
 Save Chapter
-
 </button>
 
 </div>
 
 <script>
 
-if(
-
-localStorage.getItem(
-"developerLogged"
-) !== "true"
-
-){
-
-window.location.href =
-"developer-login.html";
-
+if(localStorage.getItem("developerLogged") !== "true"){
+    window.location.href = "developer-login.html";
 }
+
+let chapters = JSON.parse(localStorage.getItem("infinite_x_chapters")) || [];
+let editIndex = localStorage.getItem("editingChapter");
 
 let pageImages = [];
 
-function addPage(){
+// =====================
+// LOAD EDIT MODE
+// =====================
+if(editIndex !== null && chapters[editIndex]){
 
-document
-.getElementById(
-"pageInput"
-)
-.click();
+    let chapter = chapters[editIndex];
 
+    document.getElementById("chapterTitle").value = chapter.title;
+    document.getElementById("chapterDesc").value = chapter.desc;
+    document.getElementById("chapterPrice").value = chapter.price;
+
+    pageImages = chapter.pageImages || [];
+
+    renderPages();
 }
 
+// =====================
+// ADD PAGE
+// =====================
+function addPage(){
+    document.getElementById("pageInput").click();
+}
+
+// =====================
+// UPLOAD PAGE
+// =====================
 function uploadPage(event){
 
-let file =
-event.target.files[0];
+    let file = event.target.files[0];
+    if(!file) return;
 
-if(
-!file
-){
+    let reader = new FileReader();
 
-return;
+    reader.onload = function(){
+        pageImages.push(reader.result);
+        renderPages();
+    };
 
+    reader.readAsDataURL(file);
 }
 
-let reader =
-new FileReader();
-
-reader.onload =
-function(){
-
-pageImages.push(
-reader.result
-);
-
-renderPages();
-
-};
-
-reader.readAsDataURL(
-file
-);
-
-}
-
+// =====================
+// RENDER PAGES
+// =====================
 function renderPages(){
 
-let container =
+    let container = document.getElementById("pageList");
+    container.innerHTML = "";
 
-document.getElementById(
-"pageList"
-);
+    document.getElementById("pageCount").innerText = pageImages.length;
 
-container.innerHTML = "";
+    pageImages.forEach((img,index)=>{
 
-document.getElementById(
-"pageCount"
-).innerText =
-pageImages.length;
+        container.innerHTML += `
+        <div class="page-card">
 
-pageImages.forEach(
+            <img src="${img}" class="page-preview">
 
-(img,index)=>{
+            <div class="page-actions">
+                <button class="delete-btn" onclick="deletePage(${index})">
+                    Delete
+                </button>
+            </div>
 
-container.innerHTML += `
+        </div>
+        `;
 
-<div class="page-card">
-
-<img
-src="${img}"
-class="page-preview"
->
-
-<div class="page-actions">
-
-<button
-class="delete-btn"
-onclick="deletePage(${index})"
->
-
-Delete
-
-</button>
-
-</div>
-
-</div>
-
-`;
+    });
 
 }
 
-);
-
-}
-
+// =====================
+// DELETE PAGE
+// =====================
 function deletePage(index){
-
-pageImages.splice(
-index,
-1
-);
-
-renderPages();
-
+    pageImages.splice(index,1);
+    renderPages();
 }
 
-
+// =====================
+// SAVE (ADD + EDIT FIX)
+// =====================
 function saveChapter(){
 
-let title =
-document.getElementById(
-"chapterTitle"
-).value;
+    let title = document.getElementById("chapterTitle").value;
+    let desc = document.getElementById("chapterDesc").value;
+    let price = document.getElementById("chapterPrice").value;
+    let coverFile = document.getElementById("chapterCover").files[0];
 
-let desc =
-document.getElementById(
-"chapterDesc"
-).value;
+    if(title == "" || desc == ""){
+        alert("Lengkapi data dulu!");
+        return;
+    }
 
-let price =
-document.getElementById(
-"chapterPrice"
-).value;
+    function finishSave(coverData){
 
-let coverFile =
-document.getElementById(
-"chapterCover"
-).files[0];
+        let data = {
+            title: title,
+            desc: desc,
+            price: Number(price),
+            cover: coverData,
+            pages: pageImages.length,
+            pageImages: pageImages
+        };
 
-if(
+        // 🔥 EDIT MODE
+        if(editIndex !== null && chapters[editIndex]){
+            chapters[editIndex] = data;
+            localStorage.removeItem("editingChapter");
+        }
+        // ➕ ADD MODE
+        else{
+            chapters.push(data);
+        }
 
-title == "" ||
-desc == ""
+        localStorage.setItem("infinite_x_chapters", JSON.stringify(chapters));
 
-){
+        alert("Chapter berhasil disimpan!");
+        window.location.href = "manage-comics.html";
+    }
 
-alert(
-"Lengkapi data dulu!"
-);
+    if(coverFile){
 
-return;
+        let reader = new FileReader();
 
-}
+        reader.onload = function(){
+            finishSave(reader.result);
+        };
 
-let chapters =
+        reader.readAsDataURL(coverFile);
 
-JSON.parse(
-
-localStorage.getItem(
-"infinite_x_chapters"
-)
-
-) || [];
-
-function finishSave(coverData){
-
-chapters.push({
-
-title:title,
-
-desc:desc,
-
-price:Number(price),
-
-cover:coverData,
-
-pages:pageImages.length,
-
-pageImages:pageImages
-
-});
-
-localStorage.setItem(
-
-"infinite_x_chapters",
-
-JSON.stringify(
-chapters
-)
-
-);
-
-alert(
-"Chapter berhasil disimpan!"
-);
-
-window.location.href =
-"manage-comics.html";
+    } else {
+        finishSave("");
+    }
 
 }
-
-if(
-
-coverFile
-
-){
-
-let reader =
-new FileReader();
-
-reader.onload =
-function(){
-
-finishSave(
-reader.result
-);
-
-};
-
-reader.readAsDataURL(
-coverFile
-);
-
-}
-
-else{
-
-finishSave("");
-
-}
-
-}
-
 
 </script>
 
 </body>
 </html>
-
