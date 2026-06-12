@@ -43,94 +43,243 @@
 
 </div>
 
-<script>
+<script type="module">
 
-let chapters = JSON.parse(localStorage.getItem("infinite_x_chapters")) || [];
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+// =====================
+// FIREBASE
+// =====================
+const firebaseConfig = {
+  apiKey: "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+  authDomain: "infinite-x-f37a2.firebaseapp.com",
+  projectId: "infinite-x-f37a2",
+  storageBucket: "infinite-x-f37a2.firebasestorage.app",
+  messagingSenderId: "32543278362",
+  appId: "1:32543278362:web:54e231f17c92596888d8a3"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+// =====================
+// CHAPTER LIST
+// =====================
+let chapters = [];
 
 // =====================
 // CONTINUE READING CHECK
 // =====================
 function checkContinue(){
 
-    let last = localStorage.getItem("lastReadChapter");
+    let last = localStorage.getItem(
+        "lastReadChapter"
+    );
 
-    if(last !== null && chapters[last]){
-        document.getElementById("continueBox").style.display = "block";
+    if(last){
+
+        document.getElementById(
+            "continueBox"
+        ).style.display =
+        "block";
+
     }
+
 }
+
+window.continueReading = continueReading;
 
 // =====================
 // CONTINUE FUNCTION
 // =====================
 function continueReading(){
 
-    let last = localStorage.getItem("lastReadChapter");
+    let last =
+    localStorage.getItem(
+        "lastReadChapter"
+    );
 
-    if(last !== null){
-        localStorage.setItem("currentChapter", last);
-        window.location.href = "reader.html";
+    if(last){
+
+        localStorage.setItem(
+            "selectedChapter",
+            last
+        );
+
+        window.location.href =
+        "reader.html";
+
     }
+
 }
 
 // =====================
-// RENDER CHAPTER LIST
+// LOAD CHAPTERS
+// =====================
+async function loadChapters(){
+
+    let container =
+    document.getElementById(
+        "chapterList"
+    );
+
+    container.innerHTML = "";
+
+    chapters = [];
+
+    let snapshot =
+    await getDocs(
+        collection(
+            db,
+            "chapters"
+        )
+    );
+
+    snapshot.forEach(docSnap=>{
+
+        chapters.push({
+
+            id: docSnap.id,
+
+            ...docSnap.data()
+
+        });
+
+    });
+
+    renderChapters();
+
+}
+
+// =====================
+// RENDER
 // =====================
 function renderChapters(){
 
-    let container = document.getElementById("chapterList");
+    let container =
+    document.getElementById(
+        "chapterList"
+    );
+
     container.innerHTML = "";
 
-    chapters.forEach((ch, index)=>{
+    chapters.forEach((ch)=>{
 
         container.innerHTML += `
+
         <div class="chapter-card">
 
-            <img src="${ch.cover || "https://placehold.co/120x170"}">
+            <img
+            src="${
+                ch.cover ||
+                "https://placehold.co/120x170"
+            }">
 
             <div class="chapter-info">
 
-                <h3>${ch.title}</h3>
-                <p>${ch.desc}</p>
-                <p>Pages: ${ch.pages}</p>
+                <h3>
+
+                ${ch.title}
+
+                </h3>
+
+                <p>
+
+                ${ch.desc}
+
+                </p>
+
+                <p>
+
+                Pages :
+                ${ch.pages}
+
+                </p>
 
             </div>
 
-            <button class="edit-btn" onclick="openChapter(${index})">
-                Read
+            <button
+            class="edit-btn"
+            onclick="openChapter('${ch.id}')"
+            >
+
+            Read
+
             </button>
 
         </div>
+
         `;
+
     });
+
 }
 
 // =====================
 // OPEN CHAPTER
 // =====================
-function openChapter(index){
+function openChapter(id){
 
-    localStorage.setItem("currentChapter", index);
+    localStorage.setItem(
 
-    // 🔥 save last read
-    localStorage.setItem("lastReadChapter", index);
+        "selectedChapter",
 
-    window.location.href = "reader.html";
+        id
+
+    );
+
+    localStorage.setItem(
+
+        "lastReadChapter",
+
+        id
+
+    );
+
+    window.location.href =
+    "reader.html";
+
 }
+
+window.openChapter = openChapter;
 
 // =====================
 // DEV MODE
 // =====================
-if(localStorage.getItem("developerLogged") === "true"){
-    document.getElementById("devButton").style.display = "block";
+if(
+
+localStorage.getItem(
+"developerLogged"
+) === "true"
+
+){
+
+document.getElementById(
+"devButton"
+).style.display =
+"block";
+
 }
 
 // =====================
 // INIT
 // =====================
-renderChapters();
+loadChapters();
+
 checkContinue();
 
 </script>
+
+
 
 </body>
 </html>
