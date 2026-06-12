@@ -79,185 +79,413 @@ Save Chapter
 
 </div>
 
-<script>
+<script type="module">
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
-if(localStorage.getItem("developerLogged") !== "true"){
-    window.location.href = "developer-login.html";
+import {
+getFirestore,
+collection,
+doc,
+getDoc,
+addDoc,
+updateDoc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+// =====================
+// FIREBASE
+// =====================
+const firebaseConfig = {
+  apiKey: "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+  authDomain: "infinite-x-f37a2.firebaseapp.com",
+  projectId: "infinite-x-f37a2",
+  storageBucket: "infinite-x-f37a2.firebasestorage.app",
+  messagingSenderId: "32543278362",
+  appId: "1:32543278362:web:54e231f17c92596888d8a3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// =====================
+// LOGIN CHECK
+// =====================
+if(
+
+localStorage.getItem(
+"developerLogged"
+) !== "true"
+
+){
+
+window.location.href =
+"developer-login.html";
+
 }
 
 // =====================
-// STATE INIT
+// STATE
 // =====================
-let chapters = JSON.parse(localStorage.getItem("infinite_x_chapters")) || [];
+let editId =
 
-let editIndex = localStorage.getItem("editingChapter");
-
-// 🔥 SYNC + SAFETY
-if(editIndex !== null){
-    editIndex = Number(editIndex);
-
-    if(isNaN(editIndex) || editIndex < 0 || editIndex >= chapters.length){
-        localStorage.removeItem("editingChapter");
-        editIndex = null;
-    }
-}
+localStorage.getItem(
+"editingChapter"
+);
 
 let pageImages = [];
+
+let currentCover = "";
 
 // =====================
 // LOAD EDIT MODE
 // =====================
-if(editIndex !== null && chapters[editIndex]){
+if(editId){
 
-    let chapter = chapters[editIndex];
+loadChapter();
 
-    document.getElementById("chapterTitle").value = chapter.title || "";
-    document.getElementById("chapterDesc").value = chapter.desc || "";
-    document.getElementById("chapterPrice").value = chapter.price || 0;
+}
 
-    pageImages = [...(chapter.pageImages || [])];
+async function loadChapter(){
 
-    renderPages();
+try{
+
+let snap = await getDoc(
+
+doc(
+db,
+"chapters",
+editId
+)
+
+);
+
+if(!snap.exists()) return;
+
+let chapter = snap.data();
+
+document.getElementById(
+"chapterTitle"
+).value =
+chapter.title || "";
+
+document.getElementById(
+"chapterDesc"
+).value =
+chapter.desc || "";
+
+document.getElementById(
+"chapterPrice"
+).value =
+chapter.price || 0;
+
+currentCover =
+chapter.cover || "";
+
+pageImages =
+chapter.pageImages || [];
+
+renderPages();
+
+}
+
+catch(e){
+
+console.error(
+e
+);
+
+}
+
 }
 
 // =====================
 // ADD PAGE
 // =====================
 function addPage(){
-    document.getElementById("pageInput").click();
+
+document.getElementById(
+"pageInput"
+).click();
+
 }
+
+window.addPage = addPage;
 
 // =====================
 // UPLOAD PAGE
 // =====================
 function uploadPage(event){
 
-    let file = event.target.files[0];
-    if(!file) return;
+let file =
+event.target.files[0];
 
-    let reader = new FileReader();
+if(!file) return;
 
-    reader.onload = function(){
-        pageImages.push(reader.result);
-        renderPages();
-    };
+let reader =
+new FileReader();
 
-    reader.readAsDataURL(file);
+reader.onload =
+function(){
+
+pageImages.push(
+reader.result
+);
+
+renderPages();
+
+};
+
+reader.readAsDataURL(
+file
+);
+
 }
+
+window.uploadPage = uploadPage;
 
 // =====================
 // RENDER PAGES
 // =====================
 function renderPages(){
 
-    let container = document.getElementById("pageList");
-    container.innerHTML = "";
+let container =
+document.getElementById(
+"pageList"
+);
 
-    document.getElementById("pageCount").innerText = pageImages.length;
+container.innerHTML = "";
 
-    pageImages.forEach((img,index)=>{
+document.getElementById(
+"pageCount"
+).innerText =
+pageImages.length;
 
-        container.innerHTML += `
-        <div class="page-card">
+pageImages.forEach(
+(img,index)=>{
 
-            <img src="${img}" class="page-preview">
+container.innerHTML += `
 
-            <div class="page-actions">
-                <button class="delete-btn" onclick="deletePage(${index})">
-                    Delete
-                </button>
-            </div>
+<div class="page-card">
 
-        </div>
-        `;
+<img
+src="${img}"
+class="page-preview"
+>
 
-    });
+<div class="page-actions">
+
+<button
+class="delete-btn"
+onclick="deletePage(${index})"
+>
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
 
 }
+
+window.renderPages = renderPages;
 
 // =====================
 // DELETE PAGE
 // =====================
 function deletePage(index){
-    pageImages.splice(index,1);
-    renderPages();
+
+pageImages.splice(
+index,
+1
+);
+
+renderPages();
+
+}
+
+window.deletePage = deletePage;
+
+// =====================
+// SAVE CHAPTER
+// =====================
+async function saveChapter(){
+
+let title =
+document.getElementById(
+"chapterTitle"
+).value;
+
+let desc =
+document.getElementById(
+"chapterDesc"
+).value;
+
+let price =
+document.getElementById(
+"chapterPrice"
+).value;
+
+let coverFile =
+document.getElementById(
+"chapterCover"
+).files[0];
+
+if(
+
+title == "" ||
+desc == ""
+
+){
+
+alert(
+"Lengkapi data dulu!"
+);
+
+return;
+
+}
+
+function finishSave(coverData){
+
+return {
+
+title:title,
+
+desc:desc,
+
+price:Number(price),
+
+cover:coverData,
+
+pages:pageImages.length,
+
+pageImages:[...pageImages]
+
+};
+
 }
 
 // =====================
-// CANCEL EDIT MODE
+// COVER FILE
 // =====================
-function cancelEdit(){
-    localStorage.removeItem("editingChapter");
-    window.location.href = "manage-comics.html";
+if(coverFile){
+
+let reader =
+new FileReader();
+
+reader.onload =
+async function(){
+
+let data =
+finishSave(
+reader.result
+);
+
+saveToFirestore(
+data
+);
+
+};
+
+reader.readAsDataURL(
+coverFile
+);
+
 }
 
+else{
+
+let data =
+finishSave(
+currentCover
+);
+
+saveToFirestore(
+data
+);
+
+}
+
+}
+
+window.saveChapter = saveChapter;
+
 // =====================
-// SAVE CHAPTER (ADD + EDIT FIX)
+// FIRESTORE SAVE
 // =====================
-function saveChapter(){
+async function saveToFirestore(data){
 
-    let title = document.getElementById("chapterTitle").value;
-    let desc = document.getElementById("chapterDesc").value;
-    let price = document.getElementById("chapterPrice").value;
-    let coverFile = document.getElementById("chapterCover").files[0];
+try{
 
-    if(title === "" || desc === ""){
-        alert("Lengkapi data dulu!");
-        return;
-    }
+// EDIT
+if(editId){
 
-    function finishSave(coverData){
+await updateDoc(
 
-        let data = {
-            title: title,
-            desc: desc,
-            price: Number(price),
-            cover: coverData,
-            pages: pageImages.length,
-            pageImages: [...pageImages]
-        };
+doc(
+db,
+"chapters",
+editId
+),
 
-        // 🔥 EDIT MODE (UPDATE)
-        if(editIndex !== null && chapters[editIndex]){
-            chapters[editIndex] = {
-                ...chapters[editIndex],
-                ...data
-            };
-        }
-        // ➕ ADD MODE
-        else{
-            chapters.push(data);
-        }
+data
 
-        localStorage.setItem("infinite_x_chapters", JSON.stringify(chapters));
+);
 
-        // 🔥 CLEAN STATE AFTER SAVE
-        localStorage.removeItem("editingChapter");
+}
 
-        alert("Chapter berhasil disimpan!");
-        window.location.href = "manage-comics.html";
-    }
+// ADD
+else{
 
-    // =====================
-    // COVER HANDLING
-    // =====================
-    if(coverFile){
+await addDoc(
 
-        let reader = new FileReader();
+collection(
+db,
+"chapters"
+),
 
-        reader.onload = function(){
-            finishSave(reader.result);
-        };
+data
 
-        reader.readAsDataURL(coverFile);
+);
 
-    } else {
-        finishSave("");
-    }
+}
+
+localStorage.removeItem(
+"editingChapter"
+);
+
+alert(
+"Chapter berhasil disimpan!"
+);
+
+window.location.href =
+"manage-comics.html";
+
+}
+
+catch(e){
+
+console.error(
+e
+);
+
+alert(
+"Gagal menyimpan!"
+);
+
+}
 
 }
 
 </script>
+
 
 </body>
 </html>
