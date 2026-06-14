@@ -1,0 +1,149 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Wallpaper Theme - Infinite X</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="manage.css">
+<link rel="stylesheet" href="theme.css">
+
+</head>
+
+<body>
+
+<nav>
+
+<a href="index.html">
+Home
+</a>
+
+<a href="comic.html">
+Comic
+</a>
+
+<a href="character.html">
+Character
+</a>
+
+<a href="#">
+About Us
+</a>
+
+<a href="profile.html">
+Profile
+</a>
+
+<a href="developer.html">
+⚙️ Dev Panel
+</a>
+
+</nav>
+
+<div class="manage-container">
+
+<h1>
+
+Wallpaper Theme
+
+</h1>
+
+<button
+class="edit-btn"
+onclick="setTheme('cyberpunk')"
+>
+
+🌆 Cyberpunk City
+
+</button>
+
+<br><br>
+
+<button
+class="edit-btn"
+onclick="setTheme('future')"
+>
+
+🔵 Future Blue
+
+</button>
+
+<br><br>
+
+<button
+class="edit-btn"
+onclick="setTheme('mountain')"
+>
+
+🌌 Night Mountain
+
+</button>
+
+<br><br>
+
+<button
+class="edit-btn"
+onclick="setTheme('scifi')"
+>
+
+⚙️ Sci-Fi
+
+</button>
+
+<br><br>
+
+<button
+class="edit-btn"
+onclick="setTheme('neon')"
+>
+
+🌃 Neon Street
+
+</button>
+
+<br><br>
+
+<button
+class="delete-btn"
+onclick="resetTheme()"
+>
+
+Reset Theme
+
+</button>
+
+</div>
+
+<script src="theme.js"></script>
+
+<script>
+
+if(
+
+localStorage.getItem(
+"developerLogged"
+) !== "true"
+
+){
+
+window.location.href =
+"developer-login.html";
+
+}
+
+function resetTheme(){
+
+localStorage.removeItem(
+"devTheme"
+);
+
+document.body.className = "";
+
+}
+
+</script>
+
+</body>
+</html>
+```
