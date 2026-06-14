@@ -192,48 +192,22 @@ margin:40px auto;
     background: #00f5ff;
 }
 
-.theme-card{
-
-width:220px;
-
-padding:15px;
-
-margin:auto;
-
-margin-bottom:25px;
-
-text-align:center;
-
-background:#1a1a1a;
-
-border-radius:15px;
-
-}
-
-.theme-preview{
-
-width:220px;
-
-height:120px;
-
-object-fit:cover;
-
-border-radius:10px;
-
-margin-bottom:10px;
-
-}
-
-
+```css id="k72blx"
 .theme-container{
 
-display:flex;
+display:grid;
 
-justify-content:center;
-
-flex-wrap:wrap;
+grid-template-columns:
+repeat(
+3,
+1fr
+);
 
 gap:40px;
+
+justify-items:center;
+
+margin-top:50px;
 
 }
 
@@ -266,3 +240,4 @@ margin-bottom:10px;
 color:white;
 
 }
+```
