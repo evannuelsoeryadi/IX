@@ -191,3 +191,35 @@ margin:40px auto;
     width: 0%;
     background: #00f5ff;
 }
+
+.theme-card{
+
+width:300px;
+
+padding:20px;
+
+margin:auto;
+
+margin-bottom:30px;
+
+text-align:center;
+
+background:#1a1a1a;
+
+border-radius:15px;
+
+}
+
+.theme-preview{
+
+width:100%;
+
+height:170px;
+
+object-fit:cover;
+
+border-radius:10px;
+
+margin-bottom:15px;
+
+}
