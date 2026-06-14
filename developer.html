@@ -1,148 +1,191 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Developer Dashboard - Infinite X</title>
-    <link rel="stylesheet" href="style.css">
+
+<title>Developer Dashboard - Infinite X</title>
+
+<link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="manage.css">
+<link rel="stylesheet" href="theme.css">
 
 </head>
 
 <body>
 
-    <nav>
+<nav>
 
-        <a href="index.html">Home</a>
+<a href="index.html">
+Home
+</a>
 
-        <a href="comic.html">
-            Comic
-        </a>
+<a href="comic.html">
+Comic
+</a>
 
-        <a href="character.html">
-            Character
-        </a>
+<a href="character.html">
+Character
+</a>
 
-        <a href="#">
-            About Us
-        </a>
+<a href="#">
+About Us
+</a>
 
-        <a href="profile.html">
-            Profile
-        </a>
+<a href="profile.html">
+Profile
+</a>
 
-        <a href="developer.html">
-            ⚙️ Dev Panel
-        </a>
+<a href="developer.html">
+⚙️ Dev Panel
+</a>
 
-    </nav>
+</nav>
 
-    <div class="dashboard">
+<div class="dashboard">
 
-        <h1>Developer Dashboard</h1>
+<h1>
 
-        <div class="dev-card">
+Developer Dashboard
 
-            <h2 id="devName"></h2>
+</h1>
 
-            <p>
-                Role:
-                <span id="devRole"></span>
-            </p>
+<div class="dev-card">
 
-            <p>
-                ID:
-                <span id="devID"></span>
-            </p>
+<h2 id="devName"></h2>
 
-        </div>
+<p>
 
-        <div class="dashboard-buttons">
+Role :
+<span id="devRole"></span>
 
-            <button onclick="window.location.href='manage-comics.html'">
-                Manage Comics
-            </button>
+</p>
 
-            <button onclick="window.location.href='manage-characters.html'">
-                Manage Characters
-            </button>
+<p>
 
-            <button onclick="window.location.href='manage-members.html'">
-                Manage Members
-            </button>
+ID :
+<span id="devID"></span>
 
-            <button
-                class="logout-btn"
-                onclick="logoutDeveloper()"
-            >
-                Logout
-            </button>
+</p>
 
-        </div>
+</div>
 
-    </div>
+<div class="dashboard-buttons">
 
-    <script>
+<button
+onclick="window.location.href='manage-comics.html'"
+>
 
-        if(
-            localStorage.getItem(
-                "developerLogged"
-            ) !== "true"
-        ){
+Manage Comics
 
-            window.location.href =
-                "developer-login.html";
+</button>
 
-        }
+<button
+onclick="window.location.href='manage-characters.html'"
+>
 
-        document.getElementById(
-            "devName"
-        ).innerText =
-            localStorage.getItem(
-                "developerName"
-            );
+Manage Characters
 
-        document.getElementById(
-            "devRole"
-        ).innerText =
-            localStorage.getItem(
-                "developerRole"
-            );
+</button>
 
-        document.getElementById(
-            "devID"
-        ).innerText =
-            localStorage.getItem(
-                "developerID"
-            );
+<button
+onclick="window.location.href='manage-members.html'"
+>
 
-function logoutDeveloper(){
+Manage Members
 
-    localStorage.removeItem(
-        "developerLogged"
-    );
+</button>
 
-    localStorage.removeItem(
-        "developerName"
-    );
+<button
+onclick="window.location.href='theme.html'"
+>
 
-    localStorage.removeItem(
-        "developerRole"
-    );
+Wallpaper Theme
 
-    localStorage.removeItem(
-        "developerID"
-    );
+</button>
 
-    localStorage.removeItem(
-        "user"
-    );
+<button
+class="logout-btn"
+onclick="logoutDeveloper()"
+>
 
-    window.location.href =
-        "index.html";
+Logout
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+if(
+
+localStorage.getItem(
+"developerLogged"
+) !== "true"
+
+){
+
+window.location.href =
+"developer-login.html";
 
 }
 
-    </script>
+document.getElementById(
+"devName"
+).innerText =
+
+localStorage.getItem(
+"developerName"
+);
+
+document.getElementById(
+"devRole"
+).innerText =
+
+localStorage.getItem(
+"developerRole"
+);
+
+document.getElementById(
+"devID"
+).innerText =
+
+localStorage.getItem(
+"developerID"
+);
+
+function logoutDeveloper(){
+
+localStorage.removeItem(
+"developerLogged"
+);
+
+localStorage.removeItem(
+"developerName"
+);
+
+localStorage.removeItem(
+"developerRole"
+);
+
+localStorage.removeItem(
+"developerID"
+);
+
+localStorage.removeItem(
+"user"
+);
+
+window.location.href =
+"index.html";
+
+}
+
+</script>
+
+<script src="theme.js"></script>
 
 </body>
 </html>
-
+```
