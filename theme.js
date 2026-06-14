@@ -64,3 +64,59 @@ fade.style.opacity = "0";
 
 // expose global
 window.setTheme = setTheme;
+
+=
+function updateThemeButtons(){
+
+let currentTheme =
+localStorage.getItem(
+"devTheme"
+);
+
+let themes = [
+
+"cyberpunk",
+"future",
+"mountain",
+"scifi",
+"neon"
+
+];
+
+themes.forEach(theme=>{
+
+let btn =
+document.getElementById(
+theme + "Btn"
+);
+
+if(!btn) return;
+
+if(theme == currentTheme){
+
+btn.innerText =
+"✔ Selected";
+
+btn.classList.add(
+"selected-theme"
+);
+
+}
+
+else{
+
+btn.innerText =
+"Use Theme";
+
+btn.classList.remove(
+"selected-theme"
+);
+
+}
+
+});
+
+}
+
+updateThemeButtons();
+
