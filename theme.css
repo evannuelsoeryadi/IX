@@ -1,0 +1,96 @@
+```css
+/* =====================
+CYBERPUNK CITY
+===================== */
+
+body.cyberpunk{
+
+background:
+linear-gradient(
+rgba(0,0,0,.7),
+rgba(0,0,0,.7)
+),
+url("wallpaper1.jpg");
+
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+
+}
+
+/* =====================
+FUTURE BLUE
+===================== */
+
+body.future{
+
+background:
+linear-gradient(
+rgba(0,0,0,.7),
+rgba(0,0,0,.7)
+),
+url("wallpaper2.jpg");
+
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+
+}
+
+/* =====================
+NIGHT MOUNTAIN
+===================== */
+
+body.mountain{
+
+background:
+linear-gradient(
+rgba(0,0,0,.7),
+rgba(0,0,0,.7)
+),
+url("wallpaper3.jpg");
+
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+
+}
+
+/* =====================
+SCI-FI
+===================== */
+
+body.scifi{
+
+background:
+linear-gradient(
+rgba(0,0,0,.7),
+rgba(0,0,0,.7)
+),
+url("wallpaper4.jpg");
+
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+
+}
+
+/* =====================
+NEON STREET
+===================== */
+
+body.neon{
+
+background:
+linear-gradient(
+rgba(0,0,0,.7),
+rgba(0,0,0,.7)
+),
+url("wallpaper5.jpg");
+
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+
+}
+```
