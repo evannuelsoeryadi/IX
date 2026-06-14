@@ -194,13 +194,13 @@ margin:40px auto;
 
 .theme-card{
 
-width:250px;
+width:220px;
 
-padding:20px;
+padding:15px;
 
 margin:auto;
 
-margin-bottom:30px;
+margin-bottom:25px;
 
 text-align:center;
 
@@ -212,14 +212,14 @@ border-radius:15px;
 
 .theme-preview{
 
-width:250px;
+width:220px;
 
-height:140px;
+height:120px;
 
 object-fit:cover;
 
 border-radius:10px;
 
-margin-bottom:15px;
+margin-bottom:10px;
 
 }
