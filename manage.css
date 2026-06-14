@@ -280,3 +280,68 @@ border:2px solid white;
 
 }
 
+.theme-item button{
+
+padding:12px 30px;
+
+border:none;
+
+border-radius:15px;
+
+font-size:18px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:0.3s;
+
+}
+
+.theme-item button:hover{
+
+transform:scale(1.05);
+
+}
+
+.theme-preview{ 
+    
+transition:0.3s; 
+
+} 
+
+.theme-preview:hover{ 
+    
+transform:scale(1.05); 
+    
+box-shadow: 0 0 25px cyan; 
+
+}
+
+.theme-title{
+
+font-size:70px;
+
+text-align:center;
+
+color:white;
+
+text-shadow:
+
+0 0 20px white,
+
+0 0 40px cyan;
+
+margin-bottom:70px;
+
+}
+
+.reset-theme{
+
+display:block;
+
+margin:auto;
+
+margin-top:50px;
+
+}
