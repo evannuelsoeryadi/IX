@@ -56,6 +56,8 @@ document.body.classList.add(
 theme
 );
 
+updateThemeButtons();
+
 fade.style.opacity = "0";
 
 },500);
