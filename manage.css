@@ -192,7 +192,6 @@ margin:40px auto;
     background: #00f5ff;
 }
 
-```css id="k72blx"
 .theme-container{
 
 display:grid;
@@ -240,4 +239,44 @@ margin-bottom:10px;
 color:white;
 
 }
-```
+
+.theme-container{
+
+display:grid !important;
+
+grid-template-columns:
+repeat(
+3,
+250px
+) !important;
+
+justify-content:center;
+
+gap:40px;
+
+width:100%;
+
+}
+
+.theme-item{
+
+width:250px;
+
+text-align:center;
+
+}
+
+.theme-preview{
+
+width:250px;
+
+height:140px;
+
+object-fit:cover;
+
+border-radius:15px;
+
+border:2px solid white;
+
+}
+
