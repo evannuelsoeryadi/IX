@@ -223,3 +223,46 @@ border-radius:10px;
 margin-bottom:10px;
 
 }
+
+
+.theme-container{
+
+display:flex;
+
+justify-content:center;
+
+flex-wrap:wrap;
+
+gap:40px;
+
+}
+
+.theme-item{
+
+text-align:center;
+
+}
+
+.theme-preview{
+
+width:250px;
+
+height:140px;
+
+object-fit:cover;
+
+border-radius:15px;
+
+border:2px solid white;
+
+}
+
+.theme-item h3{
+
+margin-top:10px;
+
+margin-bottom:10px;
+
+color:white;
+
+}
