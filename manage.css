@@ -194,7 +194,7 @@ margin:40px auto;
 
 .theme-card{
 
-width:300px;
+width:250px;
 
 padding:20px;
 
@@ -212,9 +212,9 @@ border-radius:15px;
 
 .theme-preview{
 
-width:100%;
+width:250px;
 
-height:170px;
+height:140px;
 
 object-fit:cover;
 
