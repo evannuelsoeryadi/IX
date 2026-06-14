@@ -31,7 +31,16 @@ theme
 // CHANGE THEME
 // =====================
 
+
 function setTheme(theme){
+
+let fade = document.getElementById(
+"themeFade"
+);
+
+fade.style.opacity = "1";
+
+setTimeout(()=>{
 
 localStorage.setItem(
 
@@ -47,8 +56,11 @@ document.body.classList.add(
 theme
 );
 
+fade.style.opacity = "0";
+
+},500);
+
 }
 
 // expose global
 window.setTheme = setTheme;
-
