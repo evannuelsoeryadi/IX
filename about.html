@@ -59,46 +59,6 @@ About Infinite X
 
 </div>
 
-<br><br>
-
-<div class="about-info">
-
-<p>
-
-📅 Joined :
-2026
-
-</p>
-
-<br>
-
-<p>
-
-🌎 Country :
-Indonesia
-
-</p>
-
-<br><br>
-
-<h3>
-
-"Limitless Stories,
-
-Infinite Possibilities."
-
-</h3>
-
-<br>
-
-<p>
-
-Version 1.0
-
-</p>
-
-</div>
-
 </div>
 
 <script>
@@ -141,21 +101,21 @@ image:
 
 "comic-builder.jpg",
 
-desc:
+born:
 
-`
+"2026",
 
-Story Creation
+country:
 
-<br><br>
+"Indonesia",
 
-Character Design
+joined:
 
-<br><br>
+"2026",
 
-World Building
+distribution:
 
-`
+"Story Creation"
 
 },
 
@@ -173,25 +133,21 @@ image:
 
 "builder.jpg",
 
-desc:
+born:
 
-`
+"2009",
 
-Founder of Infinite X
+country:
 
-<br><br>
+"Indonesia",
 
-Web Developer
+joined:
 
-<br><br>
+"2026",
 
-UI Designer
+distribution:
 
-<br><br>
-
-Comic Creator
-
-`
+"Global"
 
 },
 
@@ -209,21 +165,21 @@ image:
 
 "security-builder.jpg",
 
-desc:
+born:
 
-`
+"2026",
 
-Cloud Database
+country:
 
-<br><br>
+"Indonesia",
 
-Firebase System
+joined:
 
-<br><br>
+"2026",
 
-Protection Layer
+distribution:
 
-`
+"Protection"
 
 }
 
@@ -247,6 +203,10 @@ container.innerHTML +=
 
 <div class="about-card">
 
+<div class="about-card-inner">
+
+<div class="about-front">
+
 <img
 
 src="${member.image}"
@@ -267,11 +227,55 @@ ${member.name}
 
 </h3>
 
+</div>
+
+<div class="about-back">
+
+<h2>
+
+${member.title}
+
+</h2>
+
+<br>
+
 <p>
 
-${member.desc}
+🎂 Born
+
+<br>
+
+${member.born}
+
+<br><br>
+
+🌎 Country
+
+<br>
+
+${member.country}
+
+<br><br>
+
+📅 Joined
+
+<br>
+
+${member.joined}
+
+<br><br>
+
+📡 Distribution
+
+<br>
+
+${member.distribution}
 
 </p>
+
+</div>
+
+</div>
 
 </div>
 
