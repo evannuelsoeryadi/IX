@@ -121,3 +121,20 @@ btn.classList.remove(
 
 updateThemeButtons();
 
+
+// =====================
+// LOAD SAVED THEME
+// =====================
+
+let savedTheme = localStorage.getItem(
+"devTheme"
+);
+
+if(savedTheme){
+
+document.body.classList.add(
+savedTheme
+);
+
+}
+
