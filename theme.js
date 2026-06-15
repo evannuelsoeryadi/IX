@@ -1,5 +1,6 @@
+
 // =====================
-// DEV THEME
+// LOAD SAVED THEME
 // =====================
 
 if(
@@ -10,16 +11,16 @@ localStorage.getItem(
 
 ){
 
-let theme =
+let savedTheme =
 
 localStorage.getItem(
 "devTheme"
 );
 
-if(theme){
+if(savedTheme){
 
 document.body.classList.add(
-theme
+savedTheme
 );
 
 }
@@ -30,14 +31,17 @@ theme
 // CHANGE THEME
 // =====================
 
-
 function setTheme(theme){
 
 let fade = document.getElementById(
 "themeFade"
 );
 
+if(fade){
+
 fade.style.opacity = "1";
+
+}
 
 setTimeout(()=>{
 
@@ -49,15 +53,28 @@ theme
 
 );
 
-document.body.className = "";
+// hapus theme lama
+document.body.classList.remove(
+"cyberpunk",
+"future",
+"mountain",
+"scifi",
+"neon"
+);
 
+// pasang theme baru
 document.body.classList.add(
 theme
 );
 
+// update tombol
 updateThemeButtons();
 
+if(fade){
+
 fade.style.opacity = "0";
+
+}
 
 },500);
 
@@ -66,10 +83,14 @@ fade.style.opacity = "0";
 // expose global
 window.setTheme = setTheme;
 
-=
+// =====================
+// UPDATE BUTTONS
+// =====================
+
 function updateThemeButtons(){
 
 let currentTheme =
+
 localStorage.getItem(
 "devTheme"
 );
@@ -87,6 +108,7 @@ let themes = [
 themes.forEach(theme=>{
 
 let btn =
+
 document.getElementById(
 theme + "Btn"
 );
@@ -119,22 +141,9 @@ btn.classList.remove(
 
 }
 
+// =====================
+// INIT
+// =====================
+
 updateThemeButtons();
-
-
-// =====================
-// LOAD SAVED THEME
-// =====================
-
-let savedTheme = localStorage.getItem(
-"devTheme"
-);
-
-if(savedTheme){
-
-document.body.classList.add(
-savedTheme
-);
-
-}
 
