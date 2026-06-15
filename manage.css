@@ -429,7 +429,22 @@ box-sizing:border-box;
 
 transform:rotateY(180deg);
 
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+padding:20px;
+
+box-sizing:border-box;
+
+overflow:hidden;
+
 }
+
 
 
 .about-card h2{
@@ -471,6 +486,25 @@ color:white;
 color:cyan;
 
 font-style:italic;
+
+}
+
+
+.manage-container h1{
+
+text-align:center;
+
+margin-bottom:50px;
+
+}
+
+.about-back p{
+
+line-height:1.5;
+
+font-size:20px;
+
+color:white;
 
 }
 
