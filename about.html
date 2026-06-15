@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,11 +15,25 @@
 
 <nav>
 
-<a href="index.html">Home</a>
-<a href="comic.html">Comic</a>
-<a href="character.html">Character</a>
-<a href="about.html">About Us</a>
-<a href="profile.html">Profile</a>
+<a href="index.html">
+Home
+</a>
+
+<a href="comic.html">
+Comic
+</a>
+
+<a href="character.html">
+Character
+</a>
+
+<a href="about.html">
+About Us
+</a>
+
+<a href="profile.html">
+Profile
+</a>
 
 <a
 href="developer.html"
@@ -51,7 +65,8 @@ About Infinite X
 
 <p>
 
-📅 Joined : 2026
+📅 Joined :
+2026
 
 </p>
 
@@ -59,7 +74,8 @@ About Infinite X
 
 <p>
 
-🌎 Country : Indonesia
+🌎 Country :
+Indonesia
 
 </p>
 
@@ -87,10 +103,16 @@ Version 1.0
 
 <script>
 
+// =====================
+// DEV BUTTON
+// =====================
+
 if(
+
 localStorage.getItem(
 "developerLogged"
 ) === "true"
+
 ){
 
 document.getElementById(
@@ -107,11 +129,17 @@ let team = [
 
 {
 
-title:"🖼 Comic Builder",
+title:
 
-name:"",
+"🖼 Comic Builder",
 
-image:"comic-builder.jpg",
+name:
+
+"",
+
+image:
+
+"comic-builder.jpg",
 
 desc:
 
@@ -133,11 +161,17 @@ World Building
 
 {
 
-title:"👨 Build Web",
+title:
 
-name:"Evan",
+"👨 Build Web",
 
-image:"builder.jpg",
+name:
+
+"Evan",
+
+image:
+
+"builder.jpg",
 
 desc:
 
@@ -163,11 +197,17 @@ Comic Creator
 
 {
 
-title:"🔒 Security Builder",
+title:
 
-name:"",
+"🔒 Security Builder",
 
-image:"security-builder.jpg",
+name:
+
+"",
+
+image:
+
+"security-builder.jpg",
 
 desc:
 
@@ -190,7 +230,7 @@ Protection Layer
 ];
 
 // =====================
-// RENDER
+// RENDER TEAM
 // =====================
 
 let container =
@@ -208,8 +248,11 @@ container.innerHTML +=
 <div class="about-card">
 
 <img
+
 src="${member.image}"
+
 class="about-image"
+
 >
 
 <h2>
@@ -244,4 +287,4 @@ ${member.desc}
 
 </body>
 </html>
-```
+
