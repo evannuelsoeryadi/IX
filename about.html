@@ -1,0 +1,247 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>About Us - Infinite X</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="manage.css">
+<link rel="stylesheet" href="theme.css">
+
+</head>
+
+<body>
+
+<nav>
+
+<a href="index.html">Home</a>
+<a href="comic.html">Comic</a>
+<a href="character.html">Character</a>
+<a href="about.html">About Us</a>
+<a href="profile.html">Profile</a>
+
+<a
+href="developer.html"
+id="devButton"
+style="display:none;"
+>
+
+⚙️ Dev Panel
+
+</a>
+
+</nav>
+
+<div class="manage-container">
+
+<h1>
+
+About Infinite X
+
+</h1>
+
+<div id="aboutTeam">
+
+</div>
+
+<br><br>
+
+<div class="about-info">
+
+<p>
+
+📅 Joined : 2026
+
+</p>
+
+<br>
+
+<p>
+
+🌎 Country : Indonesia
+
+</p>
+
+<br><br>
+
+<h3>
+
+"Limitless Stories,
+
+Infinite Possibilities."
+
+</h3>
+
+<br>
+
+<p>
+
+Version 1.0
+
+</p>
+
+</div>
+
+</div>
+
+<script>
+
+if(
+localStorage.getItem(
+"developerLogged"
+) === "true"
+){
+
+document.getElementById(
+"devButton"
+).style.display = "block";
+
+}
+
+// =====================
+// TEAM DATA
+// =====================
+
+let team = [
+
+{
+
+title:"🖼 Comic Builder",
+
+name:"",
+
+image:"comic-builder.jpg",
+
+desc:
+
+`
+
+Story Creation
+
+<br><br>
+
+Character Design
+
+<br><br>
+
+World Building
+
+`
+
+},
+
+{
+
+title:"👨 Build Web",
+
+name:"Evan",
+
+image:"builder.jpg",
+
+desc:
+
+`
+
+Founder of Infinite X
+
+<br><br>
+
+Web Developer
+
+<br><br>
+
+UI Designer
+
+<br><br>
+
+Comic Creator
+
+`
+
+},
+
+{
+
+title:"🔒 Security Builder",
+
+name:"",
+
+image:"security-builder.jpg",
+
+desc:
+
+`
+
+Cloud Database
+
+<br><br>
+
+Firebase System
+
+<br><br>
+
+Protection Layer
+
+`
+
+}
+
+];
+
+// =====================
+// RENDER
+// =====================
+
+let container =
+
+document.getElementById(
+"aboutTeam"
+);
+
+team.forEach(member=>{
+
+container.innerHTML +=
+
+`
+
+<div class="about-card">
+
+<img
+src="${member.image}"
+class="about-image"
+>
+
+<h2>
+
+${member.title}
+
+</h2>
+
+<h3>
+
+${member.name}
+
+</h3>
+
+<p>
+
+${member.desc}
+
+</p>
+
+</div>
+
+`;
+
+});
+
+</script>
+
+<div id="themeFade"></div>
+
+<script src="theme.js"></script>
+
+</body>
+</html>
+```
