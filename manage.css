@@ -719,3 +719,32 @@ box-shadow:
 }
 
 
+.character-grid{
+
+display:flex;
+
+justify-content:center;
+
+flex-wrap:wrap;
+
+gap:30px;
+
+}
+
+.character-image{
+
+width:180px;
+
+height:180px;
+
+object-fit:cover;
+
+border-radius:15px;
+
+margin-bottom:15px;
+
+border:2px solid white;
+
+}
+
+
