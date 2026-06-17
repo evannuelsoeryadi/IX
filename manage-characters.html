@@ -1,8 +1,7 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html>
 <head>
-
 
 <title>Manage Characters - Infinite X</title>
 
@@ -10,212 +9,256 @@
 <link rel="stylesheet" href="manage.css">
 <link rel="stylesheet" href="theme.css">
 
-
 </head>
 
 <body>
 
-
 <nav>
 
-    <a href="index.html">Home</a>
-    <a href="comic.html">Comic</a>
-    <a href="character.html">Character</a>
-    <a href="about.html">About Us</a>
-    <a href="profile.html">Profile</a>
-    <a href="developer.html">⚙️ Dev Panel</a>
+<a href="index.html">Home</a>
+<a href="comic.html">Comic</a>
+<a href="character.html">Character</a>
+<a href="about.html">About Us</a>
+<a href="profile.html">Profile</a>
+<a href="developer.html">⚙️ Dev Panel</a>
 
 </nav>
 
 <div class="manage-container">
 
-    <h1>Manage Characters</h1>
+<h1>
 
-    <div class="character-form">
+Manage Characters
 
-        <input
-            type="text"
-            id="charName"
-            placeholder="Character Name"
-        >
+</h1>
 
-        <input
-            type="text"
-            id="charPower"
-            placeholder="Character Power"
-        >
+<div class="character-form">
 
-        <textarea
-            id="charDesc"
-            placeholder="Character Description"
-        ></textarea>
+<input
+type="text"
+id="charName"
+placeholder="Character Name"
+>
 
-        <button
-            class="add-btn"
-            onclick="addCharacter()"
-        >
-            + Add Character
-        </button>
+<input
+type="text"
+id="charRole"
+placeholder="Character Role"
+>
 
-    </div>
+<input
+type="text"
+id="charImage"
+placeholder="Image URL"
+>
 
-    <div id="characterList"></div>
+<textarea
+id="charDesc"
+placeholder="Character Description"
+></textarea>
+
+<button
+class="add-btn"
+onclick="addCharacter()"
+>
+
++ Add Character
+
+</button>
+
+</div>
+
+<br>
+
+<div id="characterList"></div>
 
 </div>
 
 <script>
 
-    if(
-        localStorage.getItem(
-            "developerLogged"
-        ) !== "true"
-    ){
+if(
 
-        window.location.href =
-            "developer-login.html";
+localStorage.getItem(
+"developerLogged"
+) !== "true"
 
-    }
+){
 
-    let characters =
-        JSON.parse(
-            localStorage.getItem(
-                "characters"
-            )
-        ) || [];
+window.location.href =
+"developer-login.html";
 
-    renderCharacters();
+}
 
-    function addCharacter(){
+let characters =
 
-        let name =
-            document.getElementById(
-                "charName"
-            ).value;
+JSON.parse(
+localStorage.getItem(
+"infinite_x_characters"
+)
 
-        let power =
-            document.getElementById(
-                "charPower"
-            ).value;
+) || [];
 
-        let desc =
-            document.getElementById(
-                "charDesc"
-            ).value;
+renderCharacters();
 
-        if(
-            name === "" ||
-            power === ""
-        ){
+function addCharacter(){
 
-            alert(
-                "Lengkapi data dulu!"
-            );
+let name =
+document.getElementById(
+"charName"
+).value;
 
-            return;
+let role =
+document.getElementById(
+"charRole"
+).value;
 
-        }
+let image =
+document.getElementById(
+"charImage"
+).value;
 
-        characters.push({
+let desc =
+document.getElementById(
+"charDesc"
+).value;
 
-            name:name,
-            power:power,
-            desc:desc
+if(
 
-        });
+name === "" ||
+role === ""
 
-        localStorage.setItem(
+){
 
-            "characters",
+alert(
+"Lengkapi data dulu!"
+);
 
-            JSON.stringify(
-                characters
-            )
+return;
 
-        );
+}
 
-        renderCharacters();
+characters.push({
 
-        document.getElementById(
-            "charName"
-        ).value = "";
+name:name,
 
-        document.getElementById(
-            "charPower"
-        ).value = "";
+role:role,
 
-        document.getElementById(
-            "charDesc"
-        ).value = "";
+image:image,
 
-    }
+desc:desc
 
-    function deleteCharacter(index){
+});
 
-        characters.splice(
-            index,
-            1
-        );
+localStorage.setItem(
 
-        localStorage.setItem(
+"infinite_x_characters",
 
-            "characters",
+JSON.stringify(
+characters
+)
 
-            JSON.stringify(
-                characters
-            )
+);
 
-        );
+renderCharacters();
 
-        renderCharacters();
+document.getElementById(
+"charName"
+).value = "";
 
-    }
+document.getElementById(
+"charRole"
+).value = "";
 
-    function renderCharacters(){
+document.getElementById(
+"charImage"
+).value = "";
 
-        let html = "";
+document.getElementById(
+"charDesc"
+).value = "";
 
-        characters.forEach(
-            (character,index)=>{
+}
 
-            html += `
+function deleteCharacter(index){
 
-            <div class="character-card">
+characters.splice(
+index,
+1
+);
 
-                <div>
+localStorage.setItem(
 
-                    <h2>
-                        ${character.name}
-                    </h2>
+"infinite_x_characters",
 
-                    <p>
-                        Power :
-                        ${character.power}
-                    </p>
+JSON.stringify(
+characters
+)
 
-                    <p>
-                        ${character.desc}
-                    </p>
+);
 
-                </div>
+renderCharacters();
 
-                <button
-                    class="delete-btn"
-                    onclick="deleteCharacter(${index})"
-                >
-                    Delete
-                </button>
+}
 
-            </div>
+function renderCharacters(){
 
-            `;
+let html = "";
 
-        });
+characters.forEach(
+(character,index)=>{
 
-        document.getElementById(
-            "characterList"
-        ).innerHTML = html;
+html += `
 
-    }
+<div class="character-card">
+
+<img
+src="${character.image}"
+class="character-image"
+>
+
+<div>
+
+<h2>
+
+${character.name}
+
+</h2>
+
+<p>
+
+Role :
+${character.role}
+
+</p>
+
+<p>
+
+${character.desc}
+
+</p>
+
+</div>
+
+<button
+class="delete-btn"
+onclick="deleteCharacter(${index})"
+>
+
+Delete
+
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById(
+"characterList"
+).innerHTML = html;
+
+}
 
 </script>
 
@@ -225,3 +268,4 @@
 
 </body>
 </html>
+
