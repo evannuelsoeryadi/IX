@@ -1,110 +1,170 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html>
 <head>
 
 <title>Characters - Infinite X</title>
-    
+
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="manage.css">
 <link rel="stylesheet" href="theme.css">
-
 
 </head>
 
 <body>
 
-
 <nav>
 
-    <a href="index.html">Home</a>
-    <a href="comic.html">Comic</a>
-    <a href="character.html">Character</a>
-    <a href="about.html">About Us</a>
-    <a href="profile.html">Profile</a>
-    <a 
-            href="developer.html"
-            id="devButton"
-            style="display:none;"
-        >
-            ⚙️ Dev Panel
-    </a>
+<a href="index.html">Home</a>
+<a href="comic.html">Comic</a>
+<a href="character.html">Character</a>
+<a href="about.html">About Us</a>
+<a href="profile.html">Profile</a>
+
+<a
+href="developer.html"
+id="devButton"
+style="display:none;"
+>
+
+⚙️ Dev Panel
+
+</a>
 
 </nav>
 
-<div class="character-page">
+<div class="manage-container">
 
-    <h1>Characters</h1>
+<h1>
 
-    <div class="character-grid">
+Characters
 
-        <div class="character-box">
+</h1>
 
-            <h2>Aether</h2>
-
-            <p>
-                Power : Void Energy
-            </p>
-
-            <button>
-                View More
-            </button>
-
-        </div>
-
-        <div class="character-box">
-
-            <h2>Luna</h2>
-
-            <p>
-                Power : Light Magic
-            </p>
-
-            <button>
-                View More
-            </button>
-
-        </div>
-
-        <div class="character-box">
-
-            <h2>Kai</h2>
-
-            <p>
-                Power : Shadow Blade
-            </p>
-
-            <button>
-                View More
-            </button>
-
-        </div>
-
-    </div>
+<div
+class="character-grid"
+id="characterGrid"
+>
 
 </div>
+
+</div>
+
 <script>
-    if(
 
-        localStorage.getItem(
-            "developerLogged"
-        ) === "true"
+if(
 
-    ){
+localStorage.getItem(
+"developerLogged"
+) === "true"
 
-        document
-        .getElementById(
-            "devButton"
-        )
-        .style.display =
-            "block";
+){
 
-    }
+document
+.getElementById(
+"devButton"
+)
+.style.display =
+"block";
+
+}
+
+let characters =
+
+JSON.parse(
+
+localStorage.getItem(
+"infinite_x_characters"
+)
+
+) || [];
+
+if(
+
+characters.length == 0
+
+){
+
+document.getElementById(
+"characterGrid"
+).innerHTML =
+
+`
+
+<div class="comic-card">
+
+<h2>
+
+No Characters Yet
+
+</h2>
+
+<p>
+
+Coming Soon...
+
+</p>
+
+</div>
+
+`;
+
+}
+
+else{
+
+let html = "";
+
+characters.forEach(character=>{
+
+html +=
+
+`
+
+<div class="comic-card">
+
+<img
+src="${character.image}"
+class="character-image"
+>
+
+<h2>
+
+${character.name}
+
+</h2>
+
+<p>
+
+${character.role}
+
+</p>
+
+<p>
+
+${character.desc}
+
+</p>
+
+</div>
+
+`;
+
+});
+
+document.getElementById(
+"characterGrid"
+).innerHTML =
+html;
+
+}
+
 </script>
 
 <div id="themeFade"></div>
 
 <script src="theme.js"></script>
-    
+
 </body>
 </html>
+
