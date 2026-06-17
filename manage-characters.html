@@ -47,10 +47,12 @@ placeholder="Character Role"
 >
 
 <input
-type="text"
+type="file"
 id="charImage"
-placeholder="Image URL"
+accept="image/*"
+
 >
+
 
 <textarea
 id="charDesc"
@@ -112,20 +114,20 @@ document.getElementById(
 "charRole"
 ).value;
 
-let image =
-document.getElementById(
-"charImage"
-).value;
-
 let desc =
 document.getElementById(
 "charDesc"
 ).value;
 
+let file =
+document.getElementById(
+"charImage"
+).files[0];
+
 if(
 
-name === "" ||
-role === ""
+name == "" ||
+role == ""
 
 ){
 
@@ -134,6 +136,88 @@ alert(
 );
 
 return;
+
+}
+
+let reader =
+new FileReader();
+
+reader.onload = function(){
+
+characters.push({
+
+name:name,
+
+role:role,
+
+image:reader.result,
+
+desc:desc
+
+});
+
+localStorage.setItem(
+
+"infinite_x_characters",
+
+JSON.stringify(
+characters)
+
+);
+
+renderCharacters();
+
+document.getElementById(
+"charName"
+).value = "";
+
+document.getElementById(
+"charRole"
+).value = "";
+
+document.getElementById(
+"charDesc"
+).value = "";
+
+document.getElementById(
+"charImage"
+).value = "";
+
+};
+
+if(file){
+
+reader.readAsDataURL(
+file
+);
+
+}
+
+else{
+
+characters.push({
+
+name:name,
+
+role:role,
+
+image:"",
+desc:desc
+
+});
+
+localStorage.setItem(
+
+"infinite_x_characters",
+
+JSON.stringify(
+characters)
+
+);
+
+renderCharacters();
+
+}
 
 }
 
