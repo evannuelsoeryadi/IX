@@ -785,3 +785,82 @@ font-size:24px;
 
 }
 
+
+/* =====================
+HOME LAYOUT
+===================== */
+
+.hero{
+
+min-height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+gap:80px;
+
+padding:0 50px;
+
+}
+
+.hero > div:last-child{
+
+text-align:center;
+
+}
+
+#loggedContent{
+
+width:320px;
+
+max-height:700px;
+
+overflow-y:auto;
+
+}
+
+#loggedContent .manage-container{
+
+padding:0;
+
+}
+
+#loggedContent .comic-container{
+
+display:flex;
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+#loggedContent h1{
+
+font-size:25px;
+
+margin-bottom:15px;
+
+}
+
+#loggedContent .comic-card{
+
+padding:15px;
+
+}
+
+.hero-main{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
