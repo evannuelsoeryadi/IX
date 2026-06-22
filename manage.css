@@ -884,7 +884,7 @@ gap:25px;
 
 display:flex;
 
-flex-direction:column;
+flex-direction:rows;
 
 gap:15px;
 
