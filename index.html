@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>IX</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="manage.css">
+<link rel="stylesheet" href="theme.css">
+
+</head>
+
+<body>
+
+<nav>
+
+<a href="index.html">Home</a>
+<a href="#" onclick="goComic()">Comic</a>
+<a href="character.html">Character</a>
+<a href="about.html">About Us</a>
+<a href="#" onclick="goProfile()">Profile</a>
+<a href="developer.html" id="devButton" style="display:none;">⚙️ Dev Panel</a>
+
+</nav>
+
+<!-- HERO -->
+
+<div class="hero">
+
+<h1>
+
+Infinite X
+
+</h1>
+
+<p>
+
+Read • Create • Explore
+
+</p>
+
+<div class="hero-buttons">
+
+<a
+href="#"
+class="btn"
+id="startBtn"
+>
+
+Start Reading
+
+</a>
+
+<a
+href="character.html"
+class="btn"
+>
+
+Characters
+
+</a>
+
+</div>
+
+</div>
+
+<!-- LOGIN CONTENT -->
+
+<div
+id="loggedContent"
+style="display:none;"
+>
+
+<div class="manage-container">
+
+<h1>
+
+🔥 Latest Updates
+
+</h1>
+
+<div
+class="comic-container"
+id="latestUpdates"
+>
+
+</div>
+
+<br><br>
+
+<h1>
+
+⭐ Popular Characters
+
+</h1>
+
+<div
+class="comic-container"
+id="popularCharacters"
+>
+
+</div>
+
+<br><br>
+
+<h1>
+
+📊 Infinite X Stats
+
+</h1>
+
+<div class="comic-container">
+
+<div class="comic-card">
+
+<h2>
+
+📚 Comics
+
+</h2>
+
+<p id="comicCount">
+
+0
+
+</p>
+
+</div>
+
+<div class="comic-card">
+
+<h2>
+
+👥 Characters
+
+</h2>
+
+<p id="characterCount">
+
+0
+
+</p>
+
+</div>
+
+<div class="comic-card">
+
+<h2>
+
+🌎 Members
+
+</h2>
+
+<p id="memberCount">
+
+0
+
+</p>
+
+</div>
+
+</div>
+
+<br><br>
+
+<h1>
+
+🌌 Explore Infinite X
+
+</h1>
+
+<p style="font-size:25px;">
+
+Create worlds without limits.
+
+</p>
+
+<br><br>
+
+<hr>
+
+<br>
+
+<p>
+
+Infinite X © 2026
+
+<br><br>
+
+Made by Evan and Team
+
+</p>
+
+</div>
+
+</div>
+
+<script>
+
+function isLoggedIn(){
+
+return localStorage.getItem(
+"user"
+) !== null;
+
+}
+
+// START BUTTON
+
+document
+.getElementById(
+"startBtn"
+)
+.addEventListener(
+"click",
+function(e){
+
+e.preventDefault();
+
+if(
+
+!isLoggedIn()
+
+){
+
+window.location.href =
+"whoareyou.html";
+
+}
+
+else{
+
+window.location.href =
+"comic.html";
+
+}
+
+}
+
+);
+
+// PROFILE
+
+function goProfile(){
+
+if(
+
+!isLoggedIn()
+
+){
+
+window.location.href =
+"whoareyou.html";
+
+}
+
+else{
+
+window.location.href =
+"profile.html";
+
+}
+
+}
+
+// COMIC
+
+function goComic(){
+
+if(
+
+!isLoggedIn()
+
+){
+
+window.location.href =
+"whoareyou.html";
+
+}
+
+else{
+
+window.location.href =
+"comic.html";
+
+}
+
+}
+
+// DEV BUTTON
+
+if(
+
+localStorage.getItem(
+"developerLogged"
+) === "true"
+
+){
+
+document
+.getElementById(
+"devButton"
+)
+.style.display =
+"block";
+
+}
+
+// =====================
+// LOGIN CONTENT
+// =====================
+
+if(isLoggedIn()){
+
+document.getElementById(
+"loggedContent"
+).style.display =
+"block";
+
+}
+
+// =====================
+// DATA
+// =====================
+
+let chapters =
+
+JSON.parse(
+localStorage.getItem(
+"chapters"
+)
+
+) || [];
+
+let characters =
+
+JSON.parse(
+localStorage.getItem(
+"infinite_x_characters"
+)
+
+) || [];
+
+let members =
+
+JSON.parse(
+localStorage.getItem(
+"accounts"
+)
+
+) || [];
+
+// =====================
+// STATS
+// =====================
+
+document.getElementById(
+"comicCount"
+).innerText =
+chapters.length;
+
+document.getElementById(
+"characterCount"
+).innerText =
+characters.length;
+
+document.getElementById(
+"memberCount"
+).innerText =
+members.length;
+
+// =====================
+// LATEST UPDATES
+// =====================
+
+if(chapters.length == 0){
+
+document.getElementById(
+"latestUpdates"
+).innerHTML =
+
+`
+
+<div class="comic-card">
+
+<h2>
+
+Coming Soon
+
+</h2>
+
+<p>
+
+No comic available yet.
+
+</p>
+
+</div>
+
+`;
+
+}
+
+else{
+
+chapters
+.slice(-3)
+.reverse()
+.forEach(ch=>{
+
+document.getElementById(
+"latestUpdates"
+).innerHTML +=
+
+`
+
+<div class="comic-card">
+
+<h2>
+
+${ch.title}
+
+</h2>
+
+<p>
+
+${ch.pages || 0} Pages
+
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+// =====================
+// POPULAR CHARACTERS
+// =====================
+
+if(characters.length == 0){
+
+document.getElementById(
+"popularCharacters"
+).innerHTML =
+
+`
+
+<div class="comic-card">
+
+<h2>
+
+Coming Soon
+
+</h2>
+
+<p>
+
+No character available yet.
+
+</p>
+
+</div>
+
+`;
+
+}
+
+else{
+
+characters
+.slice(-3)
+.reverse()
+.forEach(ch=>{
+
+document.getElementById(
+"popularCharacters"
+).innerHTML +=
+
+`
+
+<div class="comic-card">
+
+<img
+src="${ch.image}"
+class="character-image"
+>
+
+<h2>
+
+${ch.name}
+
+</h2>
+
+<p>
+
+${ch.role}
+
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+</script>
+
+<div id="themeFade"></div>
+
+<script src="theme.js"></script>
+
+</body>
+</html>
