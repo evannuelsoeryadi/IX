@@ -864,3 +864,29 @@ justify-content:center;
 
 }
 
+/* =====================
+HOME PANEL
+===================== */
+
+.home-panel{
+
+width:320px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:25px;
+
+}
+
+.home-section{
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
