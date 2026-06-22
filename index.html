@@ -374,6 +374,36 @@ members.length;
 // LATEST UPDATES
 // =====================
 
+if(chapters.length == 0){
+
+document.getElementById(
+"latestUpdates"
+).innerHTML =
+
+`
+
+<div class="comic-card">
+
+<h2>
+
+Coming Soon
+
+</h2>
+
+<p>
+
+No comic available yet.
+
+</p>
+
+</div>
+
+`;
+
+}
+
+else{
+
 chapters
 .slice(-3)
 .reverse()
@@ -395,7 +425,7 @@ ${ch.title}
 
 <p>
 
-${ch.pages} Pages
+${ch.pages || 0} Pages
 
 </p>
 
@@ -405,9 +435,42 @@ ${ch.pages} Pages
 
 });
 
+}
+
+
 // =====================
 // POPULAR CHARACTERS
 // =====================
+
+if(characters.length == 0){
+
+document.getElementById(
+"popularCharacters"
+).innerHTML =
+
+`
+
+<div class="comic-card">
+
+<h2>
+
+Coming Soon
+
+</h2>
+
+<p>
+
+No character available yet.
+
+</p>
+
+</div>
+
+`;
+
+}
+
+else{
 
 characters
 .slice(-3)
@@ -422,6 +485,11 @@ document.getElementById(
 
 <div class="comic-card">
 
+<img
+src="${ch.image}"
+class="character-image"
+>
+
 <h2>
 
 ${ch.name}
@@ -430,7 +498,7 @@ ${ch.name}
 
 <p>
 
-${ch.role || ""}
+${ch.role}
 
 </p>
 
@@ -439,6 +507,9 @@ ${ch.role || ""}
 `;
 
 });
+
+}
+
 
 </script>
 
