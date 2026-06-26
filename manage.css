@@ -759,28 +759,32 @@ gap:15px;
 }
 
 /* =====================
-HOME LAYOUT
+HOME PAGE
 ===================== */
 
 .home-layout{
 
 display:flex;
 
-align-items:center;
-
 justify-content:center;
 
-gap:80px;
+align-items:center;
+
+gap:100px;
 
 min-height:100vh;
 
-padding:0 60px;
+padding:40px;
 
 }
 
 .home-panel{
 
 width:340px;
+
+max-height:700px;
+
+overflow-y:auto;
 
 display:flex;
 
@@ -800,24 +804,56 @@ gap:15px;
 
 }
 
-.hero-main{
-
-text-align:center;
-
-}
-
-#loggedContent{
-
-display:none;
-
-}
-
-#loggedContent .comic-container{
+.home-panel .comic-container{
 
 display:flex;
 
 flex-direction:column;
 
 gap:15px;
+
+}
+
+.hero-main{
+
+flex:1;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+text-align:center;
+
+}
+
+.hero-main h1{
+
+font-size:70px;
+
+margin-bottom:20px;
+
+}
+
+.hero-main p{
+
+font-size:24px;
+
+margin-bottom:30px;
+
+}
+
+.hero-buttons{
+
+display:flex;
+
+gap:20px;
+
+flex-wrap:wrap;
+
+justify-content:center;
 
 }
