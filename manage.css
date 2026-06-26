@@ -747,27 +747,6 @@ border:2px solid white;
 
 }
 
-.hero{
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-gap:70px;
-
-}
-
-#loggedContent{
-
-width:300px;
-
-max-height:600px;
-
-overflow-y:auto;
-
-}
 
 #loggedContent .comic-container{
 
@@ -779,34 +758,49 @@ gap:15px;
 
 }
 
-#loggedContent h1{
-
-font-size:24px;
-
-}
-
-
 /* =====================
 HOME LAYOUT
 ===================== */
 
-.hero{
-
-min-height:100vh;
+.home-layout{
 
 display:flex;
 
-justify-content:center;
-
 align-items:center;
+
+justify-content:center;
 
 gap:80px;
 
-padding:0 50px;
+min-height:100vh;
+
+padding:0 60px;
 
 }
 
-.hero > div:last-child{
+.home-panel{
+
+width:340px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:30px;
+
+}
+
+.home-block{
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+.hero-main{
 
 text-align:center;
 
@@ -814,17 +808,7 @@ text-align:center;
 
 #loggedContent{
 
-width:320px;
-
-max-height:700px;
-
-overflow-y:auto;
-
-}
-
-#loggedContent .manage-container{
-
-padding:0;
+display:none;
 
 }
 
@@ -834,59 +818,6 @@ display:flex;
 
 flex-direction:column;
 
-gap:20px;
-
-}
-
-#loggedContent h1{
-
-font-size:25px;
-
-margin-bottom:15px;
-
-}
-
-#loggedContent .comic-card{
-
-padding:15px;
-
-}
-
-.hero-main{
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-justify-content:center;
-
-}
-
-/* =====================
-HOME PANEL
-===================== */
-
-.home-panel{
-
-width:320px;
-
-display:flex;
-
-flex-direction:column;
-
-gap:25px;
-
-}
-
-.home-section{
-
-display:flex;
-
-flex-direction:rows;
-
 gap:15px;
 
 }
-
