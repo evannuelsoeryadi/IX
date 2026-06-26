@@ -769,28 +769,49 @@ max-height:none;
 }
 
 /* =====================
-HOME PAGE
+HOME LAYOUT
 ===================== */
 
 .home-layout{
 
 display:flex;
-
-justify-content:center;
-
 align-items:center;
-
-gap:100px;
+justify-content:center;
+gap:70px;
 
 min-height:100vh;
 
-padding:40px;
+padding:40px 60px;
 
 }
+
+.hero-main{
+
+text-align:center;
+flex:1;
+
+}
+
+/* =====================
+LEFT PANEL
+===================== */
 
 .home-panel{
 
 width:340px;
+
+padding:25px;
+
+border-radius:25px;
+
+background:rgba(15,23,42,.65);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.08);
+
+box-shadow:
+0 0 35px rgba(0,255,255,.15);
 
 display:flex;
 
@@ -798,21 +819,46 @@ flex-direction:column;
 
 gap:30px;
 
-max-height:none;
-
-overflow:visible;
-
 }
+
+/* tiap section */
 
 .home-block{
 
-display:flex;
+padding-bottom:20px;
 
-flex-direction:column;
-
-gap:15px;
+border-bottom:1px solid rgba(255,255,255,.08);
 
 }
+
+.home-block:last-child{
+
+border:none;
+
+padding-bottom:0;
+
+}
+
+/* =====================
+TITLE
+===================== */
+
+.home-block h1{
+
+font-size:28px;
+
+margin-bottom:18px;
+
+color:white;
+
+text-shadow:
+0 0 12px cyan;
+
+}
+
+/* =====================
+CARD
+===================== */
 
 .home-panel .comic-container{
 
@@ -824,99 +870,39 @@ gap:15px;
 
 }
 
-.hero-main{
+.home-panel .comic-card{
 
-flex:1;
+padding:18px;
 
-display:flex;
+border-radius:18px;
 
-flex-direction:column;
+background:rgba(255,255,255,.05);
 
-justify-content:center;
+border:1px solid rgba(255,255,255,.06);
 
-align-items:center;
-
-text-align:center;
+transition:.3s;
 
 }
 
-.hero-main h1{
+.home-panel .comic-card:hover{
 
-font-size:70px;
+transform:translateY(-4px);
 
-margin-bottom:20px;
-
-}
-
-.hero-main p{
-
-font-size:24px;
-
-margin-bottom:30px;
+box-shadow:
+0 0 18px cyan;
 
 }
 
-.hero-buttons{
+/* angka */
 
-display:flex;
-
-gap:20px;
-
-flex-wrap:wrap;
-
-justify-content:center;
-
-}
-
-/* =====================
-HOME LEFT PANEL
-===================== */
-
-.home-panel h1{
+#comicCount,
+#characterCount,
+#memberCount{
 
 font-size:32px;
 
-margin-bottom:15px;
+font-weight:bold;
 
-text-align:center;
-
-text-shadow:
-0 0 10px white;
-
-}
-
-.home-panel h2{
-
-font-size:22px;
-
-}
-
-.home-panel p{
-
-font-size:16px;
-
-line-height:1.5;
-
-}
-
-.home-panel .comic-card{
-
-padding:15px;
-
-}
-
-.home-panel .character-image{
-
-width:80px;
-
-height:80px;
-
-}
-
-.home-panel #comicCount,
-.home-panel #characterCount,
-.home-panel #memberCount{
-
-font-size:28px;
+color:#00f5ff;
 
 }
