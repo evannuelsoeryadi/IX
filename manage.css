@@ -758,6 +758,16 @@ gap:15px;
 
 }
 
+#loggedContent{
+
+display:none;
+
+overflow:visible;
+
+max-height:none;
+
+}
+
 /* =====================
 HOME PAGE
 ===================== */
@@ -782,15 +792,15 @@ padding:40px;
 
 width:340px;
 
-max-height:700px;
-
-overflow-y:auto;
-
 display:flex;
 
 flex-direction:column;
 
 gap:30px;
+
+max-height:none;
+
+overflow:visible;
 
 }
 
