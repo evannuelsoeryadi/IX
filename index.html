@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <title>IX</title>
@@ -19,128 +20,24 @@
 <a href="character.html">Character</a>
 <a href="about.html">About Us</a>
 <a href="#" onclick="goProfile()">Profile</a>
-<a href="developer.html" id="devButton" style="display:none;">⚙️ Dev Panel</a>
 
-</nav>
-
-<!-- HERO -->
-
-<div class="hero">
-
-<!-- HOME -->
-
-<div class="home-layout">
-
-<!-- LEFT PANEL -->
-
-<div
-id="loggedContent"
+<a
+href="developer.html"
+id="devButton"
 style="display:none;"
 >
 
-<div class="home-panel">
+⚙️ Dev Panel
 
-<div class="home-block">
+</a>
 
-<h1>
+</nav>
 
-🔥 Latest Updates
+<!-- ========================= -->
+<!-- HERO -->
+<!-- ========================= -->
 
-</h1>
-
-<div
-class="comic-container"
-id="latestUpdates"
->
-
-</div>
-
-</div>
-
-<div class="home-block">
-
-<h1>
-
-⭐ Popular Characters
-
-</h1>
-
-<div
-class="comic-container"
-id="popularCharacters"
->
-
-</div>
-
-</div>
-
-<div class="home-block">
-
-<h1>
-
-📊 Infinite X Stats
-
-</h1>
-
-<div class="comic-container">
-
-<div class="comic-card">
-
-<h2>
-
-📚 Comics
-
-</h2>
-
-<p id="comicCount">
-
-0
-
-</p>
-
-</div>
-
-<div class="comic-card">
-
-<h2>
-
-👥 Characters
-
-</h2>
-
-<p id="characterCount">
-
-0
-
-</p>
-
-</div>
-
-<div class="comic-card">
-
-<h2>
-
-🌎 Members
-
-</h2>
-
-<p id="memberCount">
-
-0
-
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- CENTER -->
+<section class="hero">
 
 <div class="hero-main">
 
@@ -159,9 +56,13 @@ Read • Create • Explore
 <div class="hero-buttons">
 
 <a
+
 href="#"
+
 class="btn"
+
 id="startBtn"
+
 >
 
 Start Reading
@@ -169,8 +70,11 @@ Start Reading
 </a>
 
 <a
+
 href="character.html"
+
 class="btn"
+
 >
 
 Characters
@@ -181,11 +85,149 @@ Characters
 
 </div>
 
-</div>
+</section>
+
+<!-- ========================= -->
+<!-- HOME DASHBOARD -->
+<!-- ========================= -->
+
+<section
+class="home-dashboard"
+id="loggedContent"
+style="display:none;"
+>
+
+<div class="home-panel">
+
+<!-- Latest -->
+
+<div class="home-block">
+
+<h2>
+
+🔥 Latest Updates
+
+</h2>
+
+<div
+
+id="latestUpdates"
+
+class="comic-container"
+
+>
 
 </div>
 
 </div>
+
+<!-- Characters -->
+
+<div class="home-block">
+
+<h2>
+
+⭐ Popular Characters
+
+</h2>
+
+<div
+
+id="popularCharacters"
+
+class="comic-container"
+
+>
+
+</div>
+
+</div>
+
+<!-- Stats -->
+
+<div class="home-block">
+
+<h2>
+
+📊 Infinite X Stats
+
+</h2>
+
+<div class="stats-grid">
+
+<div class="comic-card">
+
+<h3>
+
+📚 Comics
+
+</h3>
+
+<p id="comicCount">
+
+0
+
+</p>
+
+</div>
+
+<div class="comic-card">
+
+<h3>
+
+👥 Characters
+
+</h3>
+
+<p id="characterCount">
+
+0
+
+</p>
+
+</div>
+
+<div class="comic-card">
+
+<h3>
+
+🌎 Members
+
+</h3>
+
+<p id="memberCount">
+
+0
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Footer -->
+
+<div class="home-footer">
+
+<p>
+
+Infinite X © 2026
+
+</p>
+
+<p>
+
+Made by Evan and Team
+
+</p>
+
+</div>
+
+</div>
+
+</section>
 
 <script>
 
@@ -193,99 +235,91 @@ function isLoggedIn(){
 
 return localStorage.getItem(
 "user"
-) !== null;
+)!==null;
 
 }
 
+// =====================
 // START BUTTON
+// =====================
 
 document
 .getElementById(
 "startBtn"
 )
-.addEventListener(
-"click",
-function(e){
+.onclick=function(e){
 
 e.preventDefault();
 
-if(
+if(!isLoggedIn()){
 
-!isLoggedIn()
-
-){
-
-window.location.href =
+window.location.href=
 "whoareyou.html";
 
 }
 
 else{
 
-window.location.href =
+window.location.href=
 "comic.html";
 
 }
 
-}
+};
 
-);
-
+// =====================
 // PROFILE
+// =====================
 
 function goProfile(){
 
-if(
+if(!isLoggedIn()){
 
-!isLoggedIn()
-
-){
-
-window.location.href =
+window.location.href=
 "whoareyou.html";
 
 }
 
 else{
 
-window.location.href =
+window.location.href=
 "profile.html";
 
 }
 
 }
 
+// =====================
 // COMIC
+// =====================
 
 function goComic(){
 
-if(
+if(!isLoggedIn()){
 
-!isLoggedIn()
-
-){
-
-window.location.href =
+window.location.href=
 "whoareyou.html";
 
 }
 
 else{
 
-window.location.href =
+window.location.href=
 "comic.html";
 
 }
 
 }
 
-// DEV BUTTON
+// =====================
+// DEV PANEL
+// =====================
 
 if(
 
 localStorage.getItem(
 "developerLogged"
-) === "true"
+)==="true"
 
 ){
 
@@ -293,93 +327,99 @@ document
 .getElementById(
 "devButton"
 )
-.style.display =
+.style.display=
 "block";
 
 }
 
 // =====================
-// LOGIN CONTENT
+// SHOW DASHBOARD
 // =====================
 
 if(isLoggedIn()){
 
-document.getElementById(
+document
+.getElementById(
 "loggedContent"
-).style.display =
+)
+.style.display=
 "block";
 
 }
 
 // =====================
-// DATA
+// LOAD DATA
 // =====================
 
-let chapters =
+const chapters=
 
 JSON.parse(
+
 localStorage.getItem(
 "chapters"
+
 )
 
-) || [];
+)||[];
 
-let characters =
+const characters=
 
 JSON.parse(
+
 localStorage.getItem(
 "infinite_x_characters"
+
 )
 
-) || [];
+)||[];
 
-let members =
+const members=
 
 JSON.parse(
+
 localStorage.getItem(
 "accounts"
+
 )
 
-) || [];
+)||[];
 
 // =====================
 // STATS
 // =====================
 
-document.getElementById(
-"comicCount"
-).innerText =
+comicCount.innerText=
 chapters.length;
 
-document.getElementById(
-"characterCount"
-).innerText =
+characterCount.innerText=
 characters.length;
 
-document.getElementById(
-"memberCount"
-).innerText =
+memberCount.innerText=
 members.length;
 
 // =====================
 // LATEST UPDATES
 // =====================
 
-if(chapters.length == 0){
+const latestBox=
 
 document.getElementById(
 "latestUpdates"
-).innerHTML =
+);
+
+if(chapters.length===0){
+
+latestBox.innerHTML=
 
 `
 
 <div class="comic-card">
 
-<h2>
+<h3>
 
 Coming Soon
 
-</h2>
+</h3>
 
 <p>
 
@@ -400,23 +440,21 @@ chapters
 .reverse()
 .forEach(ch=>{
 
-document.getElementById(
-"latestUpdates"
-).innerHTML +=
+latestBox.innerHTML+=
 
 `
 
 <div class="comic-card">
 
-<h2>
+<h3>
 
 ${ch.title}
 
-</h2>
+</h3>
 
 <p>
 
-${ch.pages || 0} Pages
+${ch.pages||0} Pages
 
 </p>
 
@@ -428,26 +466,29 @@ ${ch.pages || 0} Pages
 
 }
 
-
 // =====================
 // POPULAR CHARACTERS
 // =====================
 
-if(characters.length == 0){
+const charBox=
 
 document.getElementById(
 "popularCharacters"
-).innerHTML =
+);
+
+if(characters.length===0){
+
+charBox.innerHTML=
 
 `
 
 <div class="comic-card">
 
-<h2>
+<h3>
 
 Coming Soon
 
-</h2>
+</h3>
 
 <p>
 
@@ -468,28 +509,29 @@ characters
 .reverse()
 .forEach(ch=>{
 
-document.getElementById(
-"popularCharacters"
-).innerHTML +=
+charBox.innerHTML+=
 
 `
 
 <div class="comic-card">
 
 <img
+
 src="${ch.image}"
+
 class="character-image"
+
 >
 
-<h2>
+<h3>
 
 ${ch.name}
 
-</h2>
+</h3>
 
 <p>
 
-${ch.role}
+${ch.role||""}
 
 </p>
 
@@ -501,7 +543,6 @@ ${ch.role}
 
 }
 
-
 </script>
 
 <div id="themeFade"></div>
@@ -509,4 +550,5 @@ ${ch.role}
 <script src="theme.js"></script>
 
 </body>
+
 </html>
