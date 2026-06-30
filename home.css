@@ -8,13 +8,13 @@ display:flex;
 
 justify-content:center;
 
-align-items:flex-start;
+align-items:center;
 
-gap:60px;
-
-padding:60px;
+gap:70px;
 
 min-height:calc(100vh - 90px);
+
+padding:40px 60px;
 
 }
 
