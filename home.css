@@ -1,0 +1,193 @@
+/* =====================
+HOME LAYOUT
+===================== */
+
+.home-layout{
+
+display:flex;
+
+justify-content:center;
+
+align-items:flex-start;
+
+gap:60px;
+
+padding:60px;
+
+min-height:calc(100vh - 90px);
+
+}
+
+/* =====================
+HERO
+===================== */
+
+.hero{
+
+flex:1;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+min-height:700px;
+
+}
+
+.hero-main{
+
+text-align:center;
+
+}
+
+.hero-main h1{
+
+font-size:90px;
+
+margin-bottom:20px;
+
+}
+
+.hero-main p{
+
+font-size:30px;
+
+margin-bottom:35px;
+
+}
+
+/* =====================
+LEFT PANEL
+===================== */
+
+.home-panel{
+
+width:360px;
+
+background:rgba(15,23,42,.75);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:25px;
+
+padding:25px;
+
+box-shadow:
+
+0 0 30px rgba(0,255,255,.18);
+
+}
+
+.home-block{
+
+margin-bottom:30px;
+
+}
+
+.home-block:last-child{
+
+margin-bottom:0;
+
+}
+
+.home-block h1{
+
+font-size:28px;
+
+margin-bottom:18px;
+
+text-align:left;
+
+}
+
+/* =====================
+LIST
+===================== */
+
+.home-panel .comic-container{
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+.home-panel .comic-card{
+
+width:100%;
+
+}
+
+/* =====================
+STATS
+===================== */
+
+.home-panel .comic-card p{
+
+font-size:28px;
+
+font-weight:bold;
+
+color:#00f5ff;
+
+}
+
+/* =====================
+SCROLL
+===================== */
+
+.home-panel{
+
+max-height:760px;
+
+overflow-y:auto;
+
+}
+
+.home-panel::-webkit-scrollbar{
+
+width:8px;
+
+}
+
+.home-panel::-webkit-scrollbar-thumb{
+
+background:#3B82F6;
+
+border-radius:20px;
+
+}
+
+/* =====================
+RESPONSIVE
+===================== */
+
+@media(max-width:1000px){
+
+.home-layout{
+
+flex-direction:column;
+
+align-items:center;
+
+}
+
+.home-panel{
+
+width:95%;
+
+}
+
+.hero{
+
+min-height:auto;
+
+}
+
+}
