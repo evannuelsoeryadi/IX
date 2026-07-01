@@ -24,7 +24,13 @@ HERO
 
 .hero{
 
-min-height:calc(100vh - 90px);
+flex:1;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
 
 }
 
@@ -191,5 +197,11 @@ width:95%;
 min-height:auto;
 
 }
+
+}
+
+.home-dashboard{
+
+flex:0 0 360px;
 
 }
