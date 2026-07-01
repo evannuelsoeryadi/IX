@@ -29,23 +29,145 @@
 
 <div class="manage-container">
 
-<h1>Infinite X Comics</h1>
+<h1>
 
-<!-- 🔥 CONTINUE READING -->
-<div id="continueBox" style="display:none;">
-    <h3>Continue Reading</h3>
-    <button class="add-btn" onclick="continueReading()">
-        Resume Last Chapter
-    </button>
+Infinite X Comics
+
+</h1>
+
+<!-- ===================== -->
+<!-- TOOLBAR -->
+<!-- ===================== -->
+
+<div class="comic-toolbar">
+
+<input
+
+type="text"
+
+id="searchComic"
+
+placeholder="🔍 Search comics..."
+
+>
+
+<select id="genreFilter">
+
+<option value="all">
+
+All Genres
+
+</option>
+
+<option value="Action">
+
+Action
+
+</option>
+
+<option value="Fantasy">
+
+Fantasy
+
+</option>
+
+<option value="Sci-Fi">
+
+Sci-Fi
+
+</option>
+
+<option value="Comedy">
+
+Comedy
+
+</option>
+
+</select>
+
+<select id="sortComic">
+
+<option value="new">
+
+Newest
+
+</option>
+
+<option value="old">
+
+Oldest
+
+</option>
+
+<option value="az">
+
+A - Z
+
+</option>
+
+<option value="za">
+
+Z - A
+
+</option>
+
+</select>
+
 </div>
 
-<h2>Latest Chapters</h2>
+<!-- ===================== -->
+<!-- CONTINUE READING -->
+<!-- ===================== -->
 
-<div id="chapterList"></div>
+<div
+
+id="continueBox"
+
+class="continue-card"
+
+style="display:none;"
+
+>
+
+<h2>
+
+Continue Reading
+
+</h2>
+
+<p>
+
+Resume your last chapter instantly.
+
+</p>
+
+<button
+
+class="add-btn"
+
+onclick="continueReading()"
+
+>
+
+Resume Last Chapter
+
+</button>
 
 </div>
 
-<script type="module">
+<!-- ===================== -->
+<!-- CHAPTER TITLE -->
+<!-- ===================== -->
+
+<h2 class="comic-section-title">
+
+Latest Chapters
+
+</h2>
+
+<div id="chapterList">
+
+</div>
 
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
