@@ -226,27 +226,28 @@ window.continueReading = continueReading;
 // =====================
 // CONTINUE FUNCTION
 // =====================
-function continueReading(){
+function checkContinue(){
 
-    let last =
-    localStorage.getItem(
-        "lastReadChapter"
-    );
+let last=
 
-    if(last){
+localStorage.getItem(
+"lastReadChapter"
+);
 
-        localStorage.setItem(
-            "selectedChapter",
-            last
-        );
+if(last){
 
-        window.location.href =
-        "reader.html";
+document.getElementById(
+"continueBox"
+).style.display="block";
 
-    }
+document.getElementById(
+"continueTitle"
+).innerText=
+"Chapter : "+last;
 
 }
 
+}
 // =====================
 // LOAD CHAPTERS
 // =====================
