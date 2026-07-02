@@ -134,11 +134,23 @@ src="https://placehold.co/120x170"
 
 <div class="continue-info">
 
+<div class="continue-top">
+
 <h2>
 
 📖 Continue Reading
 
 </h2>
+
+<span
+id="continueGenre"
+class="continue-genre">
+
+Action • Fantasy
+
+</span>
+
+</div>
 
 <h3 id="continueTitle">
 
@@ -146,19 +158,38 @@ Loading...
 
 </h3>
 
+<div class="continue-progress">
+
+<div
+id="continueBar"
+class="continue-bar">
+
+</div>
+
+</div>
+
+<p id="continuePercent">
+
+0%
+
+</p>
+
 <p id="continuePages">
 
-0 Pages
+Page 0 / 0
+
+</p>
+
+<p id="continueTime">
+
+Last Read :
+Today
 
 </p>
 
 <button
-
 class="add-btn"
-
-onclick="continueReading()"
-
->
+onclick="continueReading()">
 
 Resume Reading
 
@@ -221,38 +252,138 @@ let chapters = [];
 // =====================
 function checkContinue(){
 
-let last =
+let last=
+
 localStorage.getItem(
 "lastReadChapter"
 );
 
 if(!last) return;
 
-let chapter =
+let chapter=
+
 chapters.find(c=>c.id===last);
 
 if(!chapter) return;
 
 document.getElementById(
 "continueBox"
-).style.display =
+).style.display=
 "block";
 
 document.getElementById(
+"continueCover"
+).src=
+
+chapter.cover||
+
+"https://placehold.co/120x170";
+
+document.getElementById(
 "continueTitle"
-).innerText =
+).innerText=
 chapter.title;
 
 document.getElementById(
-"continuePages"
-).innerText =
-chapter.pages + " Pages";
+"continueGenre"
+).innerText=
+chapter.genre||
+"Unknown";
+
+let lastPage=
+
+Number(
+localStorage.getItem(
+"lastReadPage"
+)||0);
+
+let percent=
+
+Math.round(
+
+(lastPage/chapter.pages)*100
+
+);
 
 document.getElementById(
-"continueCover"
-).src =
-chapter.cover ||
-"https://placehold.co/120x170";
+"continuePages"
+).innerText=
+
+"Page "+lastPage+
+
+" / "+chapter.pages;
+
+document.getElementById(
+"continuePercent"
+).innerText=
+
+percent+"%";
+
+document.getElementById(
+"continueBar"
+).style.width=
+
+percent+"%";
+
+let time=
+
+localStorage.getItem(
+"lastReadTime"
+);
+
+if(time){
+
+let diff=
+
+Date.now()-Number(time);
+
+let hours=
+
+Math.floor(
+
+diff/3600000
+
+);
+
+if(hours<1){
+
+document.getElementById(
+"continueTime"
+).innerText=
+
+"Last Read : Just now";
+
+}
+
+else if(hours<24){
+
+document.getElementById(
+"continueTime"
+).innerText=
+
+"Last Read : "+hours+
+
+" hour(s) ago";
+
+}
+
+else{
+
+let day=
+
+Math.floor(hours/24);
+
+document.getElementById(
+"continueTime"
+).innerText=
+
+"Last Read : "+day+
+
+" day(s) ago";
+
+}
+
+}
 
 }
 // =====================
