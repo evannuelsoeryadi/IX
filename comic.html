@@ -120,24 +120,35 @@ Z - A
 <!-- ===================== -->
 
 <div
-
 id="continueBox"
-
 class="continue-card"
+style="display:none;">
 
-style="display:none;"
+<div class="continue-layout">
 
+<img
+id="continueCover"
+class="continue-cover"
+src="https://placehold.co/120x170"
 >
+
+<div class="continue-info">
 
 <h2>
 
-Continue Reading
+📖 Continue Reading
 
 </h2>
 
-<p>
+<h3 id="continueTitle">
 
-Resume your last chapter instantly.
+Loading...
+
+</h3>
+
+<p id="continuePages">
+
+0 Pages
 
 </p>
 
@@ -149,9 +160,13 @@ onclick="continueReading()"
 
 >
 
-Resume Last Chapter
+Resume Reading
 
 </button>
+
+</div>
+
+</div>
 
 </div>
 
@@ -206,46 +221,38 @@ let chapters = [];
 // =====================
 function checkContinue(){
 
-    let last = localStorage.getItem(
-        "lastReadChapter"
-    );
-
-    if(last){
-
-        document.getElementById(
-            "continueBox"
-        ).style.display =
-        "block";
-
-    }
-
-}
-
-window.continueReading = continueReading;
-
-// =====================
-// CONTINUE FUNCTION
-// =====================
-function checkContinue(){
-
-let last=
-
+let last =
 localStorage.getItem(
 "lastReadChapter"
 );
 
-if(last){
+if(!last) return;
+
+let chapter =
+chapters.find(c=>c.id===last);
+
+if(!chapter) return;
 
 document.getElementById(
 "continueBox"
-).style.display="block";
+).style.display =
+"block";
 
 document.getElementById(
 "continueTitle"
-).innerText=
-"Chapter : "+last;
+).innerText =
+chapter.title;
 
-}
+document.getElementById(
+"continuePages"
+).innerText =
+chapter.pages + " Pages";
+
+document.getElementById(
+"continueCover"
+).src =
+chapter.cover ||
+"https://placehold.co/120x170";
 
 }
 // =====================
@@ -283,8 +290,11 @@ async function loadChapters(){
     });
 
     renderChapters();
+    
+    checkContinue();
 
 }
+
 
 // =====================
 // RENDER
@@ -400,8 +410,6 @@ document.getElementById(
 // INIT
 // =====================
 loadChapters();
-
-checkContinue();
 
 document.getElementById("searchComic")
 .addEventListener("input",e=>{
