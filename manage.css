@@ -508,3 +508,96 @@ color:white;
 
 }
 
+/* =====================
+COMIC TOOLBAR
+===================== */
+
+.comic-toolbar{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:15px;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin:25px 0 40px;
+
+}
+
+.comic-toolbar input{
+
+flex:1;
+
+min-width:240px;
+
+padding:15px;
+
+border:none;
+
+border-radius:15px;
+
+background:#111827;
+
+color:white;
+
+font-size:16px;
+
+}
+
+.comic-toolbar input::placeholder{
+
+color:#9ca3af;
+
+}
+
+.comic-toolbar select{
+
+padding:15px;
+
+border:none;
+
+border-radius:15px;
+
+background:#111827;
+
+color:white;
+
+font-size:16px;
+
+cursor:pointer;
+
+}
+
+.continue-card{
+
+background:#111827;
+
+padding:25px;
+
+border-radius:20px;
+
+margin-bottom:35px;
+
+color:white;
+
+}
+
+.continue-card h2{
+
+margin-bottom:10px;
+
+}
+
+.comic-section-title{
+
+color:white;
+
+margin:30px 0 20px;
+
+font-size:34px;
+
+}
