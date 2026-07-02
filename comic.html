@@ -169,6 +169,7 @@ Latest Chapters
 
 </div>
 
+    <script>
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
@@ -400,6 +401,31 @@ document.getElementById(
 loadChapters();
 
 checkContinue();
+
+document.getElementById("searchComic")
+.addEventListener("input",e=>{
+
+let keyword=e.target.value.toLowerCase();
+
+document.querySelectorAll(".chapter-card")
+
+.forEach(card=>{
+
+card.style.display=
+
+card.innerText.toLowerCase().includes(keyword)
+
+?
+
+"flex"
+
+:
+
+"none";
+
+});
+
+});
 
 </script>
 
