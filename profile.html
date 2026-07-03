@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <title>Profile - Infinite X</title>
 
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="manage.css">
+<link rel="stylesheet" href="profile.css">
 <link rel="stylesheet" href="theme.css">
 
 </head>
@@ -15,9 +16,13 @@
 <nav>
 
 <a href="index.html">Home</a>
+
 <a href="comic.html">Comic</a>
+
 <a href="character.html">Character</a>
+
 <a href="about.html">About Us</a>
+
 <a href="profile.html">Profile</a>
 
 <a
@@ -32,7 +37,7 @@ style="display:none;"
 
 </nav>
 
-<div class="manage-container">
+<div class="profile-container">
 
 <h1>
 
@@ -40,21 +45,19 @@ My Profile
 
 </h1>
 
-<!-- ========================= -->
 <!-- PROFILE CARD -->
-<!-- ========================= -->
 
 <div class="profile-card">
 
+<div class="profile-top">
+
 <img
-
 id="profileAvatar"
-
-src="https://placehold.co/150"
-
 class="profile-avatar"
-
+src="https://placehold.co/150"
 >
+
+<div class="profile-info">
 
 <h2 id="profileName">
 
@@ -65,45 +68,180 @@ Guest
 <p id="joinDate">
 
 Joined :
-Unknown
+-
 
 </p>
 
 </div>
 
-<!-- ========================= -->
+</div>
+
+<div class="profile-menu">
+
+<div
+class="menu-box"
+id="continueCard"
+>
+
+📖
+
+<span>
+
+Continue Reading
+
+</span>
+
+</div>
+
+<div
+class="menu-box"
+id="historyCard"
+>
+
+📚
+
+<span>
+
+Reading History
+
+</span>
+
+</div>
+
+<div
+class="menu-box"
+id="favoriteCard"
+>
+
+⭐
+
+<span>
+
+Favorite
+
+</span>
+
+</div>
+
+<div
+class="menu-box"
+id="achievementCard"
+>
+
+🏆
+
+<span>
+
+Achievement
+
+</span>
+
+</div>
+
+<div
+class="menu-box"
+id="settingCard"
+>
+
+⚙️
+
+<span>
+
+Settings
+
+</span>
+
+</div>
+
+<div
+class="menu-box logout-box"
+id="logoutBtn"
+>
+
+🚪
+
+<span>
+
+Logout
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
 <!-- CONTINUE READING -->
-<!-- ========================= -->
 
-<div class="comic-card">
+<section class="continue-section">
 
 <h2>
 
-📖 Continue Reading
+Continue Reading
 
 </h2>
 
-<div id="continueReading">
+<div
+id="continueReadingBox"
+class="continue-reading-card"
+>
 
-No Chapter
+<img
+id="continueCover"
+src="https://placehold.co/120x170"
+>
+
+<div>
+
+<h3 id="continueTitle">
+
+No Reading
+
+</h3>
+
+<p id="continueChapter">
+
+-
+
+</p>
+
+<div class="progress-bg">
+
+<div
+class="progress-fill"
+id="continueProgress"
+>
 
 </div>
 
 </div>
 
-<!-- ========================= -->
+<button
+id="continueButton"
+>
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
 <!-- HISTORY -->
-<!-- ========================= -->
 
-<div class="comic-card">
+<section class="history-section">
+
+<div class="history-header">
 
 <h2>
 
-📚 Reading History
+Reading History
 
 </h2>
-
-<div class="search-box">
 
 <input
 
@@ -117,101 +255,120 @@ placeholder="🔍 Search history..."
 
 </div>
 
-<div id="historyList">
+<div
+
+class="history-grid"
+
+id="historyGrid"
+
+>
 
 </div>
 
-</div>
+</section>
 
-<!-- ========================= -->
 <!-- FAVORITE -->
-<!-- ========================= -->
 
-<div class="comic-card">
+<section class="favorite-section">
 
 <h2>
 
-⭐ Favorite
+Favorite
 
 </h2>
 
+<div
+
+class="history-grid"
+
+id="favoriteGrid"
+
+>
+
+</div>
+
+</section>
+
+<!-- ACHIEVEMENT -->
+
+<section class="achievement-section">
+
+<h2>
+
+Achievement
+
+</h2>
+
+<div
+class="achievement-grid"
+id="achievementGrid"
+>
+
+<div class="achievement-card">
+
+🥇
+
+<h3>
+
+First Reader
+
+</h3>
+
 <p>
 
-Coming Soon...
+Read your first chapter.
 
 </p>
 
 </div>
 
-<!-- ========================= -->
-<!-- ACHIEVEMENT -->
-<!-- ========================= -->
+<div class="achievement-card">
 
-<div class="comic-card">
+📚
 
-<h2>
+<h3>
 
-🏆 Achievement
+Bookworm
 
-</h2>
+</h3>
 
-<ul>
+<p>
 
-<li>
+Read 10 chapters.
 
-First Reader
-
-</li>
-
-<li>
-
-Read 10 Chapters
-
-</li>
-
-<li>
-
-Coming Soon...
-
-</li>
-
-</ul>
+</p>
 
 </div>
 
-<!-- ========================= -->
-<!-- SETTINGS -->
-<!-- ========================= -->
+<div class="achievement-card">
 
-<div class="comic-card">
+👀
 
-<h2>
+<h3>
 
-⚙️ Settings
+Coming Soon
 
-</h2>
+</h3>
 
-<button
+<p>
 
-class="add-btn"
+More achievements...
 
-id="logoutBtn"
-
->
-
-Logout
-
-</button>
+</p>
 
 </div>
 
 </div>
+
+</section>
+
+<div id="themeFade"></div>
     
 <script>
 
-// =====================
+//
 // DEV PANEL
-// =====================
+//
 
 if(
 
@@ -227,31 +384,30 @@ document.getElementById(
 
 }
 
-// =====================
+//
 // PROFILE
-// =====================
+//
 
-let username=
+let profile=
 
-localStorage.getItem(
-"profileName"
-)
-
-||
-
-"Guest";
-
-let joinDate=
+JSON.parse(
 
 localStorage.getItem(
-"profileJoinDate"
+"infinite_x_profile"
+
 )
 
-||
+)||{
 
-new Date()
+name:"Guest",
 
-.toLocaleDateString();
+avatar:"https://placehold.co/150",
+
+joined:new Date()
+
+.toLocaleDateString()
+
+};
 
 document.getElementById(
 
@@ -259,7 +415,15 @@ document.getElementById(
 
 ).innerText=
 
-username;
+profile.name;
+
+document.getElementById(
+
+"profileAvatar"
+
+).src=
+
+profile.avatar;
 
 document.getElementById(
 
@@ -267,11 +431,11 @@ document.getElementById(
 
 ).innerText=
 
-"Joined : "+joinDate;
+"Joined : "+profile.joined;
 
-// =====================
+//
 // CONTINUE READING
-// =====================
+//
 
 let lastChapter=
 
@@ -279,37 +443,42 @@ localStorage.getItem(
 "lastReadChapter"
 );
 
+let lastPage=
+
+Number(
+
+localStorage.getItem(
+"lastReadPage"
+
+)||0
+
+);
+
 if(lastChapter){
 
 document.getElementById(
 
-"continueReading"
+"continueTitle"
 
-).innerHTML=
+).innerText=
 
-`
+lastChapter;
 
-<b>
+document.getElementById(
 
-${lastChapter}
+"continueChapter"
 
-</b>
+).innerText=
 
-<br><br>
+"Page "+(lastPage+1);
 
-<button
+document.getElementById(
 
-class="edit-btn"
+"continueProgress"
 
-onclick="continueReading()"
+).style.width=
 
->
-
-Continue
-
-</button>
-
-`;
+(lastPage*5)+"%";
 
 }
 
@@ -317,29 +486,142 @@ else{
 
 document.getElementById(
 
-"continueReading"
+"continueTitle"
 
-).innerHTML=
+).innerText=
 
-"No Reading History";
+"No Reading";
+
+document.getElementById(
+
+"continueButton"
+
+).disabled=true;
 
 }
 
-// =====================
-// CONTINUE
-// =====================
+document.getElementById(
 
-function continueReading(){
+"continueButton"
+
+).onclick=()=>{
 
 localStorage.setItem(
 
 "selectedChapter",
 
+lastChapter
+
+);
+
+location.href=
+
+"reader.html";
+
+};
+
+//
+// HISTORY
+//
+
+let history=
+
+JSON.parse(
+
 localStorage.getItem(
 
-"lastReadChapter"
+"infinite_x_history"
 
 )
+
+)||[];
+
+function renderHistory(list){
+
+let grid=
+
+document.getElementById(
+
+"historyGrid"
+
+);
+
+grid.innerHTML="";
+
+if(list.length==0){
+
+grid.innerHTML=
+
+`
+
+<div class="empty-card">
+
+No History
+
+</div>
+
+`;
+
+return;
+
+}
+
+list.forEach(item=>{
+
+grid.innerHTML+=`
+
+<div class="history-card">
+
+<img
+
+src="${
+item.cover||
+'https://placehold.co/150x220'
+}"
+
+>
+
+<h3>
+
+${item.title}
+
+</h3>
+
+<p>
+
+${item.chapter}
+
+</p>
+
+<button
+
+onclick="openHistory(
+
+'${item.id}'
+
+)"
+
+>
+
+Continue
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+window.openHistory=function(id){
+
+localStorage.setItem(
+
+"selectedChapter",
+
+id
 
 );
 
@@ -349,55 +631,72 @@ location.href=
 
 }
 
-window.continueReading=
+renderHistory(history);
 
-continueReading;
+//
+// FAVORITE
+//
 
-// =====================
-// HISTORY
-// =====================
-
-let history=
+let favorites=
 
 JSON.parse(
 
 localStorage.getItem(
 
-"readingHistory"
+"infinite_x_favorite"
 
 )
 
 )||[];
 
-let historyHTML="";
+function renderFavorite(){
 
-if(history.length===0){
+let grid=
 
-historyHTML=
+document.getElementById(
+
+"favoriteGrid"
+
+);
+
+grid.innerHTML="";
+
+if(favorites.length==0){
+
+grid.innerHTML=
 
 `
 
-<p>
+<div class="empty-card">
 
-No History
+No Favorite
 
-</p>
+</div>
 
 `;
 
+return;
+
 }
 
-else{
+favorites.forEach(item=>{
 
-history.forEach(ch=>{
+grid.innerHTML+=`
 
-historyHTML+=`
+<div class="history-card">
 
-<div class="comic-card history-card">
+<img
+
+src="${
+item.cover||
+'https://placehold.co/150x220'
+}"
+
+>
 
 <h3>
 
-${ch}
+${item.title}
 
 </h3>
 
@@ -409,17 +708,11 @@ ${ch}
 
 }
 
-document.getElementById(
+renderFavorite();
 
-"historyList"
-
-).innerHTML=
-
-historyHTML;
-
-// =====================
+//
 // SEARCH HISTORY
-// =====================
+//
 
 document.getElementById(
 
@@ -439,39 +732,27 @@ e.target.value
 
 .toLowerCase();
 
-document
+let filtered=
 
-.querySelectorAll(
+history.filter(item=>
 
-".history-card"
-
-)
-
-.forEach(card=>{
-
-card.style.display=
-
-card.innerText
+item.title
 
 .toLowerCase()
 
 .includes(keyword)
 
-?
+);
 
-"block"
+renderHistory(filtered);
 
-:
+}
 
-"none";
+);
 
-});
-
-});
-
-// =====================
+//
 // LOGOUT
-// =====================
+//
 
 document.getElementById(
 
@@ -481,29 +762,51 @@ document.getElementById(
 
 .onclick=()=>{
 
-if(
-
-confirm(
-
-"Logout?"
-
-)
-
-){
-
 localStorage.removeItem(
 
-"profileName"
+"user"
 
 );
 
 location.href=
 
-"index.html";
+"login.html";
+
+};
+
+//
+// ACHIEVEMENT
+//
+
+let achievements=[];
+
+if(history.length>=1){
+
+achievements.push(
+
+"First Reader"
+
+);
 
 }
 
-};
+if(history.length>=10){
+
+achievements.push(
+
+"Bookworm"
+
+);
+
+}
+
+console.log(
+
+"Achievement",
+
+achievements
+
+);
 
 </script>
     
