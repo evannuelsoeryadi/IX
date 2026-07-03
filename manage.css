@@ -875,3 +875,51 @@ gap:10px;
 }
 
 }
+
+.search-box{
+
+display:flex;
+
+justify-content:center;
+
+margin:30px 0;
+
+}
+
+.search-box input{
+
+width:600px;
+
+max-width:90%;
+
+padding:14px 20px;
+
+font-size:18px;
+
+border:none;
+
+border-radius:12px;
+
+outline:none;
+
+background:#101827;
+
+color:white;
+
+box-shadow:0 0 10px rgba(0,140,255,.25);
+
+transition:.3s;
+
+}
+
+.search-box input::placeholder{
+
+color:#9ca3af;
+
+}
+
+.search-box input:focus{
+
+box-shadow:0 0 18px #1d9bf0;
+
+}
