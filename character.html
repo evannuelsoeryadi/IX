@@ -41,6 +41,16 @@ Characters
 
 </h1>
 
+<div class="search-box">
+
+<input
+type="text"
+id="searchCharacter"
+placeholder="🔍 Search character..."
+>
+
+</div>
+
 <div
 class="character-grid"
 id="characterGrid"
@@ -88,8 +98,37 @@ characters.length == 0
 document.getElementById(
 "characterGrid"
 ).innerHTML =
+html;
 
-`
+document.getElementById("searchCharacter")
+
+.addEventListener("input",e=>{
+
+let keyword=
+
+e.target.value.toLowerCase();
+
+document.querySelectorAll(".comic-card")
+
+.forEach(card=>{
+
+card.style.display=
+
+card.innerText
+.toLowerCase()
+.includes(keyword)
+
+?
+
+"block"
+
+:
+
+"none";
+
+});
+
+});
 
 <div class="comic-card">
 
