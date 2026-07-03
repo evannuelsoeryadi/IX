@@ -62,24 +62,29 @@ id="characterGrid"
 
 <script>
 
+// =====================
+// DEV PANEL
+// =====================
+
 if(
 
 localStorage.getItem(
 "developerLogged"
-) === "true"
+)==="true"
 
 ){
 
-document
-.getElementById(
+document.getElementById(
 "devButton"
-)
-.style.display =
-"block";
+).style.display="block";
 
 }
 
-let characters =
+// =====================
+// LOAD CHARACTERS
+// =====================
+
+let characters=
 
 JSON.parse(
 
@@ -87,48 +92,17 @@ localStorage.getItem(
 "infinite_x_characters"
 )
 
-) || [];
+)||[];
 
-if(
+// =====================
+// RENDER
+// =====================
 
-characters.length == 0
-
-){
+if(characters.length===0){
 
 document.getElementById(
 "characterGrid"
-).innerHTML =
-html;
-
-document.getElementById("searchCharacter")
-
-.addEventListener("input",e=>{
-
-let keyword=
-
-e.target.value.toLowerCase();
-
-document.querySelectorAll(".comic-card")
-
-.forEach(card=>{
-
-card.style.display=
-
-card.innerText
-.toLowerCase()
-.includes(keyword)
-
-?
-
-"block"
-
-:
-
-"none";
-
-});
-
-});
+).innerHTML=`
 
 <div class="comic-card">
 
@@ -152,19 +126,20 @@ Coming Soon...
 
 else{
 
-let html = "";
+let html="";
 
 characters.forEach(character=>{
 
-html +=
-
-`
+html+=`
 
 <div class="comic-card">
 
 <img
+
 src="${character.image}"
+
 class="character-image"
+
 >
 
 <h2>
@@ -193,13 +168,61 @@ ${character.desc}
 
 document.getElementById(
 "characterGrid"
-).innerHTML =
-html;
+).innerHTML=html;
 
 }
 
-</script>
+// =====================
+// SEARCH
+// =====================
 
+document.getElementById(
+"searchCharacter"
+)
+
+.addEventListener(
+
+"input",
+
+e=>{
+
+let keyword=
+
+e.target.value
+
+.toLowerCase();
+
+document
+
+.querySelectorAll(
+".comic-card"
+)
+
+.forEach(card=>{
+
+card.style.display=
+
+card.innerText
+
+.toLowerCase()
+
+.includes(keyword)
+
+?
+
+"block"
+
+:
+
+"none";
+
+});
+
+}
+
+);
+
+</script>
 <div id="themeFade"></div>
 
 <script src="theme.js"></script>
