@@ -12,188 +12,501 @@
 
 <body>
 
-
 <nav>
 
-    <a href="index.html">Home</a>
-    <a href="comic.html">Comic</a>
-    <a href="character.html">Character</a>
-    <a href="about.html">About Us</a>
-    <a href="profile.html">Profile</a>
-    <a 
-            href="developer.html"
-            id="devButton"
-            style="display:none;"
-        >
-            ⚙️ Dev Panel
-    </a>
+<a href="index.html">Home</a>
+<a href="comic.html">Comic</a>
+<a href="character.html">Character</a>
+<a href="about.html">About Us</a>
+<a href="profile.html">Profile</a>
+
+<a
+href="developer.html"
+id="devButton"
+style="display:none;"
+>
+
+⚙️ Dev Panel
+
+</a>
 
 </nav>
 
-<div class="profile-page">
+<div class="manage-container">
 
-    <div class="profile-top">
+<h1>
 
-        <div class="profile-card">
+My Profile
 
-            <div class="avatar">
-                👤
-            </div>
+</h1>
 
-            <h2 id="username">
-                User
-            </h2>
+<!-- ========================= -->
+<!-- PROFILE CARD -->
+<!-- ========================= -->
 
-            <p id="role">
-                Member
-            </p>
+<div class="profile-card">
 
-            <button onclick="logout()">
-                Logout
-            </button>
+<img
 
-        </div>
+id="profileAvatar"
 
-        <div class="menu-card">
+src="https://placehold.co/150"
 
-            <div class="menu-icon">
-                ⚙️
-            </div>
+class="profile-avatar"
 
-            <h3>Settings</h3>
+>
 
-        </div>
+<h2 id="profileName">
 
-        <div class="menu-card">
+Guest
 
-            <div class="menu-icon">
-                📜
-            </div>
+</h2>
 
-            <h3>Purchase History</h3>
+<p id="joinDate">
 
-        </div>
+Joined :
+Unknown
 
-        <div class="menu-card">
-
-            <div class="menu-icon">
-                ℹ️
-            </div>
-
-            <h3>About Infinite X</h3>
-
-        </div>
-
-    </div>
-
-    <h2 class="history-title">
-        Reading History
-    </h2>
-
-    <div class="history-container">
-
-        <div class="history-card">
-            Chapter 1
-        </div>
-
-        <div class="history-card">
-            Chapter 2
-        </div>
-
-        <div class="history-card">
-            Chapter 3
-        </div>
-
-        <div class="history-card">
-            All History
-        </div>
-
-    </div>
-
-    <div
-        id="devPanel"
-        style="display:none;"
-    >
-
-        <button
-            onclick="location.href='developer.html'"
-            class="dev-btn"
-        >
-            ⚙️ Developer Dashboard
-        </button>
-
-    </div>
+</p>
 
 </div>
 
+<!-- ========================= -->
+<!-- CONTINUE READING -->
+<!-- ========================= -->
+
+<div class="comic-card">
+
+<h2>
+
+📖 Continue Reading
+
+</h2>
+
+<div id="continueReading">
+
+No Chapter
+
+</div>
+
+</div>
+
+<!-- ========================= -->
+<!-- HISTORY -->
+<!-- ========================= -->
+
+<div class="comic-card">
+
+<h2>
+
+📚 Reading History
+
+</h2>
+
+<div class="search-box">
+
+<input
+
+type="text"
+
+id="searchHistory"
+
+placeholder="🔍 Search history..."
+
+>
+
+</div>
+
+<div id="historyList">
+
+</div>
+
+</div>
+
+<!-- ========================= -->
+<!-- FAVORITE -->
+<!-- ========================= -->
+
+<div class="comic-card">
+
+<h2>
+
+⭐ Favorite
+
+</h2>
+
+<p>
+
+Coming Soon...
+
+</p>
+
+</div>
+
+<!-- ========================= -->
+<!-- ACHIEVEMENT -->
+<!-- ========================= -->
+
+<div class="comic-card">
+
+<h2>
+
+🏆 Achievement
+
+</h2>
+
+<ul>
+
+<li>
+
+First Reader
+
+</li>
+
+<li>
+
+Read 10 Chapters
+
+</li>
+
+<li>
+
+Coming Soon...
+
+</li>
+
+</ul>
+
+</div>
+
+<!-- ========================= -->
+<!-- SETTINGS -->
+<!-- ========================= -->
+
+<div class="comic-card">
+
+<h2>
+
+⚙️ Settings
+
+</h2>
+
+<button
+
+class="add-btn"
+
+id="logoutBtn"
+
+>
+
+Logout
+
+</button>
+
+</div>
+
+</div>
+    
 <script>
 
-    let user =
-        localStorage.getItem(
-            "user"
-        );
+// =====================
+// DEV PANEL
+// =====================
 
-    if(user){
+if(
 
-        document.getElementById(
-            "username"
-        ).innerText = user;
+localStorage.getItem(
+"developerLogged"
+)==="true"
 
-    }
+){
 
-    if(
+document.getElementById(
+"devButton"
+).style.display="block";
 
-        localStorage.getItem(
-            "developerLogged"
-        ) === "true"
+}
 
-    ){
+// =====================
+// PROFILE
+// =====================
 
-        document.getElementById(
-            "role"
-        ).innerText =
-            "Owner";
+let username=
 
-        document.getElementById(
-            "devPanel"
-        ).style.display =
-            "block";
+localStorage.getItem(
+"profileName"
+)
 
-    }
+||
 
-    function logout(){
+"Guest";
 
-        localStorage.removeItem(
-            "user"
-        );
+let joinDate=
 
-        localStorage.removeItem(
-            "developerLogged"
-        );
+localStorage.getItem(
+"profileJoinDate"
+)
 
-        window.location.href =
-            "index.html";
+||
 
-    }
-    if(
+new Date()
 
-        localStorage.getItem(
-            "developerLogged"
-        ) === "true"
+.toLocaleDateString();
 
-    ){
+document.getElementById(
 
-        document
-        .getElementById(
-            "devButton"
-        )
-        .style.display =
-            "block";
+"profileName"
 
-    }
+).innerText=
+
+username;
+
+document.getElementById(
+
+"joinDate"
+
+).innerText=
+
+"Joined : "+joinDate;
+
+// =====================
+// CONTINUE READING
+// =====================
+
+let lastChapter=
+
+localStorage.getItem(
+"lastReadChapter"
+);
+
+if(lastChapter){
+
+document.getElementById(
+
+"continueReading"
+
+).innerHTML=
+
+`
+
+<b>
+
+${lastChapter}
+
+</b>
+
+<br><br>
+
+<button
+
+class="edit-btn"
+
+onclick="continueReading()"
+
+>
+
+Continue
+
+</button>
+
+`;
+
+}
+
+else{
+
+document.getElementById(
+
+"continueReading"
+
+).innerHTML=
+
+"No Reading History";
+
+}
+
+// =====================
+// CONTINUE
+// =====================
+
+function continueReading(){
+
+localStorage.setItem(
+
+"selectedChapter",
+
+localStorage.getItem(
+
+"lastReadChapter"
+
+)
+
+);
+
+location.href=
+
+"reader.html";
+
+}
+
+window.continueReading=
+
+continueReading;
+
+// =====================
+// HISTORY
+// =====================
+
+let history=
+
+JSON.parse(
+
+localStorage.getItem(
+
+"readingHistory"
+
+)
+
+)||[];
+
+let historyHTML="";
+
+if(history.length===0){
+
+historyHTML=
+
+`
+
+<p>
+
+No History
+
+</p>
+
+`;
+
+}
+
+else{
+
+history.forEach(ch=>{
+
+historyHTML+=`
+
+<div class="comic-card history-card">
+
+<h3>
+
+${ch}
+
+</h3>
+
+</div>
+
+`;
+
+});
+
+}
+
+document.getElementById(
+
+"historyList"
+
+).innerHTML=
+
+historyHTML;
+
+// =====================
+// SEARCH HISTORY
+// =====================
+
+document.getElementById(
+
+"searchHistory"
+
+)
+
+.addEventListener(
+
+"input",
+
+e=>{
+
+let keyword=
+
+e.target.value
+
+.toLowerCase();
+
+document
+
+.querySelectorAll(
+
+".history-card"
+
+)
+
+.forEach(card=>{
+
+card.style.display=
+
+card.innerText
+
+.toLowerCase()
+
+.includes(keyword)
+
+?
+
+"block"
+
+:
+
+"none";
+
+});
+
+});
+
+// =====================
+// LOGOUT
+// =====================
+
+document.getElementById(
+
+"logoutBtn"
+
+)
+
+.onclick=()=>{
+
+if(
+
+confirm(
+
+"Logout?"
+
+)
+
+){
+
+localStorage.removeItem(
+
+"profileName"
+
+);
+
+location.href=
+
+"index.html";
+
+}
+
+};
 
 </script>
-
+    
 <div id="themeFade"></div>
 
 <script src="theme.js"></script>
