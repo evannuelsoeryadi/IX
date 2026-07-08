@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Home - Infinite X</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="manage.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="home.css">
+
+</head>
+
+<body>
+
+<nav>
+
+<a href="home.html">Home</a>
+
+<a href="comic.html">Comic</a>
+
+<a href="character.html">Character</a>
+
+<a href="about.html">About Us</a>
+
+<a href="profile.html">Profile</a>
+
+<a
+href="developer.html"
+id="devButton"
+style="display:none;"
+>
+
+⚙️ Dev Panel
+
+</a>
+
+</nav>
+
+<div class="home-container">
+
+<!-- ========================= -->
+<!-- HERO -->
+<!-- ========================= -->
+
+<section class="hero-banner">
+
+<div class="hero-left">
+
+<span class="featured-tag">
+
+FEATURED COMIC
+
+</span>
+
+<h1 id="featuredTitle">
+
+Infinite X
+
+</h1>
+
+<p id="featuredDesc">
+
+The beginning of an endless adventure.
+
+</p>
+
+<div class="hero-buttons">
+
+<button
+id="readFeatured"
+class="btn"
+>
+
+Read Now
+
+</button>
+
+<button
+id="heroInfo"
+class="btn secondary-btn"
+>
+
+More Info
+
+</button>
+
+</div>
+
+</div>
+
+<div class="hero-right">
+
+<img
+
+id="featuredCover"
+
+src="https://placehold.co/320x450"
+
+>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- TRENDING -->
+<!-- ========================= -->
+
+<section class="home-section">
+
+<h2>
+
+🔥 Trending
+
+</h2>
+
+<div
+
+class="comic-row"
+
+id="trendingList"
+
+>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- NEW RELEASE -->
+<!-- ========================= -->
+
+<section class="home-section">
+
+<h2>
+
+🆕
+
+New Release
+
+</h2>
+
+<div
+
+class="comic-row"
+
+id="newReleaseList"
+
+>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- CONTINUE -->
+<!-- ========================= -->
+
+<section class="home-section">
+
+<h2>
+
+📖 Continue Reading
+
+</h2>
+
+<div
+
+id="continueReading"
+
+class="continue-card"
+
+>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- POPULAR -->
+<!-- ========================= -->
+
+<section class="home-section">
+
+<h2>
+
+⭐ Popular
+
+</h2>
+
+<div
+
+class="comic-row"
+
+id="popularList"
+
+>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- ANNOUNCEMENT -->
+<!-- ========================= -->
+
+<section class="home-section">
+
+<h2>
+
+📢 Announcement
+
+</h2>
+
+<div
+
+class="announcement-card"
+
+id="announcementBox"
+
+>
+
+<h3>
+
+Welcome to Infinite X
+
+</h3>
+
+<p>
+
+More updates coming soon...
+
+</p>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- STATS -->
+<!-- ========================= -->
+
+<section class="home-section">
+
+<h2>
+
+📊 Infinite X Stats
+
+</h2>
+
+<div class="stats-grid">
+
+<div class="comic-card">
+
+<h3>
+
+📚 Comics
+
+</h3>
+
+<p id="comicCount">
+
+0
+
+</p>
+
+</div>
+
+<div class="comic-card">
+
+<h3>
+
+👥 Characters
+
+</h3>
+
+<p id="characterCount">
+
+0
+
+</p>
+
+</div>
+
+<div class="comic-card">
+
+<h3>
+
+🌎 Members
+
+</h3>
+
+<p id="memberCount">
+
+0
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<footer class="home-footer">
+
+<p>
+
+Infinite X © 2026
+
+</p>
+
+<p>
+
+Made by Evan and Team
+
+</p>
+
+</footer>
+
+</div>
+
+<script>
+
+// =====================
+// LOGIN CHECK
+// =====================
+
+if(
+
+!localStorage.getItem(
+"user"
+)
+
+){
+
+window.location.href=
+"index.html";
+
+}
+
+// =====================
+// DEV PANEL
+// =====================
+
+if(
+
+localStorage.getItem(
+"developerLogged"
+)==="true"
+
+){
+
+document
+.getElementById(
+"devButton"
+)
+.style.display=
+"block";
+
+}
+
+// =====================
+// LOAD DATA
+// =====================
+
+const chapters=
+
+JSON.parse(
+
+localStorage.getItem(
+"infinite_x_chapters"
+)
+
+)||[];
+
+const characters=
+
+JSON.parse(
+
+localStorage.getItem(
+"infinite_x_characters"
+)
+
+)||[];
+
+const members=
+
+JSON.parse(
+
+localStorage.getItem(
+"accounts"
+)
+
+)||[];
+
+// =====================
+// STATS
+// =====================
+
+document.getElementById(
+"comicCount"
+).innerText=
+chapters.length;
+
+document.getElementById(
+"characterCount"
+).innerText=
+characters.length;
+
+document.getElementById(
+"memberCount"
+).innerText=
+members.length;
+
+// =====================
+// FEATURED COMIC
+// =====================
+
+if(chapters.length>0){
+
+let featured=
+
+chapters[
+chapters.length-1
+];
+
+document.getElementById(
+"featuredTitle"
+).innerText=
+featured.title;
+
+document.getElementById(
+"featuredDesc"
+).innerText=
+featured.desc||
+"No description";
+
+if(featured.cover){
+
+document.getElementById(
+"featuredCover"
+).src=
+featured.cover;
+
+}
+
+document.getElementById(
+"readFeatured"
+).onclick=
+function(){
+
+localStorage.setItem(
+"selectedChapter",
+featured.id||featured.title
+);
+
+window.location.href=
+"reader.html";
+
+};
+
+}
+
+// =====================
+// TRENDING
+// =====================
+
+const trendingBox=
+
+document.getElementById(
+"trendingList"
+);
+
+chapters
+.slice(0,5)
+.forEach(ch=>{
+
+trendingBox.innerHTML+=`
+
+<div class="comic-card">
+
+<img
+src="${
+ch.cover||
+'https://placehold.co/220x320'
+}"
+>
+
+<h3>
+
+${ch.title}
+
+</h3>
+
+</div>
+
+`;
+
+});
+
+// =====================
+// NEW RELEASE
+// =====================
+
+const newRelease=
+
+document.getElementById(
+"newReleaseList"
+);
+
+chapters
+.slice(-5)
+.reverse()
+.forEach(ch=>{
+
+newRelease.innerHTML+=`
+
+<div class="comic-card">
+
+<img
+src="${
+ch.cover||
+'https://placehold.co/220x320'
+}"
+>
+
+<h3>
+
+${ch.title}
+
+</h3>
+
+</div>
+
+`;
+
+});
+
+// =====================
+// POPULAR
+// =====================
+
+const popular=
+
+document.getElementById(
+"popularList"
+);
+
+chapters
+.slice(0,5)
+.forEach(ch=>{
+
+popular.innerHTML+=`
+
+<div class="comic-card">
+
+<img
+src="${
+ch.cover||
+'https://placehold.co/220x320'
+}"
+>
+
+<h3>
+
+${ch.title}
+
+</h3>
+
+</div>
+
+`;
+
+});
+
+// =====================
+// CONTINUE READING
+// =====================
+
+const continueBox=
+
+document.getElementById(
+"continueReading"
+);
+
+let last=
+
+localStorage.getItem(
+"lastReadChapter"
+);
+
+if(last){
+
+continueBox.innerHTML=`
+
+<h3>
+
+Last Chapter
+
+</h3>
+
+<p>
+
+${last}
+
+</p>
+
+<button
+onclick="continueReading()"
+class="btn"
+>
+
+Continue
+
+</button>
+
+`;
+
+}
+
+else{
+
+continueBox.innerHTML=`
+
+<p>
+
+No Reading History
+
+</p>
+
+`;
+
+}
+
+function continueReading(){
+
+let last=
+
+localStorage.getItem(
+"lastReadChapter"
+);
+
+if(last){
+
+localStorage.setItem(
+"selectedChapter",
+last
+);
+
+window.location.href=
+"reader.html";
+
+}
+
+}
+
+// =====================
+// ANNOUNCEMENT
+// =====================
+
+document.getElementById(
+"announcementBox"
+).innerHTML=
+
+`
+
+<h3>
+
+Infinite X Development
+
+</h3>
+
+<p>
+
+Home Dashboard V1 Released.
+
+More features coming soon.
+
+</p>
+
+`;
+
+</script>
+
+<div id="themeFade"></div>
+
+<script src="theme.js"></script>
+
+</body>
+
+</html>
