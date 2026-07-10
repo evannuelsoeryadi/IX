@@ -38,21 +38,15 @@ style="display:none;"
 
 </nav>
 
-<div class="home-container">
+<div class="home-layout">
 
 <!-- ========================= -->
 <!-- HERO -->
 <!-- ========================= -->
 
-<section class="hero-banner">
+<section class="hero">
 
-<div class="hero-left">
-
-<span class="featured-tag">
-
-FEATURED COMIC
-
-</span>
+<div class="hero-main">
 
 <h1 id="featuredTitle">
 
@@ -79,7 +73,7 @@ Read Now
 
 <button
 id="heroInfo"
-class="btn secondary-btn"
+class="btn"
 >
 
 More Info
@@ -90,136 +84,124 @@ More Info
 
 </div>
 
-<div class="hero-right">
-
-<img
-
-id="featuredCover"
-
-src="https://placehold.co/320x450"
-
->
-
-</div>
-
 </section>
 
 <!-- ========================= -->
-<!-- TRENDING -->
+<!-- DASHBOARD -->
 <!-- ========================= -->
 
-<section class="home-section">
+<section class="home-dashboard">
 
-<h2>
+<div class="home-panel">
 
-🔥 Trending
+<!-- FEATURED -->
 
-</h2>
+<div class="home-block">
+
+<h1>
+
+🔥 Featured Comic
+
+</h1>
 
 <div
-
-class="comic-row"
-
-id="trendingList"
-
+id="featuredComic"
+class="comic-container"
 >
 
 </div>
 
-</section>
+</div>
 
-<!-- ========================= -->
+<!-- TRENDING -->
+
+<div class="home-block">
+
+<h1>
+
+📈 Trending
+
+</h1>
+
+<div
+id="trendingList"
+class="comic-container"
+>
+
+</div>
+
+</div>
+
 <!-- NEW RELEASE -->
-<!-- ========================= -->
 
-<section class="home-section">
+<div class="home-block">
 
-<h2>
+<h1>
 
 🆕
 
 New Release
 
-</h2>
+</h1>
 
 <div
-
-class="comic-row"
-
 id="newReleaseList"
-
+class="comic-container"
 >
 
 </div>
 
-</section>
+</div>
 
-<!-- ========================= -->
 <!-- CONTINUE -->
-<!-- ========================= -->
 
-<section class="home-section">
+<div class="home-block">
 
-<h2>
+<h1>
 
 📖 Continue Reading
 
-</h2>
+</h1>
 
 <div
-
 id="continueReading"
-
-class="continue-card"
-
 >
 
 </div>
 
-</section>
+</div>
 
-<!-- ========================= -->
 <!-- POPULAR -->
-<!-- ========================= -->
 
-<section class="home-section">
+<div class="home-block">
 
-<h2>
+<h1>
 
 ⭐ Popular
 
-</h2>
+</h1>
 
 <div
-
-class="comic-row"
-
 id="popularList"
-
+class="comic-container"
 >
 
 </div>
 
-</section>
+</div>
 
-<!-- ========================= -->
 <!-- ANNOUNCEMENT -->
-<!-- ========================= -->
 
-<section class="home-section">
+<div class="home-block">
 
-<h2>
+<h1>
 
 📢 Announcement
 
-</h2>
+</h1>
 
 <div
-
-class="announcement-card"
-
 id="announcementBox"
-
 >
 
 <h3>
@@ -230,25 +212,23 @@ Welcome to Infinite X
 
 <p>
 
-More updates coming soon...
+Loading...
 
 </p>
 
 </div>
 
-</section>
+</div>
 
-<!-- ========================= -->
 <!-- STATS -->
-<!-- ========================= -->
 
-<section class="home-section">
+<div class="home-block">
 
-<h2>
+<h1>
 
 📊 Infinite X Stats
 
-</h2>
+</h1>
 
 <div class="stats-grid">
 
@@ -302,23 +282,11 @@ More updates coming soon...
 
 </div>
 
+</div>
+
+</div>
+
 </section>
-
-<footer class="home-footer">
-
-<p>
-
-Infinite X © 2026
-
-</p>
-
-<p>
-
-Made by Evan and Team
-
-</p>
-
-</footer>
 
 </div>
 
@@ -328,16 +296,9 @@ Made by Evan and Team
 // LOGIN CHECK
 // =====================
 
-if(
+if(!localStorage.getItem("user")){
 
-!localStorage.getItem(
-"user"
-)
-
-){
-
-window.location.href=
-"index.html";
+location.href="index.html";
 
 }
 
@@ -345,20 +306,9 @@ window.location.href=
 // DEV PANEL
 // =====================
 
-if(
+if(localStorage.getItem("developerLogged")==="true"){
 
-localStorage.getItem(
-"developerLogged"
-)==="true"
-
-){
-
-document
-.getElementById(
-"devButton"
-)
-.style.display=
-"block";
+document.getElementById("devButton").style.display="block";
 
 }
 
@@ -370,9 +320,7 @@ const chapters=
 
 JSON.parse(
 
-localStorage.getItem(
-"infinite_x_chapters"
-)
+localStorage.getItem("infinite_x_chapters")
 
 )||[];
 
@@ -380,9 +328,7 @@ const characters=
 
 JSON.parse(
 
-localStorage.getItem(
-"infinite_x_characters"
-)
+localStorage.getItem("infinite_x_characters")
 
 )||[];
 
@@ -390,9 +336,7 @@ const members=
 
 JSON.parse(
 
-localStorage.getItem(
-"accounts"
-)
+localStorage.getItem("accounts")
 
 )||[];
 
@@ -400,67 +344,99 @@ localStorage.getItem(
 // STATS
 // =====================
 
-document.getElementById(
-"comicCount"
-).innerText=
+document.getElementById("comicCount").innerText=
+
 chapters.length;
 
-document.getElementById(
-"characterCount"
-).innerText=
+document.getElementById("characterCount").innerText=
+
 characters.length;
 
-document.getElementById(
-"memberCount"
-).innerText=
+document.getElementById("memberCount").innerText=
+
 members.length;
 
 // =====================
-// FEATURED COMIC
+// FEATURED
 // =====================
+
+const featuredBox=
+
+document.getElementById("featuredComic");
 
 if(chapters.length>0){
 
-let featured=
+const featured=
 
-chapters[
-chapters.length-1
-];
+chapters[chapters.length-1];
 
-document.getElementById(
-"featuredTitle"
-).innerText=
+document.getElementById("featuredTitle").innerText=
+
 featured.title;
 
-document.getElementById(
-"featuredDesc"
-).innerText=
-featured.desc||
-"No description";
+document.getElementById("featuredDesc").innerText=
 
-if(featured.cover){
+featured.desc||"No description.";
 
-document.getElementById(
-"featuredCover"
-).src=
-featured.cover;
+featuredBox.innerHTML=
 
-}
+`
 
-document.getElementById(
-"readFeatured"
-).onclick=
-function(){
+<div class="comic-card">
+
+<h2>
+
+${featured.title}
+
+</h2>
+
+<p>
+
+${featured.pages||0} Pages
+
+</p>
+
+</div>
+
+`;
+
+document.getElementById("readFeatured").onclick=function(){
 
 localStorage.setItem(
+
 "selectedChapter",
+
 featured.id||featured.title
+
 );
 
-window.location.href=
-"reader.html";
+location.href="reader.html";
 
 };
+
+}else{
+
+featuredBox.innerHTML=
+
+`
+
+<div class="comic-card">
+
+<h2>
+
+Coming Soon
+
+</h2>
+
+<p>
+
+No comic available.
+
+</p>
+
+</div>
+
+`;
 
 }
 
@@ -470,36 +446,59 @@ window.location.href=
 
 const trendingBox=
 
-document.getElementById(
-"trendingList"
-);
+document.getElementById("trendingList");
 
-chapters
-.slice(0,5)
-.forEach(ch=>{
+if(chapters.length===0){
 
-trendingBox.innerHTML+=`
+trendingBox.innerHTML=
+
+`
 
 <div class="comic-card">
 
-<img
-src="${
-ch.cover||
-'https://placehold.co/220x320'
-}"
->
+<h2>
 
-<h3>
+Coming Soon
+
+</h2>
+
+</div>
+
+`;
+
+}else{
+
+chapters
+
+.slice(0,5)
+
+.forEach(ch=>{
+
+trendingBox.innerHTML+=
+
+`
+
+<div class="comic-card">
+
+<h2>
 
 ${ch.title}
 
-</h3>
+</h2>
+
+<p>
+
+${ch.pages||0} Pages
+
+</p>
 
 </div>
 
 `;
 
 });
+
+}
 
 // =====================
 // NEW RELEASE
@@ -507,37 +506,61 @@ ${ch.title}
 
 const newRelease=
 
-document.getElementById(
-"newReleaseList"
-);
+document.getElementById("newReleaseList");
 
-chapters
-.slice(-5)
-.reverse()
-.forEach(ch=>{
+if(chapters.length===0){
 
-newRelease.innerHTML+=`
+newRelease.innerHTML=
+
+`
 
 <div class="comic-card">
 
-<img
-src="${
-ch.cover||
-'https://placehold.co/220x320'
-}"
->
+<h2>
 
-<h3>
+Coming Soon
+
+</h2>
+
+</div>
+
+`;
+
+}else{
+
+chapters
+
+.slice(-5)
+
+.reverse()
+
+.forEach(ch=>{
+
+newRelease.innerHTML+=
+
+`
+
+<div class="comic-card">
+
+<h2>
 
 ${ch.title}
 
-</h3>
+</h2>
+
+<p>
+
+${ch.pages||0} Pages
+
+</p>
 
 </div>
 
 `;
 
 });
+
+}
 
 // =====================
 // POPULAR
@@ -545,30 +568,51 @@ ${ch.title}
 
 const popular=
 
-document.getElementById(
-"popularList"
-);
+document.getElementById("popularList");
 
-chapters
-.slice(0,5)
-.forEach(ch=>{
+if(chapters.length===0){
 
-popular.innerHTML+=`
+popular.innerHTML=
+
+`
 
 <div class="comic-card">
 
-<img
-src="${
-ch.cover||
-'https://placehold.co/220x320'
-}"
->
+<h2>
 
-<h3>
+Coming Soon
+
+</h2>
+
+</div>
+
+`;
+
+}else{
+
+chapters
+
+.slice(0,5)
+
+.forEach(ch=>{
+
+popular.innerHTML+=
+
+`
+
+<div class="comic-card">
+
+<h2>
 
 ${ch.title}
 
-</h3>
+</h2>
+
+<p>
+
+${ch.pages||0} Pages
+
+</p>
 
 </div>
 
@@ -576,54 +620,51 @@ ${ch.title}
 
 });
 
+}
+
 // =====================
 // CONTINUE READING
 // =====================
 
 const continueBox=
 
-document.getElementById(
-"continueReading"
-);
+document.getElementById("continueReading");
 
-let last=
+const last=
 
-localStorage.getItem(
-"lastReadChapter"
-);
+localStorage.getItem("lastReadChapter");
 
 if(last){
 
-continueBox.innerHTML=`
+continueBox.innerHTML=
 
-<h3>
+`
 
-Last Chapter
+<div class="comic-card">
 
-</h3>
-
-<p>
+<h2>
 
 ${last}
 
-</p>
+</h2>
 
-<button
-onclick="continueReading()"
-class="btn"
->
+<button class="btn" onclick="continueReading()">
 
 Continue
 
 </button>
 
+</div>
+
 `;
 
-}
+}else{
 
-else{
+continueBox.innerHTML=
 
-continueBox.innerHTML=`
+`
+
+<div class="comic-card">
 
 <p>
 
@@ -631,27 +672,29 @@ No Reading History
 
 </p>
 
+</div>
+
 `;
 
 }
 
 function continueReading(){
 
-let last=
+const last=
 
-localStorage.getItem(
-"lastReadChapter"
-);
+localStorage.getItem("lastReadChapter");
 
 if(last){
 
 localStorage.setItem(
+
 "selectedChapter",
+
 last
+
 );
 
-window.location.href=
-"reader.html";
+location.href="reader.html";
 
 }
 
@@ -661,9 +704,7 @@ window.location.href=
 // ANNOUNCEMENT
 // =====================
 
-document.getElementById(
-"announcementBox"
-).innerHTML=
+document.getElementById("announcementBox").innerHTML=
 
 `
 
@@ -675,9 +716,9 @@ Infinite X Development
 
 <p>
 
-Home Dashboard V1 Released.
+Home Dashboard V1 Released.<br>
 
-More features coming soon.
+More features are coming soon.
 
 </p>
 
