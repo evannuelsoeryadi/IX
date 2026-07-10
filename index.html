@@ -33,137 +33,23 @@ style="display:none;"
 </a>
 
 </nav>
-
-<!-- ========================= -->
-<!-- HOME -->
-<!-- ========================= -->
-
-<div class="home-layout">
-
-<section
-class="home-dashboard"
-id="loggedContent"
-style="display:none;"
->
-
-<div class="home-panel">
-
-<!-- Latest -->
-
-<div class="home-block">
-
-<h2>🔥 Latest Updates</h2>
-
-<div
-id="latestUpdates"
-class="comic-container"
->
-
-</div>
-
-</div>
-
-<!-- Characters -->
-
-<div class="home-block">
-
-<h2>⭐ Popular Characters</h2>
-
-<div
-id="popularCharacters"
-class="comic-container"
->
-
-</div>
-
-</div>
-
-<!-- Stats -->
-
-<div class="home-block">
-
-<h2>📊 Infinite X Stats</h2>
-
-<div class="stats-grid">
-
-<div class="comic-card">
-
-<h3>📚 Comics</h3>
-
-<p id="comicCount">0</p>
-
-</div>
-
-<div class="comic-card">
-
-<h3>👥 Characters</h3>
-
-<p id="characterCount">0</p>
-
-</div>
-
-<div class="comic-card">
-
-<h3>🌎 Members</h3>
-
-<p id="memberCount">0</p>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="home-footer">
-
-<p>Infinite X © 2026</p>
-
-<p>Made by Evan and Team</p>
-
-</div>
-
-</div>
-
-</section>
-
-<section class="hero">
-
-<div class="hero-main">
-
-<h1>Infinite X</h1>
-
-<p>Read • Create • Explore</p>
-
-<div class="hero-buttons">
-
-<a
-href="#"
-class="btn"
-id="startBtn"
->
-
-Start Reading
-
-</a>
-
-<a
-href="character.html"
-class="btn"
->
-
-Characters
-
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-</div>
   
 <script>
+
+// =====================
+// AUTO REDIRECT
+// =====================
+
+if(localStorage.getItem("user")){
+
+window.location.href=
+"home.html";
+
+}
+
+// =====================
+// LOGIN CHECK
+// =====================
 
 function isLoggedIn(){
 
@@ -185,19 +71,8 @@ document
 
 e.preventDefault();
 
-if(!isLoggedIn()){
-
 window.location.href=
 "whoareyou.html";
-
-}
-
-else{
-
-window.location.href=
-"comic.html";
-
-}
 
 };
 
@@ -207,19 +82,8 @@ window.location.href=
 
 function goProfile(){
 
-if(!isLoggedIn()){
-
 window.location.href=
 "whoareyou.html";
-
-}
-
-else{
-
-window.location.href=
-"profile.html";
-
-}
 
 }
 
@@ -229,19 +93,8 @@ window.location.href=
 
 function goComic(){
 
-if(!isLoggedIn()){
-
 window.location.href=
 "whoareyou.html";
-
-}
-
-else{
-
-window.location.href=
-"comic.html";
-
-}
 
 }
 
@@ -263,217 +116,6 @@ document
 )
 .style.display=
 "block";
-
-}
-
-// =====================
-// SHOW DASHBOARD
-// =====================
-
-if(isLoggedIn()){
-
-document
-.getElementById(
-"loggedContent"
-)
-.style.display=
-"block";
-
-}
-
-// =====================
-// LOAD DATA
-// =====================
-
-const chapters=
-
-JSON.parse(
-
-localStorage.getItem(
-"chapters"
-
-)
-
-)||[];
-
-const characters=
-
-JSON.parse(
-
-localStorage.getItem(
-"infinite_x_characters"
-
-)
-
-)||[];
-
-const members=
-
-JSON.parse(
-
-localStorage.getItem(
-"accounts"
-
-)
-
-)||[];
-
-// =====================
-// STATS
-// =====================
-
-comicCount.innerText=
-chapters.length;
-
-characterCount.innerText=
-characters.length;
-
-memberCount.innerText=
-members.length;
-
-// =====================
-// LATEST UPDATES
-// =====================
-
-const latestBox=
-
-document.getElementById(
-"latestUpdates"
-);
-
-if(chapters.length===0){
-
-latestBox.innerHTML=
-
-`
-
-<div class="comic-card">
-
-<h3>
-
-Coming Soon
-
-</h3>
-
-<p>
-
-No comic available yet.
-
-</p>
-
-</div>
-
-`;
-
-}
-
-else{
-
-chapters
-.slice(-3)
-.reverse()
-.forEach(ch=>{
-
-latestBox.innerHTML+=
-
-`
-
-<div class="comic-card">
-
-<h3>
-
-${ch.title}
-
-</h3>
-
-<p>
-
-${ch.pages||0} Pages
-
-</p>
-
-</div>
-
-`;
-
-});
-
-}
-
-// =====================
-// POPULAR CHARACTERS
-// =====================
-
-const charBox=
-
-document.getElementById(
-"popularCharacters"
-);
-
-if(characters.length===0){
-
-charBox.innerHTML=
-
-`
-
-<div class="comic-card">
-
-<h3>
-
-Coming Soon
-
-</h3>
-
-<p>
-
-No character available yet.
-
-</p>
-
-</div>
-
-`;
-
-}
-
-else{
-
-characters
-.slice(-3)
-.reverse()
-.forEach(ch=>{
-
-charBox.innerHTML+=
-
-`
-
-<div class="comic-card">
-
-<img
-
-src="${ch.image}"
-
-class="character-image"
-
->
-
-<h3>
-
-${ch.name}
-
-</h3>
-
-<p>
-
-${ch.role||""}
-
-</p>
-
-</div>
-
-`;
-
-});
 
 }
 
