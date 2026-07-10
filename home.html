@@ -48,6 +48,19 @@ style="display:none;"
 
 <div class="home-panel">
 
+<!-- SEARCH -->
+
+<div class="home-block">
+
+<input
+type="text"
+id="searchComic"
+placeholder="🔍 Search Comic..."
+class="search-box"
+>
+
+</div>
+
 <!-- FEATURED -->
 
 <div class="home-block">
@@ -144,6 +157,75 @@ class="comic-container"
 
 </div>
 
+<!-- RECENT -->
+
+<div class="home-block">
+
+<h1>
+
+🕒 Recently Updated
+
+</h1>
+
+<div
+id="recentList"
+class="comic-container"
+>
+
+</div>
+
+</div>
+
+<!-- EVENT -->
+
+<div class="home-block">
+
+<h1>
+
+🎉 Today's Event
+
+</h1>
+
+<div
+id="eventBox"
+class="comic-card"
+>
+
+<p>
+
+No Event Today
+
+</p>
+
+</div>
+
+</div>
+
+<!-- QUOTE -->
+
+<div class="home-block">
+
+<h1>
+
+💬 Quote
+
+</h1>
+
+<div
+id="quoteBox"
+class="comic-card"
+>
+
+<p>
+
+"The adventure never ends."
+
+</p>
+
+</div>
+
+</div>
+
 <!-- ANNOUNCEMENT -->
 
 <div class="home-block">
@@ -156,11 +238,12 @@ class="comic-container"
 
 <div
 id="announcementBox"
+class="comic-card"
 >
 
 <h3>
 
-Welcome to Infinite X
+Welcome
 
 </h3>
 
@@ -250,6 +333,12 @@ Loading...
 
 <div class="hero-main">
 
+<span class="featured-tag">
+
+FEATURED COMIC
+
+</span>
+
 <h1 id="featuredTitle">
 
 Infinite X
@@ -284,12 +373,22 @@ More Info
 
 </div>
 
+<img
+
+id="featuredCover"
+
+class="hero-cover"
+
+src="https://placehold.co/350x500"
+
+>
+
 </div>
 
 </section>
 
 </div>
-
+  
 <script>
 
 // =====================
@@ -344,15 +443,15 @@ localStorage.getItem("accounts")
 // STATS
 // =====================
 
-document.getElementById("comicCount").innerText=
+comicCount.innerText=
 
 chapters.length;
 
-document.getElementById("characterCount").innerText=
+characterCount.innerText=
 
 characters.length;
 
-document.getElementById("memberCount").innerText=
+memberCount.innerText=
 
 members.length;
 
@@ -360,25 +459,31 @@ members.length;
 // FEATURED
 // =====================
 
-const featuredBox=
-
-document.getElementById("featuredComic");
-
-if(chapters.length>0){
+if(chapters.length){
 
 const featured=
 
 chapters[chapters.length-1];
 
-document.getElementById("featuredTitle").innerText=
+featuredTitle.innerText=
 
 featured.title;
 
-document.getElementById("featuredDesc").innerText=
+featuredDesc.innerText=
 
-featured.desc||"No description.";
+featured.desc||
 
-featuredBox.innerHTML=
+"No description.";
+
+if(featured.cover){
+
+featuredCover.src=
+
+featured.cover;
+
+}
+
+featuredComic.innerHTML=
 
 `
 
@@ -400,81 +505,59 @@ ${featured.pages||0} Pages
 
 `;
 
-document.getElementById("readFeatured").onclick=function(){
+readFeatured.onclick=function(){
 
 localStorage.setItem(
 
 "selectedChapter",
 
-featured.id||featured.title
+featured.id||
+
+featured.title
 
 );
 
-location.href="reader.html";
+location.href=
+
+"reader.html";
 
 };
 
-}else{
-
-featuredBox.innerHTML=
-
-`
-
-<div class="comic-card">
-
-<h2>
-
-Coming Soon
-
-</h2>
-
-<p>
-
-No comic available.
-
-</p>
-
-</div>
-
-`;
-
 }
 
 // =====================
-// TRENDING
+// CARD GENERATOR
 // =====================
 
-const trendingBox=
+function createComicCard(box,data){
 
-document.getElementById("trendingList");
+box.innerHTML="";
 
-if(chapters.length===0){
+if(data.length===0){
 
-trendingBox.innerHTML=
+box.innerHTML=
 
 `
 
 <div class="comic-card">
 
-<h2>
+<h3>
 
 Coming Soon
 
-</h2>
+</h3>
 
 </div>
 
 `;
 
-}else{
+return;
 
-chapters
+}
 
-.slice(0,5)
+data.forEach(ch=>{
 
-.forEach(ch=>{
-
-trendingBox.innerHTML+=
+box.innerHTML+=
 
 `
 
@@ -501,142 +584,56 @@ ${ch.pages||0} Pages
 }
 
 // =====================
-// NEW RELEASE
+// LOAD LIST
 // =====================
 
-const newRelease=
+createComicCard(
 
-document.getElementById("newReleaseList");
+trendingList,
 
-if(chapters.length===0){
+chapters.slice(0,5)
 
-newRelease.innerHTML=
+);
 
-`
+createComicCard(
 
-<div class="comic-card">
+newReleaseList,
 
-<h2>
+chapters.slice(-5).reverse()
 
-Coming Soon
+);
 
-</h2>
+createComicCard(
 
-</div>
+popularList,
 
-`;
+chapters.slice(0,5)
 
-}else{
+);
 
-chapters
+createComicCard(
 
-.slice(-5)
+recentList,
 
-.reverse()
+chapters.slice(-3).reverse()
 
-.forEach(ch=>{
-
-newRelease.innerHTML+=
-
-`
-
-<div class="comic-card">
-
-<h2>
-
-${ch.title}
-
-</h2>
-
-<p>
-
-${ch.pages||0} Pages
-
-</p>
-
-</div>
-
-`;
-
-});
-
-}
-
-// =====================
-// POPULAR
-// =====================
-
-const popular=
-
-document.getElementById("popularList");
-
-if(chapters.length===0){
-
-popular.innerHTML=
-
-`
-
-<div class="comic-card">
-
-<h2>
-
-Coming Soon
-
-</h2>
-
-</div>
-
-`;
-
-}else{
-
-chapters
-
-.slice(0,5)
-
-.forEach(ch=>{
-
-popular.innerHTML+=
-
-`
-
-<div class="comic-card">
-
-<h2>
-
-${ch.title}
-
-</h2>
-
-<p>
-
-${ch.pages||0} Pages
-
-</p>
-
-</div>
-
-`;
-
-});
-
-}
+);
 
 // =====================
 // CONTINUE READING
 // =====================
 
-const continueBox=
-
-document.getElementById("continueReading");
-
 const last=
 
-localStorage.getItem("lastReadChapter");
+localStorage.getItem(
+
+"lastReadChapter"
+
+);
 
 if(last){
 
-continueBox.innerHTML=
+continueReading.innerHTML=
 
 `
 
@@ -648,7 +645,13 @@ ${last}
 
 </h2>
 
-<button class="btn" onclick="continueReading()">
+<button
+
+class="btn"
+
+onclick="continueReadingNow()"
+
+>
 
 Continue
 
@@ -660,7 +663,7 @@ Continue
 
 }else{
 
-continueBox.innerHTML=
+continueReading.innerHTML=
 
 `
 
@@ -678,11 +681,15 @@ No Reading History
 
 }
 
-function continueReading(){
+function continueReadingNow(){
 
 const last=
 
-localStorage.getItem("lastReadChapter");
+localStorage.getItem(
+
+"lastReadChapter"
+
+);
 
 if(last){
 
@@ -694,7 +701,9 @@ last
 
 );
 
-location.href="reader.html";
+location.href=
+
+"reader.html";
 
 }
 
@@ -704,7 +713,7 @@ location.href="reader.html";
 // ANNOUNCEMENT
 // =====================
 
-document.getElementById("announcementBox").innerHTML=
+announcementBox.innerHTML=
 
 `
 
@@ -716,13 +725,109 @@ Infinite X Development
 
 <p>
 
-Home Dashboard V1 Released.<br>
-
-More features are coming soon.
+Home Final Version Released.
 
 </p>
 
 `;
+
+// =====================
+// DAILY QUOTE
+// =====================
+
+const quotes=[
+
+"The adventure never ends.",
+
+"Every chapter starts with one page.",
+
+"Heroes are made by choices.",
+
+"Dream. Read. Create.",
+
+"Infinite stories await."
+
+];
+
+quoteBox.innerHTML=
+
+`
+
+<p>
+
+${quotes[Math.floor(Math.random()*quotes.length)]}
+
+</p>
+
+`;
+
+// =====================
+// TODAY EVENT
+// =====================
+
+eventBox.innerHTML=
+
+`
+
+<h3>
+
+No Event Today
+
+</h3>
+
+<p>
+
+Stay tuned!
+
+</p>
+
+`;
+
+// =====================
+// SEARCH
+// =====================
+
+searchComic.addEventListener(
+
+"input",
+
+function(){
+
+const keyword=
+
+this.value.toLowerCase();
+
+document
+
+.querySelectorAll(
+
+".comic-card"
+
+)
+
+.forEach(card=>{
+
+card.style.display=
+
+card.innerText
+
+.toLowerCase()
+
+.includes(keyword)
+
+?
+
+"block"
+
+:
+
+"none";
+
+});
+
+}
+
+);
 
 </script>
 
