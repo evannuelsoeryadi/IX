@@ -61,25 +61,6 @@ class="search-box"
 
 </div>
 
-<!-- FEATURED -->
-
-<div class="home-block">
-
-<h1>
-
-🔥 Featured Comic
-
-</h1>
-
-<div
-id="featuredComic"
-class="comic-container"
->
-
-</div>
-
-</div>
-
 <!-- TRENDING -->
 
 <div class="home-block">
@@ -132,6 +113,7 @@ class="comic-container"
 
 <div
 id="continueReading"
+class="comic-container"
 >
 
 </div>
@@ -171,56 +153,6 @@ class="comic-container"
 id="recentList"
 class="comic-container"
 >
-
-</div>
-
-</div>
-
-<!-- EVENT -->
-
-<div class="home-block">
-
-<h1>
-
-🎉 Today's Event
-
-</h1>
-
-<div
-id="eventBox"
-class="comic-card"
->
-
-<p>
-
-No Event Today
-
-</p>
-
-</div>
-
-</div>
-
-<!-- QUOTE -->
-
-<div class="home-block">
-
-<h1>
-
-💬 Quote
-
-</h1>
-
-<div
-id="quoteBox"
-class="comic-card"
->
-
-<p>
-
-"The adventure never ends."
-
-</p>
 
 </div>
 
@@ -333,32 +265,26 @@ Loading...
 
 <div class="hero-main">
 
-<span class="featured-tag">
-
-FEATURED COMIC
-
-</span>
-
-<h1 id="featuredTitle">
+<h1>
 
 Infinite X
 
 </h1>
 
-<p id="featuredDesc">
+<p>
 
-The beginning of an endless adventure.
+Read • Create • Explore
 
 </p>
 
 <div class="hero-buttons">
 
 <button
-id="readFeatured"
+id="startReading"
 class="btn"
 >
 
-Read Now
+Start Reading
 
 </button>
 
@@ -373,6 +299,20 @@ More Info
 
 </div>
 
+</div>
+
+<!-- ========================= -->
+<!-- FEATURED COMIC -->
+<!-- ========================= -->
+
+<div class="featured-panel">
+
+<span class="featured-tag">
+
+FEATURED COMIC
+
+</span>
+
 <img
 
 id="featuredCover"
@@ -383,10 +323,31 @@ src="https://placehold.co/350x500"
 
 >
 
+<h2 id="featuredTitle">
+
+Coming Soon
+
+</h2>
+
+<p id="featuredDesc">
+
+No featured comic yet.
+
+</p>
+
+<button
+id="readFeatured"
+class="btn"
+>
+
+Read Featured
+
+</button>
+
 </div>
 
 </section>
-
+  
 </div>
   
 <script>
