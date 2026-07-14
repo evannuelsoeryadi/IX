@@ -157,7 +157,9 @@ RIGHT HERO
 display:flex;
 flex-direction:column;
 align-items:center;
-gap:18px;
+gap:12px;
+width:280px;
+flex-shrink:0;
 }
 
 .hero-right h2{
