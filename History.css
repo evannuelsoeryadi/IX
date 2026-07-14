@@ -1,0 +1,209 @@
+/* =========================
+HISTORY PAGE
+========================= */
+
+.history-page{
+
+max-width:1400px;
+
+margin:auto;
+
+padding:40px;
+
+}
+
+.history-page h1{
+
+font-size:48px;
+
+margin-bottom:30px;
+
+}
+
+/* =========================
+SEARCH
+========================= */
+
+.history-search{
+
+margin-bottom:30px;
+
+}
+
+.history-search input{
+
+width:100%;
+
+padding:16px 20px;
+
+border:none;
+
+outline:none;
+
+border-radius:18px;
+
+font-size:18px;
+
+background:#1e293b;
+
+color:white;
+
+box-sizing:border-box;
+
+transition:.3s;
+
+}
+
+.history-search input:focus{
+
+box-shadow:
+
+0 0 18px
+
+#3B82F6;
+
+}
+
+/* =========================
+GRID
+========================= */
+
+.history-grid{
+
+display:grid;
+
+grid-template-columns:
+
+repeat(auto-fill,minmax(220px,1fr));
+
+gap:25px;
+
+}
+
+/* =========================
+CARD
+========================= */
+
+.history-card{
+
+background:
+
+rgba(15,23,42,.75);
+
+border-radius:20px;
+
+padding:18px;
+
+border:1px solid rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+transition:.3s;
+
+}
+
+.history-card:hover{
+
+transform:translateY(-6px);
+
+box-shadow:
+
+0 0 20px
+
+rgba(59,130,246,.25);
+
+}
+
+.history-card img{
+
+width:100%;
+
+height:300px;
+
+object-fit:cover;
+
+border-radius:15px;
+
+margin-bottom:15px;
+
+}
+
+.history-card h3{
+
+font-size:22px;
+
+margin-bottom:10px;
+
+}
+
+.history-card p{
+
+opacity:.8;
+
+margin-bottom:15px;
+
+}
+
+.history-card button{
+
+width:100%;
+
+}
+
+/* =========================
+EMPTY
+========================= */
+
+.empty-card{
+
+grid-column:1/-1;
+
+text-align:center;
+
+padding:80px;
+
+border-radius:20px;
+
+background:
+
+rgba(255,255,255,.05);
+
+font-size:22px;
+
+opacity:.8;
+
+}
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+.history-page{
+
+padding:25px;
+
+}
+
+.history-page h1{
+
+font-size:38px;
+
+}
+
+.history-grid{
+
+grid-template-columns:
+
+repeat(auto-fill,minmax(170px,1fr));
+
+}
+
+.history-card img{
+
+height:240px;
+
+}
+
+}
