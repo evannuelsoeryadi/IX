@@ -46,7 +46,9 @@ My Profile
 
 </h1>
 
+<!-- ========================= -->
 <!-- PROFILE CARD -->
+<!-- ========================= -->
 
 <div class="profile-card">
 
@@ -68,8 +70,13 @@ Guest
 
 <p id="joinDate">
 
-Joined :
--
+Joined : -
+
+</p>
+
+<p id="memberRank">
+
+Member
 
 </p>
 
@@ -89,21 +96,6 @@ id="continueCard"
 <span>
 
 Continue Reading
-
-</span>
-
-</div>
-
-<div
-class="menu-box"
-id="historyCard"
->
-
-📚
-
-<span>
-
-Reading History
 
 </span>
 
@@ -134,6 +126,21 @@ id="achievementCard"
 <span>
 
 Achievement
+
+</span>
+
+</div>
+
+<div
+class="menu-box"
+id="wallpaperCard"
+>
+
+🖼️
+
+<span>
+
+Wallpaper
 
 </span>
 
@@ -173,7 +180,9 @@ Logout
 
 </div>
 
+<!-- ========================= -->
 <!-- CONTINUE READING -->
+<!-- ========================= -->
 
 <section class="continue-section">
 
@@ -203,7 +212,7 @@ No Reading
 
 <p id="continueChapter">
 
--
+You haven't started reading yet.
 
 </p>
 
@@ -232,17 +241,124 @@ Continue
 
 </section>
 
-<!-- HISTORY -->
+<!-- ========================= -->
+<!-- FAVORITE -->
+<!-- ========================= -->
+
+<section class="favorite-section">
+
+<h2>
+
+Favorite Comics
+
+</h2>
+
+<div
+class="history-grid"
+id="favoriteGrid"
+>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- ACHIEVEMENTS -->
+<!-- ========================= -->
+
+<section class="achievement-section">
+
+<h2>
+
+Achievements
+
+</h2>
+
+<div
+class="achievement-grid"
+id="achievementGrid"
+>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- WALLPAPER -->
+<!-- ========================= -->
+
+<section class="wallpaper-section">
+
+<h2>
+
+Wallpaper Collection
+
+</h2>
+
+<div
+class="wallpaper-grid"
+id="wallpaperGrid"
+>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- SETTINGS -->
+<!-- ========================= -->
+
+<section class="setting-section">
+
+<h2>
+
+Settings
+
+</h2>
+
+<div class="setting-list">
+
+<button class="setting-btn">
+
+🌙 Theme
+
+</button>
+
+<button class="setting-btn">
+
+🔔 Notification
+
+</button>
+
+<button class="setting-btn">
+
+🌐 Language
+
+</button>
+
+<button class="setting-btn">
+
+🧹 Clear Cache
+
+</button>
+
+</div>
+
+</section>
+
+    <!-- ========================= -->
+<!-- READING HISTORY -->
+<!-- ========================= -->
 
 <section class="history-section">
-
-<div class="history-header">
 
 <h2>
 
 Reading History
 
 </h2>
+
+<div class="history-header">
 
 <input
 
@@ -268,13 +384,15 @@ id="historyGrid"
 
 </section>
 
+<!-- ========================= -->
 <!-- FAVORITE -->
+<!-- ========================= -->
 
 <section class="favorite-section">
 
 <h2>
 
-Favorite
+Favorite Comics
 
 </h2>
 
@@ -290,72 +408,133 @@ id="favoriteGrid"
 
 </section>
 
-<!-- ACHIEVEMENT -->
+<!-- ========================= -->
+<!-- ACHIEVEMENTS -->
+<!-- ========================= -->
 
 <section class="achievement-section">
 
 <h2>
 
-Achievement
+Achievements
+
+</h2>
+
+<p>
+
+Unlocked :
+
+<span id="achievementCount">
+
+0
+
+</span>
+
+/
+
+<span id="achievementTotal">
+
+20
+
+</span>
+
+</p>
+
+<div
+
+class="achievement-grid"
+
+id="achievementGrid"
+
+>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- WALLPAPER -->
+<!-- ========================= -->
+
+<section class="wallpaper-section">
+
+<h2>
+
+Member Wallpaper
 
 </h2>
 
 <div
-class="achievement-grid"
-id="achievementGrid"
+
+class="wallpaper-grid"
+
+id="wallpaperGrid"
+
 >
 
-<div class="achievement-card">
+<div class="comic-card">
 
-🥇
+<img
 
-<h3>
+src="wallpaper1.jpg"
 
-First Reader
-
-</h3>
+>
 
 <p>
 
-Read your first chapter.
+Default Blue
 
 </p>
+
+<button>
+
+Use
+
+</button>
 
 </div>
 
-<div class="achievement-card">
+<div class="comic-card">
 
-📚
+<img
 
-<h3>
+src="wallpaper2.jpg"
 
-Bookworm
-
-</h3>
+>
 
 <p>
 
-Read 10 chapters.
+Galaxy
 
 </p>
+
+<button>
+
+Use
+
+</button>
 
 </div>
 
-<div class="achievement-card">
+<div class="comic-card">
 
-👀
+<img
 
-<h3>
+src="wallpaper3.jpg"
 
-Coming Soon
-
-</h3>
+>
 
 <p>
 
-More achievements...
+Neon City
 
 </p>
+
+<button>
+
+Use
+
+</button>
 
 </div>
 
@@ -363,40 +542,111 @@ More achievements...
 
 </section>
 
+<!-- ========================= -->
+<!-- SETTINGS -->
+<!-- ========================= -->
+
+<section class="setting-section">
+
+<h2>
+
+Settings
+
+</h2>
+
+<div class="setting-list">
+
+<div class="setting-item">
+
+<span>
+
+🌙 Theme
+
+</span>
+
+<button id="changeTheme">
+
+Change
+
+</button>
+
+</div>
+
+<div class="setting-item">
+
+<span>
+
+🖼️ Wallpaper
+
+</span>
+
+<button id="openWallpaper">
+
+Open
+
+</button>
+
+</div>
+
+<div class="setting-item">
+
+<span>
+
+🔔 Notification
+
+</span>
+
+<button>
+
+Coming Soon
+
+</button>
+
+</div>
+
+<div class="setting-item">
+
+<span>
+
+🌐 Language
+
+</span>
+
+<button>
+
+English
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+    
 <div id="themeFade"></div>
     
 <script>
 
-//
+// =====================
 // DEV PANEL
-//
+// =====================
 
-if(
+if(localStorage.getItem("developerLogged")==="true"){
 
-localStorage.getItem(
-"developerLogged"
-)==="true"
-
-){
-
-document.getElementById(
-"devButton"
-).style.display="block";
+document.getElementById("devButton").style.display="block";
 
 }
 
-//
+// =====================
 // PROFILE
-//
+// =====================
 
 let profile=
 
 JSON.parse(
 
-localStorage.getItem(
-"infinite_x_profile"
-
-)
+localStorage.getItem("infinite_x_profile")
 
 )||{
 
@@ -404,108 +654,43 @@ name:"Guest",
 
 avatar:"https://placehold.co/150",
 
-joined:new Date()
-
-.toLocaleDateString()
+joined:new Date().toLocaleDateString()
 
 };
 
-document.getElementById(
+profileName.innerText=profile.name;
+profileAvatar.src=profile.avatar;
+joinDate.innerText="Joined : "+profile.joined;
 
-"profileName"
-
-).innerText=
-
-profile.name;
-
-document.getElementById(
-
-"profileAvatar"
-
-).src=
-
-profile.avatar;
-
-document.getElementById(
-
-"joinDate"
-
-).innerText=
-
-"Joined : "+profile.joined;
-
-//
+// =====================
 // CONTINUE READING
-//
+// =====================
 
 let lastChapter=
 
-localStorage.getItem(
-"lastReadChapter"
-);
+localStorage.getItem("lastReadChapter");
 
 let lastPage=
 
 Number(
 
-localStorage.getItem(
-"lastReadPage"
-
-)||0
+localStorage.getItem("lastReadPage")||0
 
 );
 
 if(lastChapter){
 
-document.getElementById(
+continueTitle.innerText=lastChapter;
 
-"continueTitle"
-
-).innerText=
-
-lastChapter;
-
-document.getElementById(
-
-"continueChapter"
-
-).innerText=
+continueChapter.innerText=
 
 "Page "+(lastPage+1);
 
-document.getElementById(
-
-"continueProgress"
-
-).style.width=
+continueProgress.style.width=
 
 (lastPage*5)+"%";
 
-}
-
-else{
-
-document.getElementById(
-
-"continueTitle"
-
-).innerText=
-
-"No Reading";
-
-document.getElementById(
-
-"continueButton"
-
-).disabled=true;
-
-}
-
-document.getElementById(
-
-"continueButton"
-
-).onclick=()=>{
+continueButton.onclick=function(){
 
 localStorage.setItem(
 
@@ -515,49 +700,43 @@ lastChapter
 
 );
 
-location.href=
-
-"reader.html";
+location.href="reader.html";
 
 };
 
-//
+}else{
+
+continueTitle.innerText="No Reading";
+
+continueButton.disabled=true;
+
+}
+
+// =====================
 // HISTORY
-//
+// =====================
 
 let history=
 
 JSON.parse(
 
-localStorage.getItem(
-
-"infinite_x_history"
-
-)
+localStorage.getItem("infinite_x_history")
 
 )||[];
 
 function renderHistory(list){
 
-let grid=
+historyGrid.innerHTML="";
 
-document.getElementById(
+if(list.length===0){
 
-"historyGrid"
-
-);
-
-grid.innerHTML="";
-
-if(list.length==0){
-
-grid.innerHTML=
+historyGrid.innerHTML=
 
 `
 
 <div class="empty-card">
 
-No History
+No Reading History
 
 </div>
 
@@ -569,40 +748,19 @@ return;
 
 list.forEach(item=>{
 
-grid.innerHTML+=`
+historyGrid.innerHTML+=
+
+`
 
 <div class="history-card">
 
-<img
+<img src="${item.cover||'https://placehold.co/150x220'}">
 
-src="${
-item.cover||
-'https://placehold.co/150x220'
-}"
+<h3>${item.title}</h3>
 
->
+<p>${item.chapter}</p>
 
-<h3>
-
-${item.title}
-
-</h3>
-
-<p>
-
-${item.chapter}
-
-</p>
-
-<button
-
-onclick="openHistory(
-
-'${item.id}'
-
-)"
-
->
+<button onclick="openHistory('${item.id}')">
 
 Continue
 
@@ -626,80 +784,53 @@ id
 
 );
 
-location.href=
+location.href="reader.html";
 
-"reader.html";
-
-}
+};
 
 renderHistory(history);
 
-//
+// =====================
 // FAVORITE
-//
+// =====================
 
 let favorites=
 
 JSON.parse(
 
-localStorage.getItem(
-
-"infinite_x_favorite"
-
-)
+localStorage.getItem("infinite_x_favorite")
 
 )||[];
 
-function renderFavorite(){
+favoriteGrid.innerHTML="";
 
-let grid=
+if(favorites.length===0){
 
-document.getElementById(
-
-"favoriteGrid"
-
-);
-
-grid.innerHTML="";
-
-if(favorites.length==0){
-
-grid.innerHTML=
+favoriteGrid.innerHTML=
 
 `
 
 <div class="empty-card">
 
-No Favorite
+No Favorite Comic
 
 </div>
 
 `;
 
-return;
-
-}
+}else{
 
 favorites.forEach(item=>{
 
-grid.innerHTML+=`
+favoriteGrid.innerHTML+=
+
+`
 
 <div class="history-card">
 
-<img
+<img src="${item.cover||'https://placehold.co/150x220'}">
 
-src="${
-item.cover||
-'https://placehold.co/150x220'
-}"
-
->
-
-<h3>
-
-${item.title}
-
-</h3>
+<h3>${item.title}</h3>
 
 </div>
 
@@ -709,105 +840,178 @@ ${item.title}
 
 }
 
-renderFavorite();
-
-//
+// =====================
 // SEARCH HISTORY
-//
+// =====================
 
-document.getElementById(
-
-"searchHistory"
-
-)
-
-.addEventListener(
+searchHistory.addEventListener(
 
 "input",
 
-e=>{
+function(e){
 
-let keyword=
+let key=e.target.value.toLowerCase();
 
-e.target.value
-
-.toLowerCase();
-
-let filtered=
+renderHistory(
 
 history.filter(item=>
 
-item.title
-
-.toLowerCase()
-
-.includes(keyword)
-
-);
-
-renderHistory(filtered);
-
-}
-
-);
-
-//
-// LOGOUT
-//
-
-document.getElementById(
-
-"logoutBtn"
+item.title.toLowerCase().includes(key)
 
 )
 
-.onclick=()=>{
+);
 
-localStorage.removeItem(
+});
 
-"user"
+// =====================
+// ACHIEVEMENT
+// =====================
+
+const allAchievements=[
+
+{name:"First Reader",desc:"Read your first chapter.",need:1},
+
+{name:"Bookworm",desc:"Read 10 chapters.",need:10},
+
+{name:"Explorer",desc:"Read 25 chapters.",need:25},
+
+{name:"Legend",desc:"Read 50 chapters.",need:50},
+
+{name:"Infinite",desc:"Read 100 chapters.",need:100}
+
+];
+
+achievementGrid.innerHTML="";
+
+let unlocked=0;
+
+allAchievements.forEach(a=>{
+
+let done=history.length>=a.need;
+
+if(done) unlocked++;
+
+achievementGrid.innerHTML+=
+
+`
+
+<div class="achievement-card ${done?'unlock':'lock'}">
+
+<h3>${a.name}</h3>
+
+<p>${a.desc}</p>
+
+<span>
+
+${done?'✅ Unlocked':'🔒 Locked'}
+
+</span>
+
+</div>
+
+`;
+
+});
+
+achievementCount.innerText=unlocked;
+achievementTotal.innerText=allAchievements.length;
+
+// =====================
+// WALLPAPER
+// =====================
+
+document.querySelectorAll(
+
+".wallpaper-grid button"
+
+).forEach(btn=>{
+
+btn.onclick=function(){
+
+let img=
+
+this.parentElement.querySelector("img").src;
+
+localStorage.setItem(
+
+"memberWallpaper",
+
+img
 
 );
 
-location.href=
-
-"login.html";
+alert("Wallpaper Applied!");
 
 };
 
-//
-// ACHIEVEMENT
-//
+});
 
-let achievements=[];
+// =====================
+// PROFILE MENU
+// =====================
 
-if(history.length>=1){
+continueCard.onclick=()=>
 
-achievements.push(
+document.querySelector(".continue-section")
 
-"First Reader"
+.scrollIntoView({
 
-);
+behavior:"smooth"
 
-}
+});
 
-if(history.length>=10){
+historyCard.onclick=()=>
 
-achievements.push(
+document.querySelector(".history-section")
 
-"Bookworm"
+.scrollIntoView({
 
-);
+behavior:"smooth"
 
-}
+});
 
-console.log(
+favoriteCard.onclick=()=>
 
-"Achievement",
+document.querySelector(".favorite-section")
 
-achievements
+.scrollIntoView({
 
-);
+behavior:"smooth"
+
+});
+
+achievementCard.onclick=()=>
+
+document.querySelector(".achievement-section")
+
+.scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+settingCard.onclick=()=>
+
+document.querySelector(".setting-section")
+
+.scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+// =====================
+// LOGOUT
+// =====================
+
+logoutBtn.onclick=function(){
+
+localStorage.removeItem("user");
+
+location.href="login.html";
+
+};
 
 </script>
     
