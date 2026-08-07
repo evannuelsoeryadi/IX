@@ -61,4 +61,6 @@
     color: white !important;
 
 }
-
+.achievement-card * {
+    color: white !important;
+}
