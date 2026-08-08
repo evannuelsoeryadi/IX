@@ -1,0 +1,309 @@
+/* ========================================
+   INFINITE X - WALLPAPER
+======================================== */
+
+.wallpaper-container {
+
+    width: 90%;
+    max-width: 1100px;
+
+    margin: 70px auto;
+
+    text-align: center;
+
+}
+
+
+.wallpaper-container h1 {
+
+    font-size: 48px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.wallpaper-subtitle {
+
+    font-size: 18px;
+
+    margin-bottom: 45px;
+
+    opacity: 0.8;
+
+}
+
+
+/* ========================================
+   WALLPAPER OPTIONS
+======================================== */
+
+.wallpaper-options {
+
+    display: grid;
+
+    grid-template-columns:
+    repeat(3, 1fr);
+
+    gap: 25px;
+
+}
+
+
+/* ========================================
+   WALLPAPER CARD
+======================================== */
+
+.wallpaper-card {
+
+    background:
+    #111827;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow:
+    0 10px 30px
+    rgba(0,0,0,0.25);
+
+    transition:
+    transform 0.25s,
+    box-shadow 0.25s;
+
+}
+
+
+.wallpaper-card:hover {
+
+    transform:
+    translateY(-6px);
+
+    box-shadow:
+    0 15px 35px
+    rgba(0,0,0,0.35);
+
+}
+
+
+/* ========================================
+   PREVIEW
+======================================== */
+
+.wallpaper-preview {
+
+    height: 190px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.light-preview {
+
+    background:
+    linear-gradient(
+        135deg,
+        #ffffff,
+        #eeeeee
+    );
+
+    color: #222;
+
+}
+
+
+.dark-preview {
+
+    background:
+    linear-gradient(
+        135deg,
+        #111827,
+        #050505
+    );
+
+    color: white;
+
+}
+
+
+.upload-preview {
+
+    background:
+    linear-gradient(
+        135deg,
+        #4f46e5,
+        #9333ea
+    );
+
+    color: white;
+
+}
+
+
+.preview-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 24px;
+
+}
+
+
+.preview-content:first-letter {
+
+    font-size: 50px;
+
+}
+
+
+/* ========================================
+   CARD INFORMATION
+======================================== */
+
+.wallpaper-info {
+
+    padding: 25px;
+
+}
+
+
+.wallpaper-info h2 {
+
+    margin:
+    0 0 10px;
+
+    color: white;
+
+    font-size: 23px;
+
+}
+
+
+.wallpaper-info p {
+
+    margin:
+    0 0 20px;
+
+    color: #cbd5e1;
+
+    font-size: 14px;
+
+}
+
+
+/* ========================================
+   BUTTON
+======================================== */
+
+.wallpaper-button,
+.upload-button {
+
+    display: inline-block;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px 20px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+    #4169ff;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+    background 0.2s,
+    transform 0.2s;
+
+}
+
+
+.wallpaper-button:hover,
+.upload-button:hover {
+
+    background:
+    #3157e8;
+
+    transform:
+    translateY(-2px);
+
+}
+
+
+/* ========================================
+   BACK BUTTON
+======================================== */
+
+.back-profile {
+
+    margin-top: 35px;
+
+    padding:
+    12px 25px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+    #1e293b;
+
+    color: white;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+}
+
+
+.back-profile:hover {
+
+    background:
+    #334155;
+
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 800px) {
+
+    .wallpaper-options {
+
+        grid-template-columns:
+        1fr;
+
+    }
+
+
+    .wallpaper-container h1 {
+
+        font-size: 38px;
+
+    }
+
+}
