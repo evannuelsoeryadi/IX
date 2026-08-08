@@ -256,35 +256,30 @@
 ======================================== */
 
 .back-profile {
+    position: absolute;
+    top: 220px;
+    left: 25px;
 
-    margin-top: 35px;
+    display: inline-block;
 
-    padding:
-    12px 25px;
+    padding: 11px 18px;
 
-    border: none;
+    background: #1e293b;
+    color: white;
 
     border-radius: 10px;
 
-    background:
-    #1e293b;
+    text-decoration: none;
+    font-weight: bold;
 
-    color: white;
+    z-index: 10;
 
-    font-size: 16px;
-
-    cursor: pointer;
-
+    transition: 0.2s;
 }
-
 
 .back-profile:hover {
-
-    background:
-    #334155;
-
+    transform: translateY(-2px);
 }
-
 
 /* ========================================
    RESPONSIVE
@@ -345,4 +340,8 @@
 .reset-wallpaper:hover {
     background: #b91c1c;
     transform: translateY(-2px);
+}
+
+nav {
+    border-bottom: none !important;
 }
