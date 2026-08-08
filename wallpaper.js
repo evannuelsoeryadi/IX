@@ -9,152 +9,274 @@ document.getElementById("devButton").style.display="block";
 }
 
 // ========================================
-// INFINITE X - WALLPAPER
+// INFINITE X - LIGHT WALLPAPER
+// MEMBER + DEV
+// FIREBASE FIRESTORE
 // ========================================
 
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
-// LIGHT WALLPAPER
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-document.getElementById("lightButton").onclick = function () {
 
-    localStorage.setItem(
-        "infinite_x_wallpaper",
-        "light"
-    );
+// ========================================
+// FIREBASE
+// ========================================
 
-    applyWallpaper();
-
+const firebaseConfig = {
+    apiKey: "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+    authDomain: "infinite-x-f37a2.firebaseapp.com",
+    projectId: "infinite-x-f37a2",
+    storageBucket: "infinite-x-f37a2.firebasestorage.app",
+    messagingSenderId: "32543278362",
+    appId: "1:32543278362:web:54e231f17c92596888d8a3"
 };
 
-
-// DARK WALLPAPER
-
-document.getElementById("darkButton").onclick = function () {
-
-    localStorage.setItem(
-        "infinite_x_wallpaper",
-        "dark"
-    );
-
-    applyWallpaper();
-
-};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 
-// UPLOAD WALLPAPER
+// ========================================
+// FIND LOGGED-IN USER FROM LOCALSTORAGE
+// ========================================
 
-document.getElementById("wallpaperUpload").onchange = function (event) {
+function getLoggedInUser() {
 
-    let file = event.target.files[0];
+    for (let i = 0; i < localStorage.length; i++) {
 
-    if (!file) {
-        return;
+        const key = localStorage.key(i);
+        const value = localStorage.getItem(key);
+
+        if (!value) continue;
+
+        try {
+
+            const data = JSON.parse(value);
+
+            if (!data || typeof data !== "object")
+                continue;
+
+            // Member / Dev session
+            if (
+                data.uid ||
+                data.userId ||
+                data.email ||
+                data.username ||
+                data.name
+            ) {
+
+                return data;
+
+            }
+
+        } catch {
+
+            // bukan JSON, lanjut
+        }
     }
 
+    return null;
+}
 
-    if (!file.type.startsWith("image/")) {
 
-        alert("Please choose an image.");
+const currentUser = getLoggedInUser();
 
+
+// ========================================
+// USER ID
+// ========================================
+
+const userId =
+    currentUser?.uid ||
+    currentUser?.userId ||
+    currentUser?.email ||
+    currentUser?.username ||
+    currentUser?.name;
+
+
+// ========================================
+// LOGIN CHECK
+// ========================================
+
+if (!userId) {
+
+    alert("Please login first.");
+
+    window.location.href = "login.html";
+
+}
+
+
+// ========================================
+// WALLPAPER BUTTONS
+// ========================================
+
+const buttons =
+    document.querySelectorAll(".use-wallpaper");
+
+
+buttons.forEach(button => {
+
+    button.addEventListener("click", async () => {
+
+        const wallpaper =
+            button.dataset.wallpaper;
+
+        if (!userId)
+            return;
+
+
+        try {
+
+            // =================================
+            // SAVE MEMBER WALLPAPER SELECTION
+            // FIELD TERPISAH
+            // AGAR TIDAK MENIMPA DATA DEV LAMA
+            // =================================
+
+            await setDoc(
+
+                doc(
+                    db,
+                    "users",
+                    String(userId)
+                ),
+
+                {
+
+                    selectedWallpaper: {
+                        name: wallpaper,
+                        type: "light",
+                        source: "member"
+                    }
+
+                },
+
+                {
+                    merge: true
+                }
+
+            );
+
+
+            // =================================
+            // VISUAL SELECTED
+            // =================================
+
+            document
+                .querySelectorAll(".light-card")
+                .forEach(card => {
+
+                    card.classList.remove("selected");
+
+                });
+
+
+            button
+                .closest(".light-card")
+                .classList.add("selected");
+
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Firebase wallpaper error:",
+                error
+            );
+
+            alert(
+                "Failed to save wallpaper."
+            );
+
+        }
+
+    });
+
+});
+
+
+// ========================================
+// LOAD SAVED WALLPAPER
+// ========================================
+
+async function loadWallpaper() {
+
+    if (!userId)
         return;
+
+
+    try {
+
+        const userDoc =
+            await getDoc(
+                doc(
+                    db,
+                    "users",
+                    String(userId)
+                )
+            );
+
+
+        if (!userDoc.exists())
+            return;
+
+
+        const data =
+            userDoc.data();
+
+
+        const selected =
+            data.selectedWallpaper;
+
+
+        if (!selected)
+            return;
+
+
+        if (selected.type !== "light")
+            return;
+
+
+        buttons.forEach(button => {
+
+            if (
+                button.dataset.wallpaper ===
+                selected.name
+            ) {
+
+                button
+                    .closest(".light-card")
+                    .classList.add("selected");
+
+            }
+
+        });
 
     }
 
+    catch (error) {
 
-    let reader = new FileReader();
-
-
-    reader.onload = function (e) {
-
-        localStorage.setItem(
-            "infinite_x_wallpaper",
-            e.target.result
+        console.error(
+            "Failed to load wallpaper:",
+            error
         );
-
-        applyWallpaper();
-
-    };
-
-
-    reader.readAsDataURL(file);
-
-};
-
-
-// APPLY WALLPAPER
-
-function applyWallpaper() {
-
-    let wallpaper = localStorage.getItem(
-        "infinite_x_wallpaper"
-    );
-
-
-    if (!wallpaper) {
-
-        return;
-
-    }
-
-
-    if (wallpaper === "light") {
-
-        document.body.style.background =
-        "linear-gradient(135deg,#ffffff,#eeeeee)";
-
-        document.body.style.color =
-        "#111827";
-
-        return;
-
-    }
-
-
-    if (wallpaper === "dark") {
-
-        document.body.style.background =
-        "linear-gradient(135deg,#111827,#050505)";
-
-        document.body.style.color =
-        "#ffffff";
-
-        return;
-
-    }
-
-
-    if (wallpaper.startsWith("data:image")) {
-
-        document.body.style.backgroundImage =
-        `url("${wallpaper}")`;
-
-        document.body.style.backgroundSize =
-        "cover";
-
-        document.body.style.backgroundPosition =
-        "center";
-
-        document.body.style.backgroundAttachment =
-        "fixed";
-
-        document.body.style.backgroundRepeat =
-        "no-repeat";
 
     }
 
 }
 
-// RESET WALLPAPER
 
-document.getElementById("resetWallpaper").onclick = function () {
+// ========================================
+// START
+// ========================================
 
-    localStorage.removeItem(
-        "infinite_x_wallpaper"
-    );
-
-    location.reload();
-
-};
-// LOAD SAVED WALLPAPER
-
-applyWallpaper();
+loadWallpaper();
