@@ -1,0 +1,254 @@
+/* ========================================
+   INFINITE X - LIGHT WALLPAPER
+======================================== */
+
+.light-wallpaper-container {
+
+    width: 90%;
+    max-width: 1200px;
+
+    margin: 90px auto 50px;
+
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.light-header {
+
+    text-align: center;
+
+    margin-bottom: 45px;
+
+}
+
+.light-header h1 {
+
+    font-size: 42px;
+
+    margin-bottom: 10px;
+
+}
+
+.light-header p {
+
+    font-size: 18px;
+
+    opacity: 0.8;
+
+}
+
+
+/* ========================================
+   BACK BUTTON
+======================================== */
+
+.back-button {
+
+    position: absolute;
+
+    top: 205px;
+    left: 25px;
+
+    padding: 11px 18px;
+
+    background: #1e293b;
+
+    color: white;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    z-index: 10;
+
+    transition: 0.2s;
+
+}
+
+.back-button:hover {
+
+    transform: translateY(-2px);
+
+}
+
+
+/* ========================================
+   WALLPAPER GRID
+======================================== */
+
+.light-grid {
+
+    display: grid;
+
+    grid-template-columns:
+    repeat(3, 1fr);
+
+    gap: 25px;
+
+}
+
+
+/* ========================================
+   WALLPAPER CARD
+======================================== */
+
+.light-card {
+
+    background: #111827;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+    0 8px 25px
+    rgba(0, 0, 0, 0.25);
+
+    transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+
+}
+
+.light-card:hover {
+
+    transform:
+    translateY(-5px);
+
+    box-shadow:
+    0 12px 30px
+    rgba(0, 0, 0, 0.35);
+
+}
+
+
+/* ========================================
+   WALLPAPER IMAGE
+======================================== */
+
+.light-card img {
+
+    width: 100%;
+
+    height: 200px;
+
+    object-fit: cover;
+
+    display: block;
+
+}
+
+
+/* ========================================
+   CARD INFO
+======================================== */
+
+.light-card-info {
+
+    padding: 20px;
+
+    text-align: center;
+
+    color: white;
+
+}
+
+.light-card-info h2 {
+
+    margin:
+    0 0 15px;
+
+    font-size: 21px;
+
+}
+
+
+/* ========================================
+   USE WALLPAPER BUTTON
+======================================== */
+
+.use-wallpaper {
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #4169ff;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+    background 0.2s,
+    transform 0.2s;
+
+}
+
+.use-wallpaper:hover {
+
+    background: #3158e8;
+
+    transform:
+    translateY(-2px);
+
+}
+
+
+/* ========================================
+   SELECTED WALLPAPER
+======================================== */
+
+.light-card.selected {
+
+    outline:
+    3px solid #4169ff;
+
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 900px) {
+
+    .light-grid {
+
+        grid-template-columns:
+        repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .light-grid {
+
+        grid-template-columns:
+        1fr;
+
+    }
+
+    .light-header h1 {
+
+        font-size: 34px;
+
+    }
+
+}
