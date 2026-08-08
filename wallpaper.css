@@ -257,24 +257,18 @@
 
 .back-profile {
     position: absolute;
-    top: 220px;
+    top: 215px;
     left: 25px;
-
-    display: inline-block;
 
     padding: 11px 18px;
 
     background: #1e293b;
     color: white;
-
     border-radius: 10px;
 
     text-decoration: none;
     font-weight: bold;
-
     z-index: 10;
-
-    transition: 0.2s;
 }
 
 .back-profile:hover {
