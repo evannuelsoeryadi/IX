@@ -134,7 +134,17 @@ function applyWallpaper() {
 
 }
 
+// RESET WALLPAPER
 
+document.getElementById("resetWallpaper").onclick = function () {
+
+    localStorage.removeItem(
+        "infinite_x_wallpaper"
+    );
+
+    location.reload();
+
+};
 // LOAD SAVED WALLPAPER
 
 applyWallpaper();
