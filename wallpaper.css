@@ -339,3 +339,7 @@
 nav {
     border-bottom: none !important;
 }
+
+nav {
+    box-shadow: none !important;
+}
