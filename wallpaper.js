@@ -1,3 +1,13 @@
+// =====================
+// DEV PANEL
+// =====================
+
+if(localStorage.getItem("developerLogged")==="true"){
+
+document.getElementById("devButton").style.display="block";
+
+}
+
 // ========================================
 // INFINITE X - WALLPAPER
 // ========================================
