@@ -3,257 +3,199 @@
 
 <head>
 
-<title>Wallpaper - Infinite X</title>
+    <title>Wallpaper - Infinite X</title>
 
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="manage.css">
-<link rel="stylesheet" href="theme.css">
-<link rel="stylesheet" href="wallpaper.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="manage.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="wallpaper.css">
 
 </head>
 
-
 <body>
 
-<button
-id="resetWallpaper"
-class="reset-wallpaper"
->
-↻ Reset Wallpaper
-</button>
-  
 <!-- NAVIGATION -->
 
 <nav>
 
-<a href="home.html">
-Home
-</a>
+    <a href="home.html">Home</a>
 
-<a href="comic.html">
-Comic
-</a>
+    <a href="comic.html">Comic</a>
 
-<a href="character.html">
-Character
-</a>
+    <a href="character.html">Character</a>
 
-<a href="about.html">
-About Us
-</a>
+    <a href="about.html">About Us</a>
 
-<a href="profile.html">
-Profile
-</a>
+    <a href="profile.html">Profile</a>
 
-<a
-href="developer.html"
-id="devButton"
-style="display:none;"
->
-⚙️ Dev Panel
-</a>
+    <a href="developer.html"
+       id="devButton"
+       style="display:none;">
+        ⚙️ Dev Panel
+    </a>
 
 </nav>
-
 
 
 <!-- WALLPAPER PAGE -->
 
 <div class="wallpaper-container">
 
+    <h1>Wallpaper</h1>
 
-<h1>
-Wallpaper
-</h1>
-
-
-<p class="wallpaper-subtitle">
-Choose your preferred wallpaper
-</p>
+    <p class="wallpaper-subtitle">
+        Choose your preferred wallpaper
+    </p>
 
 
-
-<!-- WALLPAPER OPTIONS -->
-
-<div class="wallpaper-options">
+    <div class="wallpaper-options">
 
 
+        <!-- LIGHT -->
 
-<!-- LIGHT -->
+        <div class="wallpaper-card">
 
-<div
-class="wallpaper-card"
-id="lightWallpaper"
->
+            <div class="wallpaper-preview light-preview">
 
-<div
-class="wallpaper-preview light-preview"
->
+                <div class="preview-content">
 
-<div class="preview-content">
+                    <div>🌞</div>
 
-🌞
+                    <span>
+                        Light
+                    </span>
 
-<span>
-Light
-</span>
+                </div>
+
+            </div>
+
+
+            <div class="wallpaper-info">
+
+                <h2>Light</h2>
+
+                <p>
+                    Bright and clean wallpaper
+                </p>
+
+                <a
+                    href="light-wallpaper.html"
+                    class="wallpaper-button"
+                >
+                    Open Light
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- DARK -->
+
+        <div class="wallpaper-card">
+
+            <div class="wallpaper-preview dark-preview">
+
+                <div class="preview-content">
+
+                    <div>🌙</div>
+
+                    <span>
+                        Dark
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="wallpaper-info">
+
+                <h2>Dark</h2>
+
+                <p>
+                    Dark and comfortable wallpaper
+                </p>
+
+                <a
+                    href="dark-wallpaper.html"
+                    class="wallpaper-button"
+                >
+                    Open Dark
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CUSTOM -->
+
+        <div class="wallpaper-card">
+
+            <div class="wallpaper-preview upload-preview">
+
+                <div class="preview-content">
+
+                    <div>📤</div>
+
+                    <span>
+                        Custom
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="wallpaper-info">
+
+                <h2>
+                    Custom Wallpaper
+                </h2>
+
+                <p>
+                    Use your own wallpaper
+                </p>
+
+                <a
+                    href="custom-wallpaper.html"
+                    class="wallpaper-button"
+                >
+                    Open Custom
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- BACK TO PROFILE -->
+
+    <a
+        href="profile.html"
+        class="back-profile"
+    >
+        ← Back to Profile
+    </a>
 
 </div>
 
-</div>
 
-
-<div class="wallpaper-info">
-
-<h2>
-Light
-</h2>
-
-<p>
-Bright and clean wallpaper
-</p>
+<!-- RESET WALLPAPER -->
 
 <button
-class="wallpaper-button"
-id="lightButton"
+    id="resetWallpaper"
+    class="reset-wallpaper"
 >
-Use Light
+    ↻ Reset Wallpaper
 </button>
 
-</div>
-
-</div>
-
-
-
-<!-- DARK -->
-
-<div
-class="wallpaper-card"
-id="darkWallpaper"
->
-
-<div
-class="wallpaper-preview dark-preview"
->
-
-<div class="preview-content">
-
-🌙
-
-<span>
-Dark
-</span>
-
-</div>
-
-</div>
-
-
-<div class="wallpaper-info">
-
-<h2>
-Dark
-</h2>
-
-<p>
-Dark and comfortable wallpaper
-</p>
-
-<button
-class="wallpaper-button"
-id="darkButton"
->
-Use Dark
-</button>
-
-</div>
-
-</div>
-
-
-
-<!-- UPLOAD -->
-
-<div
-class="wallpaper-card"
-id="uploadWallpaper"
->
-
-<div
-class="wallpaper-preview upload-preview"
->
-
-<div class="preview-content">
-
-📤
-
-<span>
-Upload
-</span>
-
-</div>
-
-</div>
-
-
-<div class="wallpaper-info">
-
-<h2>
-Upload Wallpaper
-</h2>
-
-<p>
-Use your own wallpaper
-</p>
-
-
-<label
-for="wallpaperUpload"
-class="upload-button"
->
-
-Choose Image
-
-</label>
-
-
-<input
-type="file"
-id="wallpaperUpload"
-accept="image/*"
-hidden
->
-
-
-</div>
-
-</div>
-
-
-
-</div>
-
-
-
-<!-- BACK TO PROFILE -->
-
-<button
-class="back-profile"
-onclick="location.href='profile.html'"
->
-
-← Back to Profile
-
-</button>
-
-
-</div>
-
-
-
-<!-- WALLPAPER SCRIPT -->
 
 <script src="wallpaper.js"></script>
 
