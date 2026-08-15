@@ -34,90 +34,525 @@ style="display:none;"
 
 </nav>
   
-<script>
+<script type="module">
 
-// =====================
-// AUTO REDIRECT
-// =====================
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
-if(localStorage.getItem("user")){
-
-window.location.href=
-"home.html";
-
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    getDoc
 }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+
+// =====================
+// FIREBASE
+// =====================
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+    authDomain: "infinite-x-f37a2.firebaseapp.com",
+    projectId: "infinite-x-f37a2",
+    storageBucket: "infinite-x-f37a2.firebasestorage.app",
+    messagingSenderId: "32543278362",
+    appId: "1:32543278362:web:54e231f17c92596888d8a3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 
 // =====================
 // LOGIN CHECK
 // =====================
 
-function isLoggedIn(){
+const uid =
+    sessionStorage.getItem("firebaseUID");
 
-return localStorage.getItem(
-"user"
-)!==null;
+if (!uid) {
 
-}
-
-// =====================
-// START BUTTON
-// =====================
-
-document
-.getElementById(
-"startBtn"
-)
-.onclick=function(e){
-
-e.preventDefault();
-
-window.location.href=
-"whoareyou.html";
-
-};
-
-// =====================
-// PROFILE
-// =====================
-
-function goProfile(){
-
-window.location.href=
-"whoareyou.html";
+    window.location.href =
+        "index.html";
 
 }
 
-// =====================
-// COMIC
-// =====================
-
-function goComic(){
-
-window.location.href=
-"whoareyou.html";
-
-}
 
 // =====================
 // DEV PANEL
 // =====================
 
-if(
+if (
+    sessionStorage.getItem("developerLogged") === "true" ||
+    localStorage.getItem("developerLogged") === "true"
+) {
 
-localStorage.getItem(
-"developerLogged"
-)==="true"
-
-){
-
-document
-.getElementById(
-"devButton"
-)
-.style.display=
-"block";
+    document
+        .getElementById("devButton")
+        .style.display = "block";
 
 }
+
+
+// =====================
+// DATA
+// =====================
+
+let chapters = [];
+let characters = [];
+let members = [];
+
+
+// =====================
+// LOAD CHAPTERS
+// =====================
+
+async function loadChapters() {
+
+    const snapshot =
+        await getDocs(
+            collection(db, "chapters")
+        );
+
+    chapters = [];
+
+    snapshot.forEach(item => {
+
+        chapters.push({
+            id: item.id,
+            ...item.data()
+        });
+
+    });
+
+}
+
+
+// =====================
+// LOAD CHARACTERS
+// =====================
+
+async function loadCharacters() {
+
+    const snapshot =
+        await getDocs(
+            collection(db, "characters")
+        );
+
+    characters = [];
+
+    snapshot.forEach(item => {
+
+        characters.push({
+            id: item.id,
+            ...item.data()
+        });
+
+    });
+
+}
+
+
+// =====================
+// LOAD MEMBERS
+// =====================
+
+async function loadMembers() {
+
+    const snapshot =
+        await getDocs(
+            collection(db, "users")
+        );
+
+    members = [];
+
+    snapshot.forEach(item => {
+
+        const data = item.data();
+
+        if (data.role === "member") {
+
+            members.push({
+                id: item.id,
+                ...data
+            });
+
+        }
+
+    });
+
+}
+
+
+// =====================
+// STATS
+// =====================
+
+function updateStats() {
+
+    document.getElementById(
+        "comicCount"
+    ).innerText = chapters.length;
+
+    document.getElementById(
+        "characterCount"
+    ).innerText = characters.length;
+
+    document.getElementById(
+        "memberCount"
+    ).innerText = members.length;
+
+}
+
+
+// =====================
+// FEATURED
+// =====================
+
+function loadFeatured() {
+
+    if (!chapters.length)
+        return;
+
+    const featured =
+        chapters[chapters.length - 1];
+
+
+    document.getElementById(
+        "featuredTitle"
+    ).innerText =
+        featured.title;
+
+
+    document.getElementById(
+        "featuredDesc"
+    ).innerText =
+        featured.desc ||
+        "No description.";
+
+
+    if (featured.cover) {
+
+        document.getElementById(
+            "featuredCover"
+        ).src =
+            featured.cover;
+
+    }
+
+
+    document.getElementById(
+        "readFeatured"
+    ).onclick = function () {
+
+        sessionStorage.setItem(
+            "selectedChapter",
+            featured.id ||
+            featured.title
+        );
+
+        window.location.href =
+            "reader.html";
+
+    };
+
+}
+
+
+// =====================
+// CARD GENERATOR
+// =====================
+
+function createComicCard(box, data) {
+
+    box.innerHTML = "";
+
+
+    if (!data.length) {
+
+        box.innerHTML = `
+
+            <div class="comic-card">
+
+                <h3>
+                    Coming Soon
+                </h3>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    data.forEach(ch => {
+
+        box.innerHTML += `
+
+            <div class="comic-card">
+
+                <h2>
+                    ${ch.title}
+                </h2>
+
+                <p>
+                    ${ch.pages || 0} Pages
+                </p>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+// =====================
+// LOAD LISTS
+// =====================
+
+function loadLists() {
+
+    createComicCard(
+        document.getElementById(
+            "trendingList"
+        ),
+        chapters.slice(0, 5)
+    );
+
+
+    createComicCard(
+        document.getElementById(
+            "newReleaseList"
+        ),
+        chapters
+            .slice(-5)
+            .reverse()
+    );
+
+
+    createComicCard(
+        document.getElementById(
+            "popularList"
+        ),
+        chapters.slice(0, 5)
+    );
+
+
+    createComicCard(
+        document.getElementById(
+            "recentList"
+        ),
+        chapters
+            .slice(-3)
+            .reverse()
+    );
+
+}
+
+
+// =====================
+// CONTINUE READING
+// =====================
+
+async function loadContinueReading() {
+
+    const box =
+        document.getElementById(
+            "continueReading"
+        );
+
+
+    const userDoc =
+        await getDoc(
+            doc(
+                db,
+                "users",
+                uid
+            )
+        );
+
+
+    if (!userDoc.exists()) {
+
+        box.innerHTML = `
+
+            <div class="comic-card">
+
+                <p>
+                    No Reading History
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const data =
+        userDoc.data();
+
+
+    const last =
+        data.lastReadChapter;
+
+
+    if (!last) {
+
+        box.innerHTML = `
+
+            <div class="comic-card">
+
+                <p>
+                    No Reading History
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML = `
+
+        <div class="comic-card">
+
+            <h2>
+                ${last}
+            </h2>
+
+            <button
+                class="btn"
+                id="continueBtn"
+            >
+                Continue
+            </button>
+
+        </div>
+
+    `;
+
+
+    document
+        .getElementById(
+            "continueBtn"
+        )
+        .onclick = function () {
+
+            sessionStorage.setItem(
+                "selectedChapter",
+                last
+            );
+
+            window.location.href =
+                "reader.html";
+
+        };
+
+}
+
+
+// =====================
+// ANNOUNCEMENT
+// =====================
+
+document.getElementById(
+    "announcementBox"
+).innerHTML = `
+
+    <h3>
+        Infinite X Development
+    </h3>
+
+    <p>
+        Home Final Version Released.
+    </p>
+
+`;
+
+
+// =====================
+// SEARCH
+// =====================
+
+document
+    .getElementById("searchComic")
+    .addEventListener(
+        "input",
+        function () {
+
+            const keyword =
+                this.value.toLowerCase();
+
+            document
+                .querySelectorAll(
+                    ".comic-card"
+                )
+                .forEach(card => {
+
+                    card.style.display =
+                        card.innerText
+                            .toLowerCase()
+                            .includes(keyword)
+                            ? "block"
+                            : "none";
+
+                });
+
+        }
+    );
+
+
+// =====================
+// START HOME
+// =====================
+
+async function startHome() {
+
+    try {
+
+        await Promise.all([
+
+            loadChapters(),
+            loadCharacters(),
+            loadMembers()
+
+        ]);
+
+
+        updateStats();
+        loadFeatured();
+        loadLists();
+
+        await loadContinueReading();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Firebase Home Error:",
+            error
+        );
+
+    }
+
+}
+
+
+startHome();
 
 </script>
 
