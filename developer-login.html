@@ -48,198 +48,265 @@
 
     </div>
 
-    <script>
+    <script type="module">
 
-        function developerLogin(){
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
-            let id =
-                document.getElementById(
-                    "developerID"
-                ).value;
+import {
+    getAuth,
+    signInWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
-            let pass =
-                document.getElementById(
-                    "developerPass"
-                ).value;
+import {
+    getFirestore,
+    doc,
+    getDoc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-            /* OWNER 1 */
 
-            if(
-                id === "Evan01" &&
-                pass === "23062012"
-            ){
+// =====================
+// FIREBASE
+// =====================
 
-                localStorage.setItem(
-                    "developerLogged",
-                    "true"
-                );
+const firebaseConfig = {
 
-                localStorage.setItem(
-                    "developerID",
-                    "Evan01"
-                );
+    apiKey:
+    "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
 
-                localStorage.setItem(
-                    "developerName",
-                    "Evan"
-                );
+    authDomain:
+    "infinite-x-f37a2.firebaseapp.com",
 
-                localStorage.setItem(
-                    "developerRole",
-                    "Owner"
-                );
+    projectId:
+    "infinite-x-f37a2",
 
-                localStorage.setItem(
-                    "user",
-                    "Evan"
-                );
+    storageBucket:
+    "infinite-x-f37a2.firebasestorage.app",
 
-                window.location.href =
-                    "developer.html";
+    messagingSenderId:
+    "32543278362",
 
-                return;
-            }
+    appId:
+    "1:32543278362:web:54e231f17c92596888d8a3"
 
-            /* OWNER 2 */
+};
 
-            if(
-                id === "Aldo02" &&
-                pass === "15032012"
-            ){
 
-                localStorage.setItem(
-                    "developerLogged",
-                    "true"
-                );
+const app =
+    initializeApp(firebaseConfig);
 
-                localStorage.setItem(
-                    "developerID",
-                    "Aldo02"
-                );
+const auth =
+    getAuth(app);
 
-                localStorage.setItem(
-                    "developerName",
-                    "Aldo"
-                );
+const db =
+    getFirestore(app);
 
-                localStorage.setItem(
-                    "developerRole",
-                    "Owner"
-                );
 
-                localStorage.setItem(
-                    "user",
-                    "Aldo"
-                );
+// =====================
+// LOGIN
+// =====================
 
-                window.location.href =
-                    "developer.html";
+async function developerLogin(){
 
-                return;
-            }
+    const id =
+        document
+        .getElementById("developerID")
+        .value
+        .trim();
 
-            /* OWNER 3 */
+    const pass =
+        document
+        .getElementById("developerPass")
+        .value;
 
-            if(
-                id === "Darren03" &&
-                pass === "2808201210"
-            ){
 
-                localStorage.setItem(
-                    "developerLogged",
-                    "true"
-                );
+    if(
+        id === "" ||
+        pass === ""
+    ){
 
-                localStorage.setItem(
-                    "developerID",
-                    "Darren03"
-                );
+        alert(
+            "Lengkapi data dulu!"
+        );
 
-                localStorage.setItem(
-                    "developerName",
-                    "Darren"
-                );
+        return;
 
-                localStorage.setItem(
-                    "developerRole",
-                    "Owner"
-                );
+    }
 
-                localStorage.setItem(
-                    "user",
-                    "Darren"
-                );
 
-                window.location.href =
-                    "developer.html";
+    try{
 
-                return;
-            }
+        const email =
+            id.toLowerCase()
+            +
+            "@infinite-x.local";
 
-            /* OWNER 4 */
 
-            if(
-                id === "Damian04" &&
-                pass === "PembangkitListrikTenagaNuklir6769"
-            ){
+        // =========================
+        // FIREBASE AUTH
+        // =========================
 
-                localStorage.setItem(
-                    "developerLogged",
-                    "true"
-                );
-
-                localStorage.setItem(
-                    "developerID",
-                    "Damian04"
-                );
-
-                localStorage.setItem(
-                    "developerName",
-                    "Damian"
-                );
-
-                localStorage.setItem(
-                    "developerRole",
-                    "Owner"
-                );
-
-                localStorage.setItem(
-                    "user",
-                    "Damian"
-                );
-
-                window.location.href =
-                    "developer.html";
-
-                return;
-            }
-
-            alert(
-                "Developer ID atau Password salah!"
+        const result =
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                pass
             );
 
+
+        const uid =
+            result.user.uid;
+
+
+        // =========================
+        // GET DEVELOPER DATA
+        // =========================
+
+        const userDoc =
+            await getDoc(
+
+                doc(
+                    db,
+                    "users",
+                    uid
+                )
+
+            );
+
+
+        if(
+            !userDoc.exists()
+        ){
+
+            alert(
+                "Data Developer tidak ditemukan."
+            );
+
+            await auth.signOut();
+
+            return;
+
         }
 
-        function toggleDevPassword(){
 
-            let pass =
-                document.getElementById(
-                    "developerPass"
-                );
+        const data =
+            userDoc.data();
 
-            if(pass.type === "password"){
 
-                pass.type = "text";
+        // =========================
+        // ROLE CHECK
+        // =========================
 
-            }else{
+        if(
+            data.role !== "Owner"
+        ){
 
-                pass.type = "password";
+            alert(
+                "Akun ini bukan Developer."
+            );
 
-            }
+            await auth.signOut();
+
+            return;
 
         }
 
-    </script>
+
+        // =========================
+        // SAVE SESSION
+        // =========================
+
+        sessionStorage.setItem(
+            "firebaseUID",
+            uid
+        );
+
+        sessionStorage.setItem(
+            "developerLogged",
+            "true"
+        );
+
+        sessionStorage.setItem(
+            "developerID",
+            data.developerID || id
+        );
+
+        sessionStorage.setItem(
+            "developerName",
+            data.username || ""
+        );
+
+        sessionStorage.setItem(
+            "developerRole",
+            data.role
+        );
+
+
+        // =========================
+        // GO DEV PANEL
+        // =========================
+
+        window.location.href =
+            "developer.html";
+
+    }
+
+
+    catch(error){
+
+        console.error(error);
+
+
+        alert(
+            "Developer ID atau Password salah!"
+        );
+
+    }
+
+}
+
+
+// =====================
+// SHOW PASSWORD
+// =====================
+
+function toggleDevPassword(){
+
+    const pass =
+        document.getElementById(
+            "developerPass"
+        );
+
+
+    if(
+        pass.type === "password"
+    ){
+
+        pass.type = "text";
+
+    }
+    else{
+
+        pass.type = "password";
+
+    }
+
+}
+
+
+// =====================
+// GLOBAL
+// =====================
+
+window.developerLogin =
+    developerLogin;
+
+window.toggleDevPassword =
+    toggleDevPassword;
+
+</script>
 
 </body>
 </html>
