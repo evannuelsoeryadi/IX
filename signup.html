@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
     <title>Sign Up - Infinite X</title>
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="manage.css">
 
 </head>
 
+
 <body>
 
-```
+
 <div class="login-box">
 
     <h1>Sign Up</h1>
+
 
     <input
         type="text"
@@ -20,11 +25,13 @@
         placeholder="Username"
     >
 
+
     <input
         type="password"
         id="password"
         placeholder="Password"
     >
+
 
     <input
         type="password"
@@ -32,41 +39,148 @@
         placeholder="Confirm Password"
     >
 
-    <button onclick="signup()">
+
+    <button id="signupBtn">
+
         Create Account
+
     </button>
 
-    <a href="member.html" class="back-btn">
+
+    <a
+        href="member.html"
+        class="back-btn"
+    >
+
         ← Back
+
     </a>
 
+
     <p>
+
         Sudah punya akun?
+
         <a href="login.html">
+
             Login
+
         </a>
+
     </p>
+
 
 </div>
 
-<script>
 
-    function signup(){
 
-        let username =
-            document.getElementById(
-                "username"
-            ).value;
+<script type="module">
 
-        let password =
-            document.getElementById(
-                "password"
-            ).value;
+// ========================================
+// FIREBASE
+// ========================================
 
-        let confirm =
-            document.getElementById(
-                "confirm"
-            ).value;
+import {
+
+    initializeApp
+
+}
+from
+"https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+
+import {
+
+    getAuth,
+    createUserWithEmailAndPassword
+
+}
+from
+"https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+
+import {
+
+    getFirestore,
+    doc,
+    setDoc
+
+}
+from
+"https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+
+// ========================================
+// CONFIG
+// ========================================
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+
+    authDomain:
+    "infinite-x-f37a2.firebaseapp.com",
+
+    projectId:
+    "infinite-x-f37a2",
+
+    storageBucket:
+    "infinite-x-f37a2.firebasestorage.app",
+
+    messagingSenderId:
+    "32543278362",
+
+    appId:
+    "1:32543278362:web:54e231f17c92596888d8a3"
+
+};
+
+
+const app =
+initializeApp(firebaseConfig);
+
+
+const auth =
+getAuth(app);
+
+
+const db =
+getFirestore(app);
+
+
+// ========================================
+// SIGN UP
+// ========================================
+
+document
+.getElementById("signupBtn")
+.addEventListener(
+    "click",
+    async function(){
+
+        const username =
+            document
+            .getElementById("username")
+            .value
+            .trim();
+
+
+        const password =
+            document
+            .getElementById("password")
+            .value;
+
+
+        const confirm =
+            document
+            .getElementById("confirm")
+            .value;
+
+
+        // ================================
+        // CHECK EMPTY
+        // ================================
 
         if(
             username === "" ||
@@ -78,7 +192,13 @@
             );
 
             return;
+
         }
+
+
+        // ================================
+        // CHECK PASSWORD
+        // ================================
 
         if(
             password !== confirm
@@ -89,64 +209,151 @@
             );
 
             return;
+
         }
 
-        let accounts =
-            JSON.parse(
-                localStorage.getItem(
-                    "accounts"
+
+        // ================================
+        // FIREBASE AUTH
+        // ================================
+
+        try{
+
+            /*
+             * Firebase Authentication
+             * membutuhkan email.
+             *
+             * Karena sistem lu memakai
+             * username, kita buat email
+             * internal berdasarkan username.
+             */
+
+            const email =
+                username
+                .toLowerCase()
+                .replace(
+                    /\s+/g,
+                    ""
                 )
-            ) || [];
+                +
+                "@infinite-x.local";
 
-        let userExists =
-            accounts.some(
-                function(account){
 
-                    return (
-                        account.username ===
-                        username
-                    );
+            const result =
+                await
+                createUserWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+
+            const uid =
+                result.user.uid;
+
+
+            // ============================
+            // FIRESTORE PROFILE
+            // ============================
+
+            await setDoc(
+
+                doc(
+                    db,
+                    "users",
+                    uid
+                ),
+
+                {
+
+                    username:
+                        username,
+
+                    role:
+                        "member",
+
+                    createdAt:
+                        new Date(),
+
+                    wallpaper:
+                        null,
+
+                    lastReadChapter:
+                        null,
+
+                    favorites:
+                        [],
+
+                    achievements:
+                        []
 
                 }
+
             );
 
-        if(userExists){
+
+            // ============================
+            // SUCCESS
+            // ============================
 
             alert(
-                "Username sudah digunakan!"
+                "Account Created!"
             );
 
-            return;
+
+            window.location.href =
+                "home.html";
+
         }
 
-        accounts.push({
 
-            username: username,
-            password: password
+        catch(error){
 
-        });
+            console.error(
+                error
+            );
 
-        localStorage.setItem(
 
-            "accounts",
+            if(
+                error.code ===
+                "auth/email-already-in-use"
+            ){
 
-            JSON.stringify(
-                accounts
-            )
+                alert(
+                    "Username sudah digunakan!"
+                );
 
-        );
+            }
 
-        alert(
-            "Account Created!"
-        );
+            else if(
+                error.code ===
+                "auth/weak-password"
+            ){
 
-        window.location.href =
-            "home.html";
+                alert(
+                    "Password terlalu lemah!"
+                );
+
+            }
+
+            else{
+
+                alert(
+                    "Gagal membuat akun: "
+                    +
+                    error.message
+                );
+
+            }
+
+        }
 
     }
+);
 
 </script>
-```
+
 
 </body>
+
 </html>
