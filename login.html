@@ -1,118 +1,121 @@
 <!DOCTYPE html>
-
 <html>
+
 <head>
+
     <title>Login - Infinite X</title>
 
-<style>
+    <style>
 
-    body{
-        margin:0;
-        font-family:Arial;
-        height:100vh;
+        body{
+            margin:0;
+            font-family:Arial;
+            height:100vh;
 
-        display:flex;
-        justify-content:center;
-        align-items:center;
+            display:flex;
+            justify-content:center;
+            align-items:center;
 
-        background:linear-gradient(
-            180deg,
-            #3B82F6,
-            #A855F7,
-            #EC4899
-        );
-    }
+            background:linear-gradient(
+                180deg,
+                #3B82F6,
+                #A855F7,
+                #EC4899
+            );
+        }
 
-    .box{
-        width:320px;
-        padding:40px;
+        .box{
+            width:320px;
+            padding:40px;
 
-        background:#0f172a;
-        border-radius:15px;
+            background:#0f172a;
+            border-radius:15px;
 
-        box-shadow:0 0 20px rgba(0,0,0,0.5);
+            box-shadow:
+                0 0 20px rgba(0,0,0,0.5);
 
-        text-align:center;
-    }
+            text-align:center;
+        }
 
-    h2{
-        color:white;
-        margin-bottom:20px;
-    }
+        h2{
+            color:white;
+            margin-bottom:20px;
+        }
 
-    input{
-        width:100%;
-        padding:12px;
-        margin:10px 0;
+        input{
+            width:100%;
+            padding:12px;
+            margin:10px 0;
 
-        border:none;
-        border-radius:8px;
+            border:none;
+            border-radius:8px;
 
-        outline:none;
-        box-sizing:border-box;
-    }
+            outline:none;
+            box-sizing:border-box;
+        }
 
-    button{
-        width:100%;
-        padding:12px;
+        button{
+            width:100%;
+            padding:12px;
 
-        margin-top:10px;
+            margin-top:10px;
 
-        border:none;
-        border-radius:8px;
+            border:none;
+            border-radius:8px;
 
-        background:#3B82F6;
-        color:white;
+            background:#3B82F6;
+            color:white;
 
-        font-weight:bold;
-        cursor:pointer;
+            font-weight:bold;
+            cursor:pointer;
 
-        transition:0.3s;
-    }
+            transition:0.3s;
+        }
 
-    button:hover{
-        background:#2563eb;
-    }
+        button:hover{
+            background:#2563eb;
+        }
 
-    p{
-        color:white;
-        font-size:12px;
-        margin-top:15px;
-    }
+        p{
+            color:white;
+            font-size:12px;
+            margin-top:15px;
+        }
 
-    a{
-        color:#22D3EE;
-        text-decoration:none;
-    }
+        a{
+            color:#22D3EE;
+            text-decoration:none;
+        }
 
-    .show-pass{
-        color:white;
-        font-size:14px;
+        .show-pass{
+            color:white;
+            font-size:14px;
 
-        display:flex;
-        justify-content:center;
-        align-items:center;
+            display:flex;
+            justify-content:center;
+            align-items:center;
 
-        gap:8px;
-        margin-top:10px;
-    }
+            gap:8px;
+            margin-top:10px;
+        }
 
-    .show-pass input{
-        width:auto;
-        margin:0;
-    }
+        .show-pass input{
+            width:auto;
+            margin:0;
+        }
 
-</style>
-```
+    </style>
 
 </head>
 
+
 <body>
 
-```
+
 <div class="box">
 
     <h2>Login</h2>
+
 
     <input
         type="text"
@@ -120,104 +123,344 @@
         placeholder="Username"
     >
 
+
     <input
         type="password"
         id="pass"
         placeholder="Password"
     >
 
+
     <label class="show-pass">
 
         <input
             type="checkbox"
-            onclick="togglePassword()"
+            id="showPassword"
         >
 
         Show Password
 
     </label>
 
-    <button onclick="login()">
+
+    <button id="loginBtn">
+
         Login
+
     </button>
 
+
     <a href="member.html">
+
         ← Back
+
     </a>
 
+
     <p>
+
         Belum punya akun?
+
         <a href="signup.html">
+
             Sign Up
+
         </a>
+
     </p>
+
 
 </div>
 
-<script>
 
-    function login(){
 
-        let user =
-            document.getElementById("user").value;
+<script type="module">
 
-        let pass =
-            document.getElementById("pass").value;
+// ========================================
+// FIREBASE
+// ========================================
 
-        let accounts =
-            JSON.parse(
-                localStorage.getItem("accounts")
-            ) || [];
+import {
 
-        let foundAccount =
-            accounts.find(function(account){
+    initializeApp
 
-                return (
-                    account.username === user &&
-                    account.password === pass
+}
+from
+"https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+
+import {
+
+    getAuth,
+    signInWithEmailAndPassword
+
+}
+from
+"https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+
+import {
+
+    getFirestore,
+    doc,
+    getDoc
+
+}
+from
+"https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+
+// ========================================
+// FIREBASE CONFIG
+// ========================================
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+
+    authDomain:
+    "infinite-x-f37a2.firebaseapp.com",
+
+    projectId:
+    "infinite-x-f37a2",
+
+    storageBucket:
+    "infinite-x-f37a2.firebasestorage.app",
+
+    messagingSenderId:
+    "32543278362",
+
+    appId:
+    "1:32543278362:web:54e231f17c92596888d8a3"
+
+};
+
+
+const app =
+initializeApp(firebaseConfig);
+
+
+const auth =
+getAuth(app);
+
+
+const db =
+getFirestore(app);
+
+
+// ========================================
+// SHOW PASSWORD
+// ========================================
+
+document
+.getElementById("showPassword")
+.addEventListener(
+    "change",
+    function(){
+
+        const pass =
+            document.getElementById(
+                "pass"
+            );
+
+
+        pass.type =
+            this.checked
+            ? "text"
+            : "password";
+
+    }
+);
+
+
+// ========================================
+// LOGIN
+// ========================================
+
+document
+.getElementById("loginBtn")
+.addEventListener(
+    "click",
+    async function(){
+
+        const username =
+            document
+            .getElementById("user")
+            .value
+            .trim();
+
+
+        const password =
+            document
+            .getElementById("pass")
+            .value;
+
+
+        if(
+            username === "" ||
+            password === ""
+        ){
+
+            alert(
+                "Lengkapi data dulu!"
+            );
+
+            return;
+
+        }
+
+
+        try{
+
+            // ==============================
+            // CONVERT USERNAME → EMAIL
+            // ==============================
+
+            const email =
+                username
+                .toLowerCase()
+                .replace(
+                    /\s+/g,
+                    ""
+                )
+                +
+                "@infinite-x.local";
+
+
+            // ==============================
+            // FIREBASE LOGIN
+            // ==============================
+
+            const result =
+                await
+                signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
                 );
 
-            });
 
-        if(foundAccount){
+            const uid =
+                result.user.uid;
 
-            localStorage.setItem(
-                "user",
-                user
+
+            // ==============================
+            // GET PROFILE
+            // ==============================
+
+            const userDoc =
+                await getDoc(
+
+                    doc(
+                        db,
+                        "users",
+                        uid
+                    )
+
+                );
+
+
+            if(
+                !userDoc.exists()
+            ){
+
+                alert(
+                    "Data akun tidak ditemukan."
+                );
+
+                return;
+
+            }
+
+
+            const data =
+                userDoc.data();
+
+
+            // ==============================
+            // CHECK MEMBER
+            // ==============================
+
+            if(
+                data.role !== "member"
+            ){
+
+                alert(
+                    "Akun ini bukan akun member."
+                );
+
+                return;
+
+            }
+
+
+            // ==============================
+            // LOGIN SUCCESS
+            // ==============================
+
+            /*
+             * Sementara kita simpan UID
+             * agar halaman lama yang masih
+             * membutuhkan user bisa
+             * dimigrasikan satu per satu.
+             */
+
+            sessionStorage.setItem(
+                "firebaseUID",
+                uid
             );
+
+
+            sessionStorage.setItem(
+                "username",
+                data.username
+            );
+
 
             window.location.href =
                 "home.html";
 
-        }else{
+        }
 
-            alert(
-                "Username atau Password salah!"
+
+        catch(error){
+
+            console.error(
+                "Login error:",
+                error
             );
 
+
+            if(
+                error.code ===
+                "auth/invalid-credential"
+            ){
+
+                alert(
+                    "Username atau Password salah!"
+                );
+
+            }
+
+            else{
+
+                alert(
+                    "Login gagal: "
+                    +
+                    error.message
+                );
+
+            }
+
         }
 
     }
-
-    function togglePassword(){
-
-        let pass =
-            document.getElementById("pass");
-
-        if(pass.type === "password"){
-
-            pass.type = "text";
-
-        }else{
-
-            pass.type = "password";
-
-        }
-
-    }
+);
 
 </script>
-```
+
 
 </body>
+
 </html>
