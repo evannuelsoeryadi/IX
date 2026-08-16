@@ -614,392 +614,718 @@ English
     
 <div id="themeFade"></div>
     
-<script>
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    collection,
+    getDocs,
+    query,
+    where
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
 
 // =====================
-// DEV PANEL
+// FIREBASE
 // =====================
 
-if(localStorage.getItem("developerLogged")==="true"){
+const firebaseConfig = {
 
-document.getElementById("devButton").style.display="block";
+    apiKey:
+    "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+
+    authDomain:
+    "infinite-x-f37a2.firebaseapp.com",
+
+    projectId:
+    "infinite-x-f37a2",
+
+    storageBucket:
+    "infinite-x-f37a2.firebasestorage.app",
+
+    messagingSenderId:
+    "32543278362",
+
+    appId:
+    "1:32543278362:web:54e231f17c92596888d8a3"
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
+
+
+// =====================
+// CURRENT USER
+// =====================
+
+const username =
+    localStorage.getItem("user");
+
+
+if(!username){
+
+    location.href = "login.html";
 
 }
+
+
+// =====================
+// DEV BUTTON
+// =====================
+
+if(
+
+    sessionStorage.getItem(
+        "developerLogged"
+    ) === "true"
+
+){
+
+    document.getElementById(
+        "devButton"
+    ).style.display = "block";
+
+}
+
 
 // =====================
 // PROFILE
 // =====================
 
-let profile=
+async function loadProfile(){
 
-JSON.parse(
+    const profileRef =
+        doc(
+            db,
+            "members",
+            username
+        );
 
-localStorage.getItem("infinite_x_profile")
+    const profileSnap =
+        await getDoc(profileRef);
 
-)||{
 
-name:"Guest",
+    if(profileSnap.exists()){
 
-avatar:"https://placehold.co/150",
+        const profile =
+            profileSnap.data();
 
-joined:new Date().toLocaleDateString()
 
-};
+        profileName.innerText =
+            profile.name || username;
 
-profileName.innerText=profile.name;
-profileAvatar.src=profile.avatar;
-joinDate.innerText="Joined : "+profile.joined;
+
+        profileAvatar.src =
+            profile.avatar ||
+            "https://placehold.co/150";
+
+
+        joinDate.innerText =
+            "Joined : " +
+            (
+                profile.joined ||
+                "-"
+            );
+
+
+        memberRank.innerText =
+            profile.rank ||
+            "Member";
+
+    }
+
+    else{
+
+        profileName.innerText =
+            username;
+
+        profileAvatar.src =
+            "https://placehold.co/150";
+
+        joinDate.innerText =
+            "Joined : -";
+
+        memberRank.innerText =
+            "Member";
+
+    }
+
+}
+
 
 // =====================
 // CONTINUE READING
 // =====================
 
-let lastChapter=
+async function loadContinue(){
 
-localStorage.getItem("lastReadChapter");
+    const progressRef =
+        doc(
+            db,
+            "members",
+            username,
+            "progress",
+            "current"
+        );
 
-let lastPage=
 
-Number(
+    const progressSnap =
+        await getDoc(progressRef);
 
-localStorage.getItem("lastReadPage")||0
 
-);
+    if(!progressSnap.exists()){
 
-if(lastChapter){
+        continueTitle.innerText =
+            "No Reading";
 
-continueTitle.innerText=lastChapter;
+        continueChapter.innerText =
+            "You haven't started reading yet.";
 
-continueChapter.innerText=
+        continueButton.disabled =
+            true;
 
-"Page "+(lastPage+1);
+        return;
 
-continueProgress.style.width=
+    }
 
-(lastPage*5)+"%";
 
-continueButton.onclick=function(){
+    const data =
+        progressSnap.data();
 
-localStorage.setItem(
 
-"selectedChapter",
+    const lastChapter =
+        data.chapterId;
 
-lastChapter
 
-);
+    const lastPage =
+        Number(
+            data.page || 0
+        );
 
-location.href="reader.html";
 
-};
+    if(!lastChapter){
 
-}else{
+        continueButton.disabled =
+            true;
 
-continueTitle.innerText="No Reading";
+        return;
 
-continueButton.disabled=true;
+    }
+
+
+    continueTitle.innerText =
+        data.title ||
+        lastChapter;
+
+
+    continueChapter.innerText =
+        "Page " +
+        (lastPage + 1);
+
+
+    const percent =
+        Math.min(
+            100,
+            lastPage * 5
+        );
+
+
+    continueProgress.style.width =
+        percent + "%";
+
+
+    continueButton.onclick =
+        function(){
+
+            sessionStorage.setItem(
+                "selectedChapter",
+                lastChapter
+            );
+
+            location.href =
+                "reader.html";
+
+        };
 
 }
+
 
 // =====================
 // HISTORY
 // =====================
 
-let history=
+let history = [];
 
-JSON.parse(
 
-localStorage.getItem("infinite_x_history")
+async function loadHistory(){
 
-)||[];
+    history = [];
+
+
+    const historyRef =
+        collection(
+            db,
+            "members",
+            username,
+            "history"
+        );
+
+
+    const snapshot =
+        await getDocs(historyRef);
+
+
+    snapshot.forEach(
+        docSnap => {
+
+            history.push({
+
+                id:
+                    docSnap.id,
+
+                ...docSnap.data()
+
+            });
+
+        }
+    );
+
+
+    renderHistory(history);
+
+    loadAchievements();
+
+}
+
 
 function renderHistory(list){
 
-historyGrid.innerHTML="";
+    historyGrid.innerHTML =
+        "";
 
-if(list.length===0){
 
-historyGrid.innerHTML=
+    if(list.length === 0){
 
-`
+        historyGrid.innerHTML = `
 
-<div class="empty-card">
+            <div class="empty-card">
+                No Reading History
+            </div>
 
-No Reading History
+        `;
 
-</div>
+        return;
 
-`;
+    }
 
-return;
+
+    list.forEach(
+        item => {
+
+            historyGrid.innerHTML += `
+
+                <div class="history-card">
+
+                    <img
+                        src="${
+                            item.cover ||
+                            "https://placehold.co/150x220"
+                        }"
+                    >
+
+                    <h3>
+                        ${item.title || "Unknown"}
+                    </h3>
+
+                    <p>
+                        ${item.chapter || ""}
+                    </p>
+
+                    <button
+                        onclick="openHistory('${item.id}')"
+                    >
+                        Continue
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+    );
 
 }
 
-list.forEach(item=>{
 
-historyGrid.innerHTML+=
+// =====================
+// OPEN HISTORY
+// =====================
 
-`
+window.openHistory =
+function(id){
 
-<div class="history-card">
+    sessionStorage.setItem(
+        "selectedChapter",
+        id
+    );
 
-<img src="${item.cover||'https://placehold.co/150x220'}">
-
-<h3>${item.title}</h3>
-
-<p>${item.chapter}</p>
-
-<button onclick="openHistory('${item.id}')">
-
-Continue
-
-</button>
-
-</div>
-
-`;
-
-});
-
-}
-
-window.openHistory=function(id){
-
-localStorage.setItem(
-
-"selectedChapter",
-
-id
-
-);
-
-location.href="reader.html";
+    location.href =
+        "reader.html";
 
 };
 
-renderHistory(history);
 
 // =====================
-// FAVORITE
+// FAVORITES
 // =====================
 
-let favorites=
+async function loadFavorites(){
 
-JSON.parse(
+    const favoriteGrid =
+        document.getElementById(
+            "favoriteGrid"
+        );
 
-localStorage.getItem("infinite_x_favorite")
 
-)||[];
+    favoriteGrid.innerHTML =
+        "";
 
-favoriteGrid.innerHTML="";
 
-if(favorites.length===0){
+    const favoritesRef =
+        collection(
+            db,
+            "members",
+            username,
+            "favorites"
+        );
 
-favoriteGrid.innerHTML=
 
-`
+    const snapshot =
+        await getDocs(
+            favoritesRef
+        );
 
-<div class="empty-card">
 
-No Favorite Comic
+    if(snapshot.empty){
 
-</div>
+        favoriteGrid.innerHTML = `
 
-`;
+            <div class="empty-card">
+                No Favorite Comic
+            </div>
 
-}else{
+        `;
 
-favorites.forEach(item=>{
+        return;
 
-favoriteGrid.innerHTML+=
+    }
 
-`
 
-<div class="history-card">
+    snapshot.forEach(
+        docSnap => {
 
-<img src="${item.cover||'https://placehold.co/150x220'}">
+            const item =
+                docSnap.data();
 
-<h3>${item.title}</h3>
 
-</div>
+            favoriteGrid.innerHTML += `
 
-`;
+                <div class="history-card">
 
-});
+                    <img
+                        src="${
+                            item.cover ||
+                            "https://placehold.co/150x220"
+                        }"
+                    >
+
+                    <h3>
+                        ${item.title || "Unknown"}
+                    </h3>
+
+                </div>
+
+            `;
+
+        }
+    );
 
 }
+
 
 // =====================
 // SEARCH HISTORY
 // =====================
 
 searchHistory.addEventListener(
+    "input",
+    function(e){
 
-"input",
+        const key =
+            e.target.value
+            .toLowerCase();
 
-function(e){
 
-let key=e.target.value.toLowerCase();
+        renderHistory(
 
-renderHistory(
+            history.filter(
+                item =>
+                    (
+                        item.title ||
+                        ""
+                    )
+                    .toLowerCase()
+                    .includes(key)
+            )
 
-history.filter(item=>
+        );
 
-item.title.toLowerCase().includes(key)
-
-)
-
+    }
 );
 
-});
 
 // =====================
-// ACHIEVEMENT
+// ACHIEVEMENTS
 // =====================
 
-const allAchievements=[
+const allAchievements = [
 
-{name:"First Reader",desc:"Read your first chapter.",need:1},
+    {
+        name:
+            "First Reader",
 
-{name:"Bookworm",desc:"Read 10 chapters.",need:10},
+        desc:
+            "Read your first chapter.",
 
-{name:"Explorer",desc:"Read 25 chapters.",need:25},
+        need:
+            1
+    },
 
-{name:"Legend",desc:"Read 50 chapters.",need:50},
+    {
+        name:
+            "Bookworm",
 
-{name:"Infinite",desc:"Read 100 chapters.",need:100}
+        desc:
+            "Read 10 chapters.",
+
+        need:
+            10
+    },
+
+    {
+        name:
+            "Explorer",
+
+        desc:
+            "Read 25 chapters.",
+
+        need:
+            25
+    },
+
+    {
+        name:
+            "Legend",
+
+        desc:
+            "Read 50 chapters.",
+
+        need:
+            50
+    },
+
+    {
+        name:
+            "Infinite",
+
+        desc:
+            "Read 100 chapters.",
+
+        need:
+            100
+    }
 
 ];
 
-achievementGrid.innerHTML="";
 
-let unlocked=0;
+function loadAchievements(){
 
-allAchievements.forEach(a=>{
+    achievementGrid.innerHTML =
+        "";
 
-let done=history.length>=a.need;
 
-if(done) unlocked++;
+    let unlocked =
+        0;
 
-achievementGrid.innerHTML+=
 
-`
+    allAchievements.forEach(
+        achievement => {
 
-<div class="achievement-card ${done?'unlock':'lock'}">
+            const done =
+                history.length >=
+                achievement.need;
 
-<h3>${a.name}</h3>
 
-<p>${a.desc}</p>
+            if(done)
+                unlocked++;
 
-<span>
 
-${done?'✅ Unlocked':'🔒 Locked'}
+            achievementGrid.innerHTML += `
 
-</span>
+                <div class="
+                    achievement-card
+                    ${done ? "unlock" : "lock"}
+                ">
 
-</div>
+                    <h3>
+                        ${achievement.name}
+                    </h3>
 
-`;
+                    <p>
+                        ${achievement.desc}
+                    </p>
 
-});
+                    <span>
+                        ${
+                            done
+                            ? "✅ Unlocked"
+                            : "🔒 Locked"
+                        }
+                    </span>
 
-achievementCount.innerText=unlocked;
-achievementTotal.innerText=allAchievements.length;
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    achievementCount.innerText =
+        unlocked;
+
+
+    achievementTotal.innerText =
+        allAchievements.length;
+
+}
+
 
 // =====================
 // WALLPAPER
 // =====================
 
-document.querySelectorAll(
+document
+.querySelectorAll(
+    ".wallpaper-grid button"
+)
+.forEach(
+    button => {
 
-".wallpaper-grid button"
+        button.onclick =
+        async function(){
 
-).forEach(btn=>{
+            const img =
+                this
+                .parentElement
+                .querySelector(
+                    "img"
+                )
+                .src;
 
-btn.onclick=function(){
 
-let img=
+            await setDoc(
 
-this.parentElement.querySelector("img").src;
+                doc(
+                    db,
+                    "members",
+                    username
+                ),
 
-localStorage.setItem(
+                {
+                    wallpaper:
+                        img
+                },
 
-"memberWallpaper",
+                {
+                    merge:
+                        true
+                }
 
-img
+            );
 
+
+            alert(
+                "Wallpaper Applied!"
+            );
+
+        };
+
+    }
 );
 
-alert("Wallpaper Applied!");
-
-};
-
-});
-
-// =====================
-// PROFILE MENU
-// =====================
-
-continueCard.onclick=()=>
-
-document.querySelector(".continue-section")
-
-.scrollIntoView({
-
-behavior:"smooth"
-
-});
-
-historyCard.onclick=()=>
-
-document.querySelector(".history-section")
-
-.scrollIntoView({
-
-behavior:"smooth"
-
-});
-
-favoriteCard.onclick=()=>
-
-document.querySelector(".favorite-section")
-
-.scrollIntoView({
-
-behavior:"smooth"
-
-});
-
-achievementCard.onclick=()=>
-
-document.querySelector(".achievement-section")
-
-.scrollIntoView({
-
-behavior:"smooth"
-
-});
-
-settingCard.onclick=()=>
-
-document.querySelector(".setting-section")
-
-.scrollIntoView({
-
-behavior:"smooth"
-
-});
 
 // =====================
 // LOGOUT
 // =====================
 
-logoutBtn.onclick=function(){
+logoutBtn.onclick =
+function(){
 
-localStorage.removeItem("user");
+    localStorage.removeItem(
+        "user"
+    );
 
-location.href="login.html";
+    sessionStorage.clear();
+
+    location.href =
+        "login.html";
 
 };
+
+
+// =====================
+// INIT
+// =====================
+
+async function init(){
+
+    try{
+
+        await loadProfile();
+
+        await loadContinue();
+
+        await loadHistory();
+
+        await loadFavorites();
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Profile Firebase Error:",
+            error
+        );
+
+    }
+
+}
+
+
+init();
 
 </script>
     
