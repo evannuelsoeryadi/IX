@@ -216,213 +216,316 @@ Latest Chapters
 </div>
 
 <script type="module">
+
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
 import {
-getFirestore,
-collection,
-getDocs
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    getDoc,
+    setDoc
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
 
 // =====================
 // FIREBASE
 // =====================
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
-  authDomain: "infinite-x-f37a2.firebaseapp.com",
-  projectId: "infinite-x-f37a2",
-  storageBucket: "infinite-x-f37a2.firebasestorage.app",
-  messagingSenderId: "32543278362",
-  appId: "1:32543278362:web:54e231f17c92596888d8a3"
+
+    apiKey:
+    "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+
+    authDomain:
+    "infinite-x-f37a2.firebaseapp.com",
+
+    projectId:
+    "infinite-x-f37a2",
+
+    storageBucket:
+    "infinite-x-f37a2.firebasestorage.app",
+
+    messagingSenderId:
+    "32543278362",
+
+    appId:
+    "1:32543278362:web:54e231f17c92596888d8a3"
 };
 
-const app = initializeApp(firebaseConfig);
 
-const db = getFirestore(app);
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
+
+
+// =====================
+// CURRENT USER
+// =====================
+
+const uid =
+    sessionStorage.getItem(
+        "firebaseUID"
+    );
+
 
 // =====================
 // CHAPTER LIST
 // =====================
+
 let chapters = [];
 
+
 // =====================
-// CONTINUE READING CHECK
+// CONTINUE READING
 // =====================
-function checkContinue(){
 
-let last=
+async function checkContinue(){
 
-localStorage.getItem(
-"lastReadChapter"
-);
+    if(!uid)
+        return;
 
-if(!last) return;
 
-let chapter=
+    const userRef =
+        doc(
+            db,
+            "users",
+            uid
+        );
 
-chapters.find(c=>c.id===last);
 
-if(!chapter) return;
+    const userSnap =
+        await getDoc(
+            userRef
+        );
 
-document.getElementById(
-"continueBox"
-).style.display=
-"block";
 
-document.getElementById(
-"continueCover"
-).src=
+    if(!userSnap.exists())
+        return;
 
-chapter.cover||
 
-"https://placehold.co/120x170";
+    const userData =
+        userSnap.data();
 
-document.getElementById(
-"continueTitle"
-).innerText=
-chapter.title;
 
-document.getElementById(
-"continueGenre"
-).innerText=
-chapter.genre||
-"Unknown";
+    const reading =
+        userData.readingProgress;
 
-let lastPage=
 
-Number(
-localStorage.getItem(
-"lastReadPage"
-)||0);
+    if(!reading)
+        return;
 
-let percent=
 
-Math.round(
+    const last =
+        reading.chapterId;
 
-(lastPage/chapter.pages)*100
 
-);
+    if(!last)
+        return;
 
-document.getElementById(
-"continuePages"
-).innerText=
 
-"Page "+lastPage+
+    const chapter =
+        chapters.find(
+            c => c.id === last
+        );
 
-" / "+chapter.pages;
 
-document.getElementById(
-"continuePercent"
-).innerText=
+    if(!chapter)
+        return;
 
-percent+"%";
 
-document.getElementById(
-"continueBar"
-).style.width=
+    document.getElementById(
+        "continueBox"
+    ).style.display =
+        "block";
 
-percent+"%";
 
-let time=
+    document.getElementById(
+        "continueCover"
+    ).src =
+        chapter.cover ||
+        "https://placehold.co/120x170";
 
-localStorage.getItem(
-"lastReadTime"
-);
 
-if(time){
+    document.getElementById(
+        "continueTitle"
+    ).innerText =
+        chapter.title;
 
-let diff=
 
-Date.now()-Number(time);
+    document.getElementById(
+        "continueGenre"
+    ).innerText =
+        chapter.genre ||
+        "Unknown";
 
-let hours=
 
-Math.floor(
+    const lastPage =
+        Number(
+            reading.page || 0
+        );
 
-diff/3600000
 
-);
+    const totalPages =
+        Number(
+            chapter.pages || 0
+        );
 
-if(hours<1){
 
-document.getElementById(
-"continueTime"
-).innerText=
+    let percent = 0;
 
-"Last Read : Just now";
+
+    if(totalPages > 0){
+
+        percent =
+            Math.round(
+                (
+                    lastPage /
+                    totalPages
+                ) * 100
+            );
+
+    }
+
+
+    document.getElementById(
+        "continuePages"
+    ).innerText =
+
+        "Page " +
+        lastPage +
+        " / " +
+        totalPages;
+
+
+    document.getElementById(
+        "continuePercent"
+    ).innerText =
+
+        percent +
+        "%";
+
+
+    document.getElementById(
+        "continueBar"
+    ).style.width =
+
+        percent +
+        "%";
+
+
+    const time =
+        reading.lastReadTime;
+
+
+    if(time){
+
+        const diff =
+            Date.now() -
+            Number(time);
+
+
+        const hours =
+            Math.floor(
+                diff / 3600000
+            );
+
+
+        if(hours < 1){
+
+            document.getElementById(
+                "continueTime"
+            ).innerText =
+                "Last Read : Just now";
+
+        }
+
+        else if(hours < 24){
+
+            document.getElementById(
+                "continueTime"
+            ).innerText =
+
+                "Last Read : " +
+                hours +
+                " hour(s) ago";
+
+        }
+
+        else{
+
+            const day =
+                Math.floor(
+                    hours / 24
+                );
+
+
+            document.getElementById(
+                "continueTime"
+            ).innerText =
+
+                "Last Read : " +
+                day +
+                " day(s) ago";
+
+        }
+
+    }
 
 }
 
-else if(hours<24){
 
-document.getElementById(
-"continueTime"
-).innerText=
-
-"Last Read : "+hours+
-
-" hour(s) ago";
-
-}
-
-else{
-
-let day=
-
-Math.floor(hours/24);
-
-document.getElementById(
-"continueTime"
-).innerText=
-
-"Last Read : "+day+
-
-" day(s) ago";
-
-}
-
-}
-
-}
 // =====================
 // LOAD CHAPTERS
 // =====================
+
 async function loadChapters(){
 
-    let container =
-    document.getElementById(
-        "chapterList"
-    );
+    const container =
+        document.getElementById(
+            "chapterList"
+        );
+
 
     container.innerHTML = "";
 
+
     chapters = [];
 
-    let snapshot =
-    await getDocs(
-        collection(
-            db,
-            "chapters"
-        )
+
+    const snapshot =
+        await getDocs(
+            collection(
+                db,
+                "chapters"
+            )
+        );
+
+
+    snapshot.forEach(
+        docSnap => {
+
+            chapters.push({
+
+                id:
+                    docSnap.id,
+
+                ...docSnap.data()
+
+            });
+
+        }
     );
 
-    snapshot.forEach(docSnap=>{
-
-        chapters.push({
-
-            id: docSnap.id,
-
-            ...docSnap.data()
-
-        });
-
-    });
 
     renderChapters();
-    
-    checkContinue();
+
+    await checkContinue();
 
 }
 
@@ -430,142 +533,259 @@ async function loadChapters(){
 // =====================
 // RENDER
 // =====================
+
 function renderChapters(){
 
-    let container =
-    document.getElementById(
-        "chapterList"
-    );
+    const container =
+        document.getElementById(
+            "chapterList"
+        );
+
 
     container.innerHTML = "";
 
-    chapters.forEach((ch)=>{
 
-        container.innerHTML += `
+    chapters.forEach(
+        ch => {
 
-        <div class="chapter-card">
+            container.innerHTML += `
 
-            <img
-            src="${
-                ch.cover ||
-                "https://placehold.co/120x170"
-            }">
+                <div
+                    class="chapter-card"
+                >
 
-            <div class="chapter-info">
+                    <img
+                        src="${
+                            ch.cover ||
+                            "https://placehold.co/120x170"
+                        }"
+                    >
 
-                <h3>
+                    <div
+                        class="chapter-info"
+                    >
 
-                ${ch.title}
+                        <h3>
+                            ${ch.title}
+                        </h3>
 
-                </h3>
+                        <p>
+                            ${ch.desc || ""}
+                        </p>
 
-                <p>
+                        <p>
+                            Pages :
+                            ${ch.pages || 0}
+                        </p>
 
-                ${ch.desc}
+                    </div>
 
-                </p>
+                    <button
+                        class="edit-btn"
+                        onclick="openChapter('${ch.id}')"
+                    >
 
-                <p>
+                        Read
 
-                Pages :
-                ${ch.pages}
+                    </button>
 
-                </p>
+                </div>
 
-            </div>
+            `;
 
-            <button
-            class="edit-btn"
-            onclick="openChapter('${ch.id}')"
-            >
-
-            Read
-
-            </button>
-
-        </div>
-
-        `;
-
-    });
+        }
+    );
 
 }
+
 
 // =====================
 // OPEN CHAPTER
 // =====================
-function openChapter(id){
 
-    localStorage.setItem(
+async function openChapter(id){
 
-        "selectedChapter",
+    if(uid){
 
-        id
+        const userRef =
+            doc(
+                db,
+                "users",
+                uid
+            );
 
-    );
 
-    localStorage.setItem(
+        const current =
+            await getDoc(
+                userRef
+            );
 
-        "lastReadChapter",
 
-        id
+        const oldData =
+            current.exists()
+            ? current.data()
+            : {};
 
-    );
+
+        await setDoc(
+            userRef,
+            {
+
+                selectedChapter:
+                    id,
+
+                readingProgress:
+                {
+
+                    chapterId:
+                        id,
+
+                    page:
+                        0,
+
+                    lastReadTime:
+                        Date.now()
+
+                }
+
+            },
+            {
+                merge: true
+            }
+        );
+
+    }
+
 
     window.location.href =
-    "reader.html";
+        "reader.html";
 
 }
 
-window.openChapter = openChapter;
+
+window.openChapter =
+    openChapter;
+
+
+// =====================
+// CONTINUE READING
+// =====================
+
+async function continueReading(){
+
+    if(!uid)
+        return;
+
+
+    const userSnap =
+        await getDoc(
+
+            doc(
+                db,
+                "users",
+                uid
+            )
+
+        );
+
+
+    if(
+        !userSnap.exists()
+    )
+        return;
+
+
+    const data =
+        userSnap.data();
+
+
+    const reading =
+        data.readingProgress;
+
+
+    if(
+        !reading ||
+        !reading.chapterId
+    )
+        return;
+
+
+    window.location.href =
+        "reader.html";
+
+}
+
+
+window.continueReading =
+    continueReading;
+
 
 // =====================
 // DEV MODE
 // =====================
+
 if(
 
-localStorage.getItem(
-"developerLogged"
-) === "true"
+    sessionStorage.getItem(
+        "developerLogged"
+    ) === "true"
 
 ){
 
-document.getElementById(
-"devButton"
-).style.display =
-"block";
+    document.getElementById(
+        "devButton"
+    ).style.display =
+        "block";
 
 }
+
+
+// =====================
+// SEARCH
+// =====================
+
+document
+.getElementById(
+    "searchComic"
+)
+.addEventListener(
+    "input",
+    e => {
+
+        const keyword =
+            e.target.value
+            .toLowerCase();
+
+
+        document
+        .querySelectorAll(
+            ".chapter-card"
+        )
+        .forEach(
+            card => {
+
+                card.style.display =
+
+                    card.innerText
+                    .toLowerCase()
+                    .includes(keyword)
+
+                    ? "flex"
+
+                    : "none";
+
+            }
+        );
+
+    }
+);
+
 
 // =====================
 // INIT
 // =====================
+
 loadChapters();
-
-document.getElementById("searchComic")
-.addEventListener("input",e=>{
-
-let keyword=e.target.value.toLowerCase();
-
-document.querySelectorAll(".chapter-card")
-
-.forEach(card=>{
-
-card.style.display=
-
-card.innerText.toLowerCase().includes(keyword)
-
-?
-
-"flex"
-
-:
-
-"none";
-
-});
-
-});
 
 </script>
 
