@@ -60,7 +60,51 @@ id="characterGrid"
 
 </div>
 
-<script>
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+
+// =====================
+// FIREBASE
+// =====================
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+
+    authDomain:
+    "infinite-x-f37a2.firebaseapp.com",
+
+    projectId:
+    "infinite-x-f37a2",
+
+    storageBucket:
+    "infinite-x-f37a2.firebasestorage.app",
+
+    messagingSenderId:
+    "32543278362",
+
+    appId:
+    "1:32543278362:web:54e231f17c92596888d8a3"
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
+
 
 // =====================
 // DEV PANEL
@@ -68,159 +112,226 @@ id="characterGrid"
 
 if(
 
-localStorage.getItem(
-"developerLogged"
-)==="true"
+    sessionStorage.getItem(
+        "developerLogged"
+    ) === "true"
 
 ){
 
-document.getElementById(
-"devButton"
-).style.display="block";
+    document.getElementById(
+        "devButton"
+    ).style.display = "block";
 
 }
+
 
 // =====================
 // LOAD CHARACTERS
 // =====================
 
-let characters=
+let characters = [];
 
-JSON.parse(
 
-localStorage.getItem(
-"infinite_x_characters"
-)
+async function loadCharacters(){
 
-)||[];
+    const grid =
+        document.getElementById(
+            "characterGrid"
+        );
+
+
+    grid.innerHTML = "";
+
+
+    try{
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "characters"
+                )
+            );
+
+
+        snapshot.forEach(
+            docSnap => {
+
+                characters.push({
+
+                    id:
+                        docSnap.id,
+
+                    ...docSnap.data()
+
+                });
+
+            }
+        );
+
+
+        renderCharacters();
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Character Firebase Error:",
+            error
+        );
+
+
+        grid.innerHTML = `
+
+            <div class="comic-card">
+
+                <h2>
+                    Failed to Load Characters
+                </h2>
+
+                <p>
+                    Please try again later.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
 
 // =====================
 // RENDER
 // =====================
 
-if(characters.length===0){
+function renderCharacters(){
 
-document.getElementById(
-"characterGrid"
-).innerHTML=`
+    const grid =
+        document.getElementById(
+            "characterGrid"
+        );
 
-<div class="comic-card">
 
-<h2>
+    grid.innerHTML = "";
 
-No Characters Yet
 
-</h2>
+    if(
+        characters.length === 0
+    ){
 
-<p>
+        grid.innerHTML = `
 
-Coming Soon...
+            <div class="comic-card">
 
-</p>
+                <h2>
+                    No Characters Yet
+                </h2>
 
-</div>
+                <p>
+                    Coming Soon...
+                </p>
 
-`;
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    characters.forEach(
+        character => {
+
+            html += `
+
+                <div class="comic-card">
+
+                    <img
+                        src="${
+                            character.image ||
+                            "https://placehold.co/300x400"
+                        }"
+                        class="character-image"
+                    >
+
+                    <h2>
+                        ${character.name || "Unknown"}
+                    </h2>
+
+                    <p>
+                        ${character.role || ""}
+                    </p>
+
+                    <p>
+                        ${character.desc || ""}
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    grid.innerHTML = html;
 
 }
 
-else{
-
-let html="";
-
-characters.forEach(character=>{
-
-html+=`
-
-<div class="comic-card">
-
-<img
-
-src="${character.image}"
-
-class="character-image"
-
->
-
-<h2>
-
-${character.name}
-
-</h2>
-
-<p>
-
-${character.role}
-
-</p>
-
-<p>
-
-${character.desc}
-
-</p>
-
-</div>
-
-`;
-
-});
-
-document.getElementById(
-"characterGrid"
-).innerHTML=html;
-
-}
 
 // =====================
 // SEARCH
 // =====================
 
-document.getElementById(
-"searchCharacter"
-)
-
-.addEventListener(
-
-"input",
-
-e=>{
-
-let keyword=
-
-e.target.value
-
-.toLowerCase();
-
 document
-
-.querySelectorAll(
-".comic-card"
+.getElementById(
+    "searchCharacter"
 )
+.addEventListener(
+    "input",
+    e => {
 
-.forEach(card=>{
+        const keyword =
+            e.target.value
+            .toLowerCase();
 
-card.style.display=
 
-card.innerText
+        document
+        .querySelectorAll(
+            "#characterGrid .comic-card"
+        )
+        .forEach(
+            card => {
 
-.toLowerCase()
+                card.style.display =
 
-.includes(keyword)
+                    card.innerText
+                    .toLowerCase()
+                    .includes(keyword)
 
-?
+                    ? "block"
 
-"block"
+                    : "none";
 
-:
+            }
+        );
 
-"none";
-
-});
-
-}
-
+    }
 );
+
+
+// =====================
+// INIT
+// =====================
+
+loadCharacters();
 
 </script>
 <div id="themeFade"></div>
