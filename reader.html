@@ -70,80 +70,99 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
 import {
-
-getFirestore,
-
-doc,
-
-getDoc,
-
-collection,
-
-getDocs
-
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc
 }
-
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 // =====================
 // FIREBASE
 // =====================
 
-const firebaseConfig={
-
-apiKey:"AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
-
-authDomain:"infinite-x-f37a2.firebaseapp.com",
-
-projectId:"infinite-x-f37a2",
-
-storageBucket:"infinite-x-f37a2.firebasestorage.app",
-
-messagingSenderId:"32543278362",
-
-appId:"1:32543278362:web:54e231f17c92596888d8a3"
-
+const firebaseConfig = {
+    apiKey: "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+    authDomain: "infinite-x-f37a2.firebaseapp.com",
+    projectId: "infinite-x-f37a2",
+    storageBucket: "infinite-x-f37a2.firebasestorage.app",
+    messagingSenderId: "32543278362",
+    appId: "1:32543278362:web:54e231f17c92596888d8a3"
 };
 
-const app=
+const app =
+    initializeApp(firebaseConfig);
 
-initializeApp(firebaseConfig);
-
-const db=
-
-getFirestore(app);
+const db =
+    getFirestore(app);
 
 // =====================
 // DATA
 // =====================
 
-let chapterId=
+const chapterId =
+    localStorage.getItem(
+        "selectedChapter"
+    );
 
-localStorage.getItem(
-"selectedChapter"
-);
+let pages = [];
 
-let pages=[];
+let currentPage = 0;
 
-let currentPage=0;
+let chapterData = null;
 
-let chapterData=null;
+let unlocked = false;
+
+// =====================
+// USER
+// =====================
+
+const username =
+    localStorage.getItem("user");
+
+if(!username){
+
+    location.href =
+        "login.html";
+
+}
 
 // =====================
 // DEV PANEL
 // =====================
 
 if(
-
-localStorage.getItem(
-"developerLogged"
-)==="true"
-
+    localStorage.getItem(
+        "developerLogged"
+    ) === "true"
 ){
 
-document.getElementById(
-"devButton"
-).style.display="block";
+    const devButton =
+        document.getElementById(
+            "devButton"
+        );
+
+    if(devButton){
+
+        devButton.style.display =
+            "block";
+
+    }
+
+}
+
+// =====================
+// CHECK CHAPTER
+// =====================
+
+if(!chapterId){
+
+    alert(
+        "Chapter tidak ditemukan!"
+    );
+
+    location.href =
+        "comic.html";
 
 }
 
@@ -153,177 +172,397 @@ document.getElementById(
 
 async function loadChapter(){
 
-const chapterRef=
+    try{
 
-doc(
+        const chapterRef =
+            doc(
+                db,
+                "chapters",
+                chapterId
+            );
 
-db,
+        const snap =
+            await getDoc(
+                chapterRef
+            );
 
-"chapters",
+        if(!snap.exists()){
 
-chapterId
+            alert(
+                "Chapter tidak ditemukan!"
+            );
 
-);
+            location.href =
+                "comic.html";
 
-const snap=
+            return;
 
-await getDoc(chapterRef);
+        }
 
-if(!snap.exists()){
+        chapterData =
+            snap.data();
 
-alert("Chapter not found.");
+        document.getElementById(
+            "chapterTitle"
+        ).innerText =
+            chapterData.title ||
+            "Untitled Chapter";
 
-location.href="comic.html";
+        // =====================
+        // FREE / PAID
+        // =====================
 
-return;
+        const price =
+            Number(
+                chapterData.price || 0
+            );
 
-}
+        if(price === 0){
 
-chapterData=snap.data();
+            unlocked = true;
 
-document.getElementById(
+            document.getElementById(
+                "codeBox"
+            ).style.display =
+                "none";
 
-"chapterTitle"
+            showReader();
 
-).innerText=
+        }
 
-chapterData.title;
+        else{
 
-loadPages();
+            document.getElementById(
+                "codeBox"
+            ).style.display =
+                "block";
 
-}
+            document.getElementById(
+                "pageInfo"
+            ).innerText =
+                "Chapter ini membutuhkan code.";
 
-// =====================
-// LOAD PAGES
-// =====================
+        }
 
-async function loadPages(){
+    }
 
-pages=[];
+    catch(error){
 
-const container=
+        console.error(
+            "Load chapter error:",
+            error
+        );
 
-document.getElementById(
+        alert(
+            "Gagal mengambil chapter!"
+        );
 
-"readerContainer"
-
-);
-
-container.innerHTML="";
-
-const snapshot=
-
-await getDocs(
-
-collection(
-
-db,
-
-"chapters",
-
-chapterId,
-
-"pages"
-
-)
-
-);
-
-snapshot.forEach(docSnap=>{
-
-pages.push({
-
-id:docSnap.id,
-
-...docSnap.data()
-
-});
-
-});
-
-pages.sort(
-
-(a,b)=>
-
-Number(a.id)-Number(b.id)
-
-);
-
-// render
-
-pages.forEach((page,index)=>{
-
-container.innerHTML+=`
-
-<img
-
-class="reader-image"
-
-src="${page.url}"
-
-data-page="${index}"
-
->
-
-`;
-
-});
-
-document.getElementById(
-
-"readerLoading"
-
-).style.display="none";
-
-document.getElementById(
-
-"readerPage"
-
-).style.display="flex";
-
-updateProgress();
-
-restoreReading();
+    }
 
 }
 
 // =====================
-// RESTORE
+// UNLOCK CHAPTER
 // =====================
 
-function restoreReading(){
+window.unlockChapter =
+    async function(){
 
-let saved=
+        if(!chapterData){
 
-Number(
+            return;
 
-localStorage.getItem(
+        }
 
-"lastReadPage"
+        const input =
+            document.getElementById(
+                "readerCode"
+            ).value.trim();
 
-)||0
+        if(input === ""){
 
-);
+            alert(
+                "Masukkan code!"
+            );
 
-if(saved>0){
+            return;
 
-currentPage=saved;
+        }
 
-document
+        /*
+         * Code chapter diambil dari
+         * field "code" pada Firestore.
+         */
 
-.querySelectorAll(
+        const chapterCode =
+            chapterData.code;
 
-".reader-image"
+        if(
+            chapterCode &&
+            input === String(chapterCode)
+        ){
 
-)[saved]
+            unlocked = true;
 
-.scrollIntoView({
+            document.getElementById(
+                "codeBox"
+            ).style.display =
+                "none";
 
-behavior:"instant"
+            showReader();
 
-});
+        }
+
+        else{
+
+            alert(
+                "Code salah!"
+            );
+
+        }
+
+    };
+
+// =====================
+// SHOW READER
+// =====================
+
+async function showReader(){
+
+    if(!unlocked){
+
+        return;
+
+    }
+
+    pages =
+        Array.isArray(
+            chapterData.pageImages
+        )
+
+        ? chapterData.pageImages
+
+        : [];
+
+    const container =
+        document.getElementById(
+            "readerPages"
+        );
+
+    container.innerHTML = "";
+
+    if(pages.length === 0){
+
+        container.innerHTML = `
+
+        <div class="comic-card">
+
+            <h2>
+                No Pages Yet
+            </h2>
+
+            <p>
+                Chapter ini belum memiliki halaman.
+            </p>
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    pages.forEach(
+        (url,index)=>{
+
+            container.innerHTML += `
+
+            <img
+
+                class="reader-image"
+
+                src="${url}"
+
+                data-page="${index}"
+
+                alt="Page ${index + 1}"
+
+            >
+
+            `;
+
+        }
+    );
+
+    document.getElementById(
+        "pageInfo"
+    ).style.display =
+        "block";
+
+    await restoreReading();
+
+    updateProgress();
 
 }
+
+// =====================
+// READING DATA ID
+// =====================
+
+function getProgressId(){
+
+    return (
+        username +
+        "_" +
+        chapterId
+    )
+    .replace(
+        /[^a-zA-Z0-9_-]/g,
+        "_"
+    );
+
+}
+
+// =====================
+// LOAD READING PROGRESS
+// =====================
+
+async function restoreReading(){
+
+    try{
+
+        const progressRef =
+            doc(
+                db,
+                "readingProgress",
+                getProgressId()
+            );
+
+        const snap =
+            await getDoc(
+                progressRef
+            );
+
+        if(!snap.exists()){
+
+            currentPage = 0;
+
+            return;
+
+        }
+
+        const data =
+            snap.data();
+
+        currentPage =
+            Number(
+                data.page || 0
+            );
+
+        if(
+            currentPage >=
+            pages.length
+        ){
+
+            currentPage =
+                pages.length - 1;
+
+        }
+
+        const images =
+            document.querySelectorAll(
+                ".reader-image"
+            );
+
+        if(images[currentPage]){
+
+            setTimeout(()=>{
+
+                images[
+                    currentPage
+                ].scrollIntoView({
+
+                    behavior:
+                        "instant",
+
+                    block:
+                        "start"
+
+                });
+
+            },100);
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Restore progress error:",
+            error
+        );
+
+    }
+
+}
+
+// =====================
+// SAVE READING
+// =====================
+
+async function saveReading(){
+
+    if(!username ||
+       !chapterId){
+
+        return;
+
+    }
+
+    try{
+
+        await setDoc(
+
+            doc(
+                db,
+                "readingProgress",
+                getProgressId()
+            ),
+
+            {
+
+                username:
+                    username,
+
+                chapterId:
+                    chapterId,
+
+                page:
+                    currentPage,
+
+                time:
+                    Date.now()
+
+            },
+
+            {
+                merge:true
+            }
+
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Save progress error:",
+            error
+        );
+
+    }
 
 }
 
@@ -333,65 +572,40 @@ behavior:"instant"
 
 function updateProgress(){
 
-document.getElementById(
+    if(
+        pages.length === 0
+    ){
 
-"pageCounter"
+        return;
 
-).innerText=
+    }
 
-(currentPage+1)
+    const counter =
+        document.getElementById(
+            "pageInfo"
+        );
 
-+" / "+pages.length;
+    const percent =
+        (
+            (currentPage + 1)
+            /
+            pages.length
+        ) * 100;
 
-let percent=
+    document.getElementById(
+        "progressBar"
+    ).style.width =
+        percent + "%";
 
-((currentPage+1)
+    if(counter){
 
-/pages.length)
+        counter.innerText =
+            "Page " +
+            (currentPage + 1) +
+            " / " +
+            pages.length;
 
-*100;
-
-document.getElementById(
-
-"progressBar"
-
-).style.width=
-
-percent+"%";
-
-}
-
-loadChapter();
-
-// =====================
-// AUTO SAVE
-// =====================
-
-function saveReading(){
-
-localStorage.setItem(
-
-"lastReadChapter",
-
-chapterId
-
-);
-
-localStorage.setItem(
-
-"lastReadPage",
-
-currentPage
-
-);
-
-localStorage.setItem(
-
-"lastReadTime",
-
-Date.now()
-
-);
+    }
 
 }
 
@@ -400,401 +614,264 @@ Date.now()
 // =====================
 
 window.addEventListener(
+    "scroll",
+    ()=>{
 
-"scroll",
+        const images =
+            document.querySelectorAll(
+                ".reader-image"
+            );
 
-()=>{
+        if(!images.length){
 
-const images=
+            return;
 
-document.querySelectorAll(
+        }
 
-".reader-image"
+        let closest =
+            0;
 
-);
+        images.forEach(
+            (img,index)=>{
 
-let index=0;
+                const rect =
+                    img.getBoundingClientRect();
 
-images.forEach((img,i)=>{
+                if(
+                    rect.top <=
+                    window.innerHeight * 0.4
+                ){
 
-const rect=
+                    closest =
+                        index;
 
-img.getBoundingClientRect();
+                }
 
-if(
+            }
+        );
 
-rect.top<=
+        if(
+            closest !==
+            currentPage
+        ){
 
-window.innerHeight*0.4
+            currentPage =
+                closest;
 
-){
+            updateProgress();
 
-index=i;
+            saveReading();
 
-}
+        }
 
-});
-
-if(index!==currentPage){
-
-currentPage=index;
-
-updateProgress();
-
-saveReading();
-
-}
-
-}
-
+    }
 );
 
 // =====================
 // NEXT PAGE
 // =====================
 
-document.getElementById(
+const nextBtn =
+    document.getElementById(
+        "nextBtn"
+    );
 
-"nextBtn"
+if(nextBtn){
 
-).onclick=()=>{
+    nextBtn.onclick =
+        ()=>{
 
-if(
+            if(
+                currentPage <
+                pages.length - 1
+            ){
 
-currentPage<
+                currentPage++;
 
-pages.length-1
+                const images =
+                    document.querySelectorAll(
+                        ".reader-image"
+                    );
 
-){
+                images[
+                    currentPage
+                ].scrollIntoView({
 
-currentPage++;
+                    behavior:
+                        "smooth"
 
-document
+                });
 
-.querySelectorAll(
+                updateProgress();
 
-".reader-image"
+                saveReading();
 
-)
+            }
 
-[currentPage]
-
-.scrollIntoView({
-
-behavior:"smooth"
-
-});
-
-updateProgress();
-
-saveReading();
+        };
 
 }
-
-};
 
 // =====================
 // PREVIOUS PAGE
 // =====================
 
-document.getElementById(
+const prevBtn =
+    document.getElementById(
+        "prevBtn"
+    );
 
-"prevBtn"
+if(prevBtn){
 
-).onclick=()=>{
+    prevBtn.onclick =
+        ()=>{
 
-if(currentPage>0){
+            if(
+                currentPage > 0
+            ){
 
-currentPage--;
+                currentPage--;
 
-document
+                const images =
+                    document.querySelectorAll(
+                        ".reader-image"
+                    );
 
-.querySelectorAll(
+                images[
+                    currentPage
+                ].scrollIntoView({
 
-".reader-image"
+                    behavior:
+                        "smooth"
 
-)
+                });
 
-[currentPage]
+                updateProgress();
 
-.scrollIntoView({
+                saveReading();
 
-behavior:"smooth"
+            }
 
-});
-
-updateProgress();
-
-saveReading();
+        };
 
 }
 
-};
-
 // =====================
-// BACK BUTTON
+// BACK
 // =====================
 
-document.getElementById(
+const backBtn =
+    document.getElementById(
+        "backBtn"
+    );
 
-"backBtn"
+if(backBtn){
 
-).onclick=()=>{
+    backBtn.onclick =
+        ()=>{
 
-location.href=
+            location.href =
+                "comic.html";
 
-"comic.html";
+        };
 
-};
+}
 
-    
 // =====================
 // FULLSCREEN
 // =====================
 
-document.getElementById(
+const fullscreenBtn =
+    document.getElementById(
+        "fullscreenBtn"
+    );
 
-"fullscreenBtn"
+if(fullscreenBtn){
 
-).onclick=()=>{
+    fullscreenBtn.onclick =
+        ()=>{
 
-if(!document.fullscreenElement){
+            if(
+                !document.fullscreenElement
+            ){
 
-document.documentElement.requestFullscreen();
+                document
+                    .documentElement
+                    .requestFullscreen();
+
+            }
+
+            else{
+
+                document.exitFullscreen();
+
+            }
+
+        };
 
 }
-
-else{
-
-document.exitFullscreen();
-
-}
-
-};
 
 // =====================
-// KEYBOARD SHORTCUT
+// KEYBOARD
 // =====================
 
 document.addEventListener(
+    "keydown",
+    e=>{
 
-"keydown",
+        if(e.key === "ArrowRight"){
 
-(e)=>{
+            if(nextBtn){
 
-switch(e.key){
+                nextBtn.click();
 
-case "ArrowRight":
+            }
 
-document.getElementById(
+        }
 
-"nextBtn"
+        if(e.key === "ArrowLeft"){
 
-).click();
+            if(prevBtn){
 
-break;
+                prevBtn.click();
 
-case "ArrowLeft":
+            }
 
-document.getElementById(
+        }
 
-"prevBtn"
+        if(
+            e.key === "f" ||
+            e.key === "F"
+        ){
 
-).click();
+            if(fullscreenBtn){
 
-break;
+                fullscreenBtn.click();
 
-case "f":
+            }
 
-case "F":
+        }
 
-document.getElementById(
+        if(e.key === "Escape"){
 
-"fullscreenBtn"
+            if(
+                document.fullscreenElement
+            ){
 
-).click();
+                document.exitFullscreen();
 
-break;
+            }
 
-case "Escape":
+        }
 
-if(document.fullscreenElement){
-
-document.exitFullscreen();
-
-}
-
-break;
-
-}
-
-});
-
-// =====================
-// SETTINGS PANEL
-// =====================
-
-const settingPanel=
-
-document.getElementById(
-
-"settingPanel"
-
+    }
 );
 
-document.getElementById(
-
-"settingBtn"
-
-).onclick=()=>{
-
-settingPanel.classList.toggle(
-
-"show"
-
-);
-
-};
-
 // =====================
-// SAVE SETTINGS
+// INIT
 // =====================
 
-document.getElementById(
-
-"saveSettingBtn"
-
-).onclick=()=>{
-
-localStorage.setItem(
-
-"readerTheme",
-
-document.getElementById(
-
-"themeSelect"
-
-).value
-
-);
-
-localStorage.setItem(
-
-"readerMode",
-
-document.getElementById(
-
-"readingMode"
-
-).value
-
-);
-
-localStorage.setItem(
-
-"readerZoom",
-
-document.getElementById(
-
-"zoomSlider"
-
-).value
-
-);
-
-alert("Settings Saved");
-
-};
-
-// =====================
-// LOAD SETTINGS
-// =====================
-
-window.addEventListener(
-
-"load",
-
-()=>{
-
-if(localStorage.getItem(
-
-"readerTheme"
-
-))
-
-document.getElementById(
-
-"themeSelect"
-
-).value=
-
-localStorage.getItem(
-
-"readerTheme"
-
-);
-
-if(localStorage.getItem(
-
-"readerMode"
-
-))
-
-document.getElementById(
-
-"readingMode"
-
-).value=
-
-localStorage.getItem(
-
-"readerMode"
-
-);
-
-if(localStorage.getItem(
-
-"readerZoom"
-
-))
-
-document.getElementById(
-
-"zoomSlider"
-
-).value=
-
-localStorage.getItem(
-
-"readerZoom"
-
-);
-
-});
-
-// =====================
-// SCROLL TOP
-// =====================
-
-document.getElementById(
-
-"scrollTopBtn"
-
-).onclick=()=>{
-
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
-
-});
-
-};
-
-// =====================
-// FINISH
-// =====================
+loadChapter();
 
 </script>
 
