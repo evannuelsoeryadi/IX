@@ -76,273 +76,410 @@ onclick="addCharacter()"
 
 </div>
 
-<script>
+<script type="module">
 
-if(
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
-localStorage.getItem(
-"developerLogged"
-) !== "true"
-
-){
-
-window.location.href =
-"developer-login.html";
-
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    addDoc,
+    deleteDoc,
+    doc
 }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-let characters =
+// =====================
+// FIREBASE
+// =====================
 
-JSON.parse(
-localStorage.getItem(
-"infinite_x_characters"
-)
-
-) || [];
-
-renderCharacters();
-
-function addCharacter(){
-
-let name =
-document.getElementById(
-"charName"
-).value;
-
-let role =
-document.getElementById(
-"charRole"
-).value;
-
-let desc =
-document.getElementById(
-"charDesc"
-).value;
-
-let file =
-document.getElementById(
-"charImage"
-).files[0];
-
-if(
-
-name == "" ||
-role == ""
-
-){
-
-alert(
-"Lengkapi data dulu!"
-);
-
-return;
-
-}
-
-let reader =
-new FileReader();
-
-reader.onload = function(){
-
-characters.push({
-
-name:name,
-
-role:role,
-
-image:reader.result,
-
-desc:desc
-
-});
-
-localStorage.setItem(
-
-"infinite_x_characters",
-
-JSON.stringify(
-characters)
-
-);
-
-renderCharacters();
-
-document.getElementById(
-"charName"
-).value = "";
-
-document.getElementById(
-"charRole"
-).value = "";
-
-document.getElementById(
-"charDesc"
-).value = "";
-
-document.getElementById(
-"charImage"
-).value = "";
-
+const firebaseConfig = {
+    apiKey: "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+    authDomain: "infinite-x-f37a2.firebaseapp.com",
+    projectId: "infinite-x-f37a2",
+    storageBucket: "infinite-x-f37a2.firebasestorage.app",
+    messagingSenderId: "32543278362",
+    appId: "1:32543278362:web:54e231f17c92596888d8a3"
 };
 
-if(file){
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-reader.readAsDataURL(
-file
-);
+// =====================
+// LOGIN CHECK
+// =====================
 
-}
+if(
+    localStorage.getItem("developerLogged") !== "true"
+){
 
-else{
-
-characters.push({
-
-name:name,
-
-role:role,
-
-image:"",
-desc:desc
-
-});
-
-localStorage.setItem(
-
-"infinite_x_characters",
-
-JSON.stringify(
-characters)
-
-);
-
-renderCharacters();
+    window.location.href =
+        "developer-login.html";
 
 }
 
-}
+// =====================
+// LOAD CHARACTERS
+// =====================
 
-characters.push({
+let characters = [];
 
-name:name,
+async function loadCharacters(){
 
-role:role,
+    try{
 
-image:image,
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "characters"
+                )
+            );
 
-desc:desc
+        characters = [];
 
-});
+        snapshot.forEach(
+            docSnap => {
 
-localStorage.setItem(
+                characters.push({
 
-"infinite_x_characters",
+                    id: docSnap.id,
 
-JSON.stringify(
-characters
-)
+                    ...docSnap.data()
 
-);
+                });
 
-renderCharacters();
+            }
+        );
 
-document.getElementById(
-"charName"
-).value = "";
+        renderCharacters();
 
-document.getElementById(
-"charRole"
-).value = "";
+    }
 
-document.getElementById(
-"charImage"
-).value = "";
+    catch(error){
 
-document.getElementById(
-"charDesc"
-).value = "";
+        console.error(
+            "Load characters error:",
+            error
+        );
 
-}
+        alert(
+            "Gagal mengambil data character!"
+        );
 
-function deleteCharacter(index){
-
-characters.splice(
-index,
-1
-);
-
-localStorage.setItem(
-
-"infinite_x_characters",
-
-JSON.stringify(
-characters
-)
-
-);
-
-renderCharacters();
+    }
 
 }
+
+// =====================
+// ADD CHARACTER
+// =====================
+
+async function addCharacter(){
+
+    const name =
+        document.getElementById(
+            "charName"
+        ).value.trim();
+
+    const role =
+        document.getElementById(
+            "charRole"
+        ).value.trim();
+
+    const desc =
+        document.getElementById(
+            "charDesc"
+        ).value.trim();
+
+    const file =
+        document.getElementById(
+            "charImage"
+        ).files[0];
+
+    // =====================
+    // VALIDATION
+    // =====================
+
+    if(
+        name === "" ||
+        role === ""
+    ){
+
+        alert(
+            "Lengkapi data dulu!"
+        );
+
+        return;
+
+    }
+
+    // =====================
+    // IMAGE
+    // =====================
+
+    if(file){
+
+        const reader =
+            new FileReader();
+
+        reader.onload =
+            async function(){
+
+                await saveCharacter(
+                    name,
+                    role,
+                    desc,
+                    reader.result
+                );
+
+            };
+
+        reader.readAsDataURL(
+            file
+        );
+
+    }
+
+    else{
+
+        await saveCharacter(
+            name,
+            role,
+            desc,
+            ""
+        );
+
+    }
+
+}
+
+window.addCharacter =
+    addCharacter;
+
+// =====================
+// SAVE TO FIRESTORE
+// =====================
+
+async function saveCharacter(
+    name,
+    role,
+    desc,
+    image
+){
+
+    try{
+
+        await addDoc(
+
+            collection(
+                db,
+                "characters"
+            ),
+
+            {
+
+                name: name,
+
+                role: role,
+
+                desc: desc,
+
+                image: image
+
+            }
+
+        );
+
+        alert(
+            "Character berhasil ditambahkan!"
+        );
+
+        // =====================
+        // CLEAR FORM
+        // =====================
+
+        document.getElementById(
+            "charName"
+        ).value = "";
+
+        document.getElementById(
+            "charRole"
+        ).value = "";
+
+        document.getElementById(
+            "charDesc"
+        ).value = "";
+
+        document.getElementById(
+            "charImage"
+        ).value = "";
+
+        loadCharacters();
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Save character error:",
+            error
+        );
+
+        alert(
+            "Gagal menyimpan character!"
+        );
+
+    }
+
+}
+
+// =====================
+// DELETE CHARACTER
+// =====================
+
+async function deleteCharacter(id){
+
+    if(
+        !confirm(
+            "Yakin mau hapus character ini?"
+        )
+    ){
+
+        return;
+
+    }
+
+    try{
+
+        await deleteDoc(
+
+            doc(
+                db,
+                "characters",
+                id
+            )
+
+        );
+
+        alert(
+            "Character berhasil dihapus!"
+        );
+
+        loadCharacters();
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Delete character error:",
+            error
+        );
+
+        alert(
+            "Gagal menghapus character!"
+        );
+
+    }
+
+}
+
+window.deleteCharacter =
+    deleteCharacter;
+
+// =====================
+// RENDER
+// =====================
 
 function renderCharacters(){
 
-let html = "";
+    const container =
+        document.getElementById(
+            "characterList"
+        );
 
-characters.forEach(
-(character,index)=>{
+    container.innerHTML = "";
 
-html += `
+    if(
+        characters.length === 0
+    ){
 
-<div class="character-card">
+        container.innerHTML = `
 
-<img
-src="${character.image}"
-class="character-image"
->
+        <div class="comic-card">
 
-<div>
+            <h2>
+                No Characters Yet
+            </h2>
 
-<h2>
+            <p>
+                Coming Soon...
+            </p>
 
-${character.name}
+        </div>
 
-</h2>
+        `;
 
-<p>
+        return;
 
-Role :
-${character.role}
+    }
 
-</p>
+    characters.forEach(
+        character => {
 
-<p>
+            container.innerHTML += `
 
-${character.desc}
+            <div class="character-card">
 
-</p>
+                <img
+                    src="${
+                        character.image ||
+                        "https://placehold.co/150"
+                    }"
+                    class="character-image"
+                >
 
-</div>
+                <div>
 
-<button
-class="delete-btn"
-onclick="deleteCharacter(${index})"
->
+                    <h2>
+                        ${character.name}
+                    </h2>
 
-Delete
+                    <p>
+                        Role :
+                        ${character.role}
+                    </p>
 
-</button>
+                    <p>
+                        ${character.desc || ""}
+                    </p>
 
-</div>
+                </div>
 
-`;
+                <button
+                    class="delete-btn"
+                    onclick="deleteCharacter('${character.id}')"
+                >
+                    Delete
+                </button>
 
-});
+            </div>
 
-document.getElementById(
-"characterList"
-).innerHTML = html;
+            `;
+
+        }
+    );
 
 }
+
+// =====================
+// INIT
+// =====================
+
+loadCharacters();
 
 </script>
 
