@@ -48,125 +48,335 @@ onclick="window.location.href='manage-pages.html'"
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
 import {
     getFirestore,
     collection,
     getDocs,
     deleteDoc,
     doc
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
 
 // =====================
 // FIREBASE CONFIG
 // =====================
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
-  authDomain: "infinite-x-f37a2.firebaseapp.com",
-  projectId: "infinite-x-f37a2",
-  storageBucket: "infinite-x-f37a2.firebasestorage.app",
-  messagingSenderId: "32543278362",
-  appId: "1:32543278362:web:54e231f17c92596888d8a3"
+
+    apiKey:
+    "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+
+    authDomain:
+    "infinite-x-f37a2.firebaseapp.com",
+
+    projectId:
+    "infinite-x-f37a2",
+
+    storageBucket:
+    "infinite-x-f37a2.firebasestorage.app",
+
+    messagingSenderId:
+    "32543278362",
+
+    appId:
+    "1:32543278362:web:54e231f17c92596888d8a3"
+
 };
 
-// INIT
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
-window.db = db;
+// =====================
+// INITIALIZE FIREBASE
+// =====================
 
-console.log("Firebase CONNECTED ✅");
+const app =
+    initializeApp(
+        firebaseConfig
+    );
+
+const db =
+    getFirestore(app);
+
 
 // =====================
 // LOAD CHAPTERS
 // =====================
+
 async function loadChapters(){
 
-    let container = document.getElementById("chapterList");
+    const container =
+        document.getElementById(
+            "chapterList"
+        );
+
     container.innerHTML = "";
 
-    try {
 
-        let snapshot = await getDocs(collection(db, "chapters"));
+    try{
 
-        let chapters = [];
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "chapters"
+                )
+            );
 
-        snapshot.forEach(docSnap => {
-            chapters.push({
-                id: docSnap.id,
-                ...docSnap.data()
-            });
-        });
 
-        document.getElementById("chapterCount").innerText = chapters.length;
+        const chapters = [];
 
-        chapters.forEach((chapter)=>{
 
-            container.innerHTML += `
-            <div class="chapter-card">
+        snapshot.forEach(
+            docSnap => {
 
-                <img src="${chapter.cover || "https://placehold.co/120x170"}" class="chapter-cover">
+                chapters.push({
 
-                <div class="chapter-info">
+                    id:
+                        docSnap.id,
 
-                    <h2>${chapter.title}</h2>
-                    <p>${chapter.desc}</p>
-                    <p>Price : ${chapter.price == 0 ? "Free" : chapter.price}</p>
-                    <p>Pages : ${chapter.pages}</p>
+                    ...docSnap.data()
+
+                });
+
+            }
+        );
+
+
+        // =====================
+        // CHAPTER COUNT
+        // =====================
+
+        document.getElementById(
+            "chapterCount"
+        ).innerText =
+            chapters.length;
+
+
+        // =====================
+        // EMPTY
+        // =====================
+
+        if(chapters.length === 0){
+
+            container.innerHTML = `
+
+                <div class="comic-card">
+
+                    <h2>
+                        No Chapters Yet
+                    </h2>
+
+                    <p>
+                        Add your first chapter.
+                    </p>
 
                 </div>
 
-                <div class="action-buttons">
+            `;
 
-                    <button class="edit-btn" onclick="editChapter('${chapter.id}')">
-                        Edit
-                    </button>
+            return;
 
-                    <button class="delete-btn" onclick="deleteChapter('${chapter.id}')">
-                        Delete
-                    </button>
+        }
 
-                </div>
+
+        // =====================
+        // RENDER
+        // =====================
+
+        chapters.forEach(
+            chapter => {
+
+                container.innerHTML += `
+
+                    <div class="chapter-card">
+
+                        <img
+                            src="${
+                                chapter.cover ||
+                                "https://placehold.co/120x170"
+                            }"
+                            class="chapter-cover"
+                        >
+
+                        <div class="chapter-info">
+
+                            <h2>
+                                ${chapter.title || "Untitled"}
+                            </h2>
+
+                            <p>
+                                ${chapter.desc || "No description."}
+                            </p>
+
+                            <p>
+                                Price :
+                                ${
+                                    chapter.price == 0 ||
+                                    !chapter.price
+                                    ? "Free"
+                                    : chapter.price
+                                }
+                            </p>
+
+                            <p>
+                                Pages :
+                                ${chapter.pages || 0}
+                            </p>
+
+                        </div>
+
+
+                        <div class="action-buttons">
+
+                            <button
+                                class="edit-btn"
+                                onclick="editChapter('${chapter.id}')"
+                            >
+                                Edit
+                            </button>
+
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteChapter('${chapter.id}')"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Load chapters error:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="comic-card">
+
+                <h2>
+                    Failed to Load Chapters
+                </h2>
+
+                <p>
+                    Check Firebase connection.
+                </p>
 
             </div>
-            `;
-        });
 
-    } catch (e) {
-        console.error("Load error:", e);
+        `;
+
     }
+
 }
 
+
 // =====================
-// DELETE FIREBASE
+// DELETE CHAPTER
 // =====================
+
 async function deleteChapter(id){
 
-    let confirmDelete = confirm("Yakin mau hapus chapter ini?");
-    if(!confirmDelete) return;
+    const confirmDelete =
+        confirm(
+            "Yakin mau hapus chapter ini?"
+        );
 
-    try {
-        await deleteDoc(doc(db, "chapters", id));
-        console.log("Deleted ✅");
-        loadChapters();
-    } catch (e) {
-        console.error("Delete error:", e);
+
+    if(!confirmDelete)
+        return;
+
+
+    try{
+
+        await deleteDoc(
+
+            doc(
+                db,
+                "chapters",
+                id
+            )
+
+        );
+
+
+        alert(
+            "Chapter berhasil dihapus!"
+        );
+
+
+        await loadChapters();
+
     }
+
+    catch(error){
+
+        console.error(
+            "Delete chapter error:",
+            error
+        );
+
+
+        alert(
+            "Gagal menghapus chapter!"
+        );
+
+    }
+
 }
 
+
 // =====================
-// EDIT FLOW (NEXT PAGE)
+// EDIT CHAPTER
 // =====================
+
 function editChapter(id){
-    localStorage.setItem("editingChapter", id);
-    window.location.href = "manage-pages.html";
+
+    sessionStorage.setItem(
+
+        "editingChapter",
+
+        id
+
+    );
+
+
+    window.location.href =
+        "manage-pages.html";
+
 }
 
-// expose global
-window.deleteChapter = deleteChapter;
-window.editChapter = editChapter;
 
+// =====================
+// GLOBAL FUNCTIONS
+// =====================
+
+window.deleteChapter =
+    deleteChapter;
+
+window.editChapter =
+    editChapter;
+
+
+// =====================
 // INIT
+// =====================
+
 loadChapters();
 
 </script>
