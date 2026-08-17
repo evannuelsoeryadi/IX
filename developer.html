@@ -115,71 +115,199 @@ Logout
 
 </div>
 
-<script>
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+
+// =====================
+// FIREBASE
+// =====================
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+
+    authDomain:
+    "infinite-x-f37a2.firebaseapp.com",
+
+    projectId:
+    "infinite-x-f37a2",
+
+    storageBucket:
+    "infinite-x-f37a2.firebasestorage.app",
+
+    messagingSenderId:
+    "32543278362",
+
+    appId:
+    "1:32543278362:web:54e231f17c92596888d8a3"
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
+
+
+// =====================
+// DEV LOGIN CHECK
+// =====================
+
+const developerID =
+    sessionStorage.getItem(
+        "developerID"
+    );
+
 
 if(
 
-localStorage.getItem(
-"developerLogged"
-) !== "true"
+    sessionStorage.getItem(
+        "developerLogged"
+    ) !== "true"
+
+    ||
+
+    !developerID
 
 ){
 
-window.location.href =
-"developer-login.html";
+    window.location.href =
+        "developer-login.html";
 
 }
 
-document.getElementById(
-"devName"
-).innerText =
 
-localStorage.getItem(
-"developerName"
-);
+// =====================
+// LOAD DEVELOPER
+// =====================
 
-document.getElementById(
-"devRole"
-).innerText =
+async function loadDeveloper(){
 
-localStorage.getItem(
-"developerRole"
-);
+    try{
 
-document.getElementById(
-"devID"
-).innerText =
+        const devRef =
+            doc(
+                db,
+                "developers",
+                developerID
+            );
 
-localStorage.getItem(
-"developerID"
-);
+
+        const devSnap =
+            await getDoc(devRef);
+
+
+        if(!devSnap.exists()){
+
+            alert(
+                "Developer account tidak ditemukan!"
+            );
+
+            logoutDeveloper();
+
+            return;
+
+        }
+
+
+        const dev =
+            devSnap.data();
+
+
+        document.getElementById(
+            "devName"
+        ).innerText =
+
+            dev.name ||
+            "Developer";
+
+
+        document.getElementById(
+            "devRole"
+        ).innerText =
+
+            dev.role ||
+            "Developer";
+
+
+        document.getElementById(
+            "devID"
+        ).innerText =
+
+            developerID;
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Developer Firebase Error:",
+            error
+        );
+
+        alert(
+            "Gagal mengambil data Developer."
+        );
+
+    }
+
+}
+
+
+// =====================
+// LOGOUT
+// =====================
 
 function logoutDeveloper(){
 
-localStorage.removeItem(
-"developerLogged"
-);
+    sessionStorage.removeItem(
+        "developerLogged"
+    );
 
-localStorage.removeItem(
-"developerName"
-);
+    sessionStorage.removeItem(
+        "developerID"
+    );
 
-localStorage.removeItem(
-"developerRole"
-);
+    sessionStorage.removeItem(
+        "developerName"
+    );
 
-localStorage.removeItem(
-"developerID"
-);
+    sessionStorage.removeItem(
+        "developerRole"
+    );
 
-localStorage.removeItem(
-"user"
-);
+    localStorage.removeItem(
+        "user"
+    );
 
-window.location.href =
-"index.html";
+
+    window.location.href =
+        "index.html";
 
 }
+
+
+window.logoutDeveloper =
+    logoutDeveloper;
+
+
+// =====================
+// INIT
+// =====================
+
+loadDeveloper();
 
 </script>
 
