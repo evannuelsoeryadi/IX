@@ -37,83 +37,232 @@
 
 </div>
 
-<script>
+<script type="module">
 
-    if(
-        localStorage.getItem(
-            "developerLogged"
-        ) !== "true"
-    ){
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
-        window.location.href =
-            "developer-login.html";
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    deleteDoc,
+    doc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-    }
+// =====================
+// FIREBASE
+// =====================
 
-    let accounts =
-        JSON.parse(
-            localStorage.getItem(
-                "accounts"
-            )
-        ) || [];
+const firebaseConfig = {
+    apiKey: "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+    authDomain: "infinite-x-f37a2.firebaseapp.com",
+    projectId: "infinite-x-f37a2",
+    storageBucket: "infinite-x-f37a2.firebasestorage.app",
+    messagingSenderId: "32543278362",
+    appId: "1:32543278362:web:54e231f17c92596888d8a3"
+};
 
-    let html = "";
+const app = initializeApp(firebaseConfig);
 
-    accounts.forEach((member,index)=>{
+const db = getFirestore(app);
 
-        html += `
+// =====================
+// DEVELOPER CHECK
+// =====================
 
-        <div class="member-card">
+if(
+    localStorage.getItem(
+        "developerLogged"
+    ) !== "true"
+){
 
-            <div>
+    window.location.href =
+        "developer-login.html";
 
-                <h2>${member.username}</h2>
+}
 
-                <p>
-                    Role : Member
-                </p>
+// =====================
+// LOAD MEMBERS
+// =====================
+
+async function loadMembers(){
+
+    const container =
+        document.getElementById(
+            "memberList"
+        );
+
+    container.innerHTML = "";
+
+    try{
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "members"
+                )
+            );
+
+        if(snapshot.empty){
+
+            container.innerHTML = `
+
+            <div class="comic-card">
+
+                <h2>
+                    No Members Yet
+                </h2>
 
             </div>
 
-            <button
-                class="delete-btn"
-                onclick="deleteMember(${index})"
-            >
+            `;
 
-                Delete
+            return;
 
-            </button>
+        }
+
+        snapshot.forEach(
+            memberSnap => {
+
+                const member =
+                    memberSnap.data();
+
+                const id =
+                    memberSnap.id;
+
+                container.innerHTML += `
+
+                <div class="member-card">
+
+                    <div>
+
+                        <h2>
+                            ${member.username || "Unknown"}
+                        </h2>
+
+                        <p>
+                            Role : Member
+                        </p>
+
+                        <p>
+                            Joined :
+                            ${member.joined || "-"}
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteMember('${id}')"
+                    >
+
+                        Delete
+
+                    </button>
+
+                </div>
+
+                `;
+
+            }
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Load members error:",
+            error
+        );
+
+        container.innerHTML = `
+
+        <div class="comic-card">
+
+            <h2>
+                Failed to load members
+            </h2>
+
+            <p>
+                Check Firebase connection.
+            </p>
 
         </div>
 
         `;
 
-    });
+    }
 
-    document.getElementById(
-        "memberList"
-    ).innerHTML = html;
+}
 
-    function deleteMember(index){
+// =====================
+// DELETE MEMBER
+// =====================
 
-        accounts.splice(
-            index,
-            1
+async function deleteMember(id){
+
+    const confirmDelete =
+        confirm(
+            "Yakin mau hapus member ini?"
         );
 
-        localStorage.setItem(
+    if(!confirmDelete){
 
-            "accounts",
+        return;
 
-            JSON.stringify(
-                accounts
+    }
+
+    try{
+
+        await deleteDoc(
+
+            doc(
+                db,
+                "members",
+                id
             )
 
         );
 
-        location.reload();
+        alert(
+            "Member berhasil dihapus!"
+        );
+
+        loadMembers();
 
     }
+
+    catch(error){
+
+        console.error(
+            "Delete member error:",
+            error
+        );
+
+        alert(
+            "Gagal menghapus member!"
+        );
+
+    }
+
+}
+
+// =====================
+// GLOBAL
+// =====================
+
+window.deleteMember =
+    deleteMember;
+
+// =====================
+// INIT
+// =====================
+
+loadMembers();
 
 </script>
 
