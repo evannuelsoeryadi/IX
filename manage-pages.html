@@ -82,29 +82,31 @@ Save Chapter
 </div>
 
 <script type="module">
+
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
 import {
-getFirestore,
-collection,
-doc,
-getDoc,
-addDoc,
-updateDoc
+    getFirestore,
+    collection,
+    doc,
+    getDoc,
+    addDoc,
+    updateDoc
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 // =====================
 // FIREBASE
 // =====================
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
-  authDomain: "infinite-x-f37a2.firebaseapp.com",
-  projectId: "infinite-x-f37a2",
-  storageBucket: "infinite-x-f37a2.firebasestorage.app",
-  messagingSenderId: "32543278362",
-  appId: "1:32543278362:web:54e231f17c92596888d8a3"
+    apiKey: "AIzaSyBxksahQKfodVKIbuSFGGhJt7RCAuveT5Y",
+    authDomain: "infinite-x-f37a2.firebaseapp.com",
+    projectId: "infinite-x-f37a2",
+    storageBucket: "infinite-x-f37a2.firebasestorage.app",
+    messagingSenderId: "32543278362",
+    appId: "1:32543278362:web:54e231f17c92596888d8a3"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -113,27 +115,19 @@ const db = getFirestore(app);
 // =====================
 // LOGIN CHECK
 // =====================
+
 if(
-
-localStorage.getItem(
-"developerLogged"
-) !== "true"
-
+    localStorage.getItem("developerLogged") !== "true"
 ){
-
-window.location.href =
-"developer-login.html";
-
+    window.location.href = "developer-login.html";
 }
 
 // =====================
 // STATE
 // =====================
-let editId =
 
-localStorage.getItem(
-"editingChapter"
-);
+let editId =
+    localStorage.getItem("editingChapter");
 
 let pageImages = [];
 
@@ -142,73 +136,91 @@ let currentCover = "";
 // =====================
 // LOAD EDIT MODE
 // =====================
+
 if(editId){
-
-loadChapter();
-
+    loadChapter();
 }
+
+// =====================
+// LOAD CHAPTER
+// =====================
 
 async function loadChapter(){
 
-try{
+    try{
 
-let snap = await getDoc(
+        const snap = await getDoc(
+            doc(
+                db,
+                "chapters",
+                editId
+            )
+        );
 
-doc(
-db,
-"chapters",
-editId
-)
+        if(!snap.exists()){
 
-);
+            alert("Chapter tidak ditemukan!");
 
-if(!snap.exists()) return;
+            localStorage.removeItem(
+                "editingChapter"
+            );
 
-let chapter = snap.data();
+            return;
+        }
 
-document.getElementById(
-"chapterTitle"
-).value =
-chapter.title || "";
+        const chapter = snap.data();
 
-document.getElementById(
-"chapterDesc"
-).value =
-chapter.desc || "";
+        document.getElementById(
+            "chapterTitle"
+        ).value =
+            chapter.title || "";
 
-document.getElementById(
-"chapterPrice"
-).value =
-chapter.price || 0;
+        document.getElementById(
+            "chapterDesc"
+        ).value =
+            chapter.desc || "";
 
-currentCover =
-chapter.cover || "";
+        document.getElementById(
+            "chapterPrice"
+        ).value =
+            chapter.price || 0;
 
-pageImages =
-chapter.pageImages || [];
+        currentCover =
+            chapter.cover || "";
 
-renderPages();
+        pageImages =
+            Array.isArray(chapter.pageImages)
+            ? [...chapter.pageImages]
+            : [];
 
-}
+        renderPages();
 
-catch(e){
+    }
 
-console.error(
-e
-);
+    catch(error){
 
-}
+        console.error(
+            "Load chapter error:",
+            error
+        );
+
+        alert(
+            "Gagal mengambil data chapter!"
+        );
+
+    }
 
 }
 
 // =====================
 // ADD PAGE
 // =====================
+
 function addPage(){
 
-document.getElementById(
-"pageInput"
-).click();
+    document.getElementById(
+        "pageInput"
+    ).click();
 
 }
 
@@ -217,30 +229,32 @@ window.addPage = addPage;
 // =====================
 // UPLOAD PAGE
 // =====================
+
 function uploadPage(event){
 
-let file =
-event.target.files[0];
+    const file =
+        event.target.files[0];
 
-if(!file) return;
+    if(!file) return;
 
-let reader =
-new FileReader();
+    const reader =
+        new FileReader();
 
-reader.onload =
-function(){
+    reader.onload = function(){
 
-pageImages.push(
-reader.result
-);
+        pageImages.push(
+            reader.result
+        );
 
-renderPages();
+        renderPages();
 
-};
+        // reset input supaya file yang sama
+        // bisa dipilih lagi
+        event.target.value = "";
 
-reader.readAsDataURL(
-file
-);
+    };
+
+    reader.readAsDataURL(file);
 
 }
 
@@ -249,50 +263,50 @@ window.uploadPage = uploadPage;
 // =====================
 // RENDER PAGES
 // =====================
+
 function renderPages(){
 
-let container =
-document.getElementById(
-"pageList"
-);
+    const container =
+        document.getElementById(
+            "pageList"
+        );
 
-container.innerHTML = "";
+    container.innerHTML = "";
 
-document.getElementById(
-"pageCount"
-).innerText =
-pageImages.length;
+    document.getElementById(
+        "pageCount"
+    ).innerText =
+        pageImages.length;
 
-pageImages.forEach(
-(img,index)=>{
+    pageImages.forEach(
+        (img,index)=>{
 
-container.innerHTML += `
+            container.innerHTML += `
 
-<div class="page-card">
+            <div class="page-card">
 
-<img
-src="${img}"
-class="page-preview"
->
+                <img
+                    src="${img}"
+                    class="page-preview"
+                >
 
-<div class="page-actions">
+                <div class="page-actions">
 
-<button
-class="delete-btn"
-onclick="deletePage(${index})"
->
+                    <button
+                        class="delete-btn"
+                        onclick="deletePage(${index})"
+                    >
+                        Delete
+                    </button>
 
-Delete
+                </div>
 
-</button>
+            </div>
 
-</div>
+            `;
 
-</div>
-
-`;
-
-});
+        }
+    );
 
 }
 
@@ -301,14 +315,23 @@ window.renderPages = renderPages;
 // =====================
 // DELETE PAGE
 // =====================
+
 function deletePage(index){
 
-pageImages.splice(
-index,
-1
-);
+    if(
+        !confirm(
+            "Hapus halaman ini?"
+        )
+    ){
+        return;
+    }
 
-renderPages();
+    pageImages.splice(
+        index,
+        1
+    );
+
+    renderPages();
 
 }
 
@@ -317,172 +340,206 @@ window.deletePage = deletePage;
 // =====================
 // SAVE CHAPTER
 // =====================
+
 async function saveChapter(){
 
-let title =
-document.getElementById(
-"chapterTitle"
-).value;
+    const title =
+        document.getElementById(
+            "chapterTitle"
+        ).value.trim();
 
-let desc =
-document.getElementById(
-"chapterDesc"
-).value;
+    const desc =
+        document.getElementById(
+            "chapterDesc"
+        ).value.trim();
 
-let price =
-document.getElementById(
-"chapterPrice"
-).value;
+    const price =
+        Number(
+            document.getElementById(
+                "chapterPrice"
+            ).value || 0
+        );
 
-let coverFile =
-document.getElementById(
-"chapterCover"
-).files[0];
+    const coverFile =
+        document.getElementById(
+            "chapterCover"
+        ).files[0];
 
-if(
+    // =====================
+    // VALIDATION
+    // =====================
 
-title == "" ||
-desc == ""
+    if(
+        title === "" ||
+        desc === ""
+    ){
 
-){
+        alert(
+            "Lengkapi data dulu!"
+        );
 
-alert(
-"Lengkapi data dulu!"
-);
+        return;
 
-return;
+    }
+
+    // =====================
+    // SAVE DATA
+    // =====================
+
+    function finishSave(
+        coverData
+    ){
+
+        return {
+
+            title: title,
+
+            desc: desc,
+
+            price: price,
+
+            cover:
+                coverData || "",
+
+            pages:
+                pageImages.length,
+
+            pageImages:
+                [...pageImages]
+
+        };
+
+    }
+
+    // =====================
+    // COVER BARU
+    // =====================
+
+    if(coverFile){
+
+        const reader =
+            new FileReader();
+
+        reader.onload =
+            async function(){
+
+                const data =
+                    finishSave(
+                        reader.result
+                    );
+
+                await saveToFirestore(
+                    data
+                );
+
+            };
+
+        reader.readAsDataURL(
+            coverFile
+        );
+
+    }
+
+    // =====================
+    // COVER LAMA
+    // =====================
+
+    else{
+
+        const data =
+            finishSave(
+                currentCover
+            );
+
+        await saveToFirestore(
+            data
+        );
+
+    }
 
 }
 
-function finishSave(coverData){
-
-return {
-
-title:title,
-
-desc:desc,
-
-price:Number(price),
-
-cover:coverData,
-
-pages:pageImages.length,
-
-pageImages:[...pageImages]
-
-};
-
-}
-
-// =====================
-// COVER FILE
-// =====================
-if(coverFile){
-
-let reader =
-new FileReader();
-
-reader.onload =
-async function(){
-
-let data =
-finishSave(
-reader.result
-);
-
-saveToFirestore(
-data
-);
-
-};
-
-reader.readAsDataURL(
-coverFile
-);
-
-}
-
-else{
-
-let data =
-finishSave(
-currentCover
-);
-
-saveToFirestore(
-data
-);
-
-}
-
-}
-
-window.saveChapter = saveChapter;
+window.saveChapter =
+    saveChapter;
 
 // =====================
 // FIRESTORE SAVE
 // =====================
-async function saveToFirestore(data){
 
-try{
+async function saveToFirestore(
+    data
+){
 
-// EDIT
-if(editId){
+    try{
 
-await updateDoc(
+        // =====================
+        // EDIT CHAPTER
+        // =====================
 
-doc(
-db,
-"chapters",
-editId
-),
+        if(editId){
 
-data
+            await updateDoc(
 
-);
+                doc(
+                    db,
+                    "chapters",
+                    editId
+                ),
 
-}
+                data
 
-// ADD
-else{
+            );
 
-await addDoc(
+        }
 
-collection(
-db,
-"chapters"
-),
+        // =====================
+        // ADD CHAPTER
+        // =====================
 
-data
+        else{
 
-);
+            await addDoc(
 
-}
+                collection(
+                    db,
+                    "chapters"
+                ),
 
-localStorage.removeItem(
-"editingChapter"
-);
+                data
 
-alert(
-"Chapter berhasil disimpan!"
-);
+            );
 
-window.location.href =
-"manage-comics.html";
+        }
 
-}
+        // =====================
+        // CLEAR EDIT STATE
+        // =====================
 
-catch(e){
+        localStorage.removeItem(
+            "editingChapter"
+        );
 
-console.error(
-e
-);
+        alert(
+            "Chapter berhasil disimpan!"
+        );
 
-alert(
-"Gagal menyimpan!"
-);
+        window.location.href =
+            "manage-comics.html";
 
-}
+    }
+
+    catch(error){
+
+        console.error(
+            "Firestore save error:",
+            error
+        );
+
+        alert(
+            "Gagal menyimpan chapter!"
+        );
+
+    }
 
 }
 
