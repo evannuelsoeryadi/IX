@@ -138,11 +138,16 @@ async function developerLogin(){
 
     try{
 
-        const email =
-            id.toLowerCase()
-            +
-            "@infinite-x.local";
+       const developerEmails = {
+           "Evan01": "evannuel.soeryadi@gmail.com"
+       };
 
+        const email = developerEmails[id];
+
+        if(!email){
+            alert("Developer ID tidak ditemukan!");
+            return;
+        }
 
         // =========================
         // FIREBASE AUTH
