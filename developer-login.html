@@ -38,7 +38,7 @@
 
         </label>
 
-        <button onclick="developerLogin()">
+        <button onclick="loginBtn">
             Login
         </button>
 
@@ -305,8 +305,9 @@ function toggleDevPassword(){
 // GLOBAL
 // =====================
 
-window.developerLogin =
-    developerLogin;
+document
+    .getElementById("loginBtn")
+    .addEventListener("click", developerLogin);
 
 window.toggleDevPassword =
     toggleDevPassword;
